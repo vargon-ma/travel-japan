@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   getStartingPriceJpy,
+  convertJpyToThb,
   filterEntries,
   sortByPrice,
   searchMatches,
@@ -44,6 +45,39 @@ describe('getStartingPriceJpy', () => {
   it('คืน null เมื่อไม่มี priceJpy ที่ใช้ได้เลย', () => {
     const entry = { products: [{ nameTh: 'ก', priceJpy: null }] };
     expect(getStartingPriceJpy(entry)).toBe(null);
+  });
+});
+
+describe('convertJpyToThb', () => {
+  it('คำนวณบาทจากเยนถูกต้อง', () => {
+    expect(convertJpyToThb(1000, 0.23)).toBe(230);
+    expect(convertJpyToThb(1800, 0.23)).toBe(414);
+  });
+
+  it('ปัดเศษเป็นจำนวนเต็มบาท (.5 ปัดขึ้น)', () => {
+    // 100 * 0.235 = 23.5 → 24
+    expect(convertJpyToThb(100, 0.235)).toBe(24);
+    // 980 * 0.2345 = 229.81 → 230
+    expect(convertJpyToThb(980, 0.2345)).toBe(230);
+  });
+
+  it('คืน 0 เมื่อ jpy = 0', () => {
+    expect(convertJpyToThb(0, 0.23)).toBe(0);
+  });
+
+  it('คำนวณถูกต้องเมื่อใช้เรตสำรอง (fallback)', () => {
+    // เรตสำรองโดยประมาณ ~0.22
+    expect(convertJpyToThb(500, 0.22)).toBe(110);
+  });
+
+  it('คืน null เมื่อ jpy ไม่ใช่ตัวเลขที่ใช้ได้ (เช่น null)', () => {
+    expect(convertJpyToThb(null, 0.23)).toBe(null);
+    expect(convertJpyToThb(undefined, 0.23)).toBe(null);
+  });
+
+  it('คืน null เมื่อ rate ไม่ใช่ตัวเลขที่ใช้ได้', () => {
+    expect(convertJpyToThb(1000, null)).toBe(null);
+    expect(convertJpyToThb(1000, NaN)).toBe(null);
   });
 });
 

@@ -19,6 +19,18 @@ export function getStartingPriceJpy(entry) {
 }
 
 /**
+ * แปลงราคาเยน (JPY) เป็นบาท (THB) ด้วยอัตราแลกเปลี่ยน แล้วปัดเศษเป็นจำนวนเต็มบาท
+ * @param {number} jpy ราคาเป็นเยน
+ * @param {number} rate อัตราแลกเปลี่ยน JPY→THB (บาทต่อ 1 เยน)
+ * @returns {number|null} ราคาบาท (ปัดเศษ) หรือ null ถ้า input ไม่ใช่ตัวเลขที่ใช้ได้
+ */
+export function convertJpyToThb(jpy, rate) {
+  if (typeof jpy !== 'number' || !Number.isFinite(jpy)) return null;
+  if (typeof rate !== 'number' || !Number.isFinite(rate)) return null;
+  return Math.round(jpy * rate);
+}
+
+/**
  * ตรวจว่า entry ตรงกับคำค้นหรือไม่ (ค้นจากชื่อไทย/ญี่ปุ่น/โรมาจิ และชื่อสินค้า)
  * แบบ case-insensitive และตัดช่องว่างหัวท้ายของคำค้น
  * @param {object} entry

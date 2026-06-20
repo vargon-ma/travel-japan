@@ -1,6 +1,15 @@
 // app.js — ชั้น side-effect: fetch ข้อมูล, render DOM
 // เรียกใช้ pure functions จาก logic.js แล้วเอาผลไป render
-import { getStartingPriceJpy, filterEntries, sortByPrice } from './logic.js';
+import {
+  getStartingPriceJpy,
+  convertJpyToThb,
+  filterEntries,
+  sortByPrice,
+} from './logic.js';
+
+// เรต JPY→THB ดึงสดจาก API ที่ไม่ต้องใช้ key; ถ้าล้มเหลวใช้เรตสำรองด้านล่าง
+const RATE_API_URL = 'https://open.er-api.com/v6/latest/JPY';
+const FALLBACK_RATE = 0.22; // เรตโดยประมาณ ใช้เมื่อดึงเรตสดไม่สำเร็จ
 
 const CATEGORY_LABELS = {
   sightseeing: 'ท่องเที่ยว',
@@ -17,17 +26,26 @@ const CITY_LABELS = {
 };
 
 const jpyFormatter = new Intl.NumberFormat('ja-JP');
+const thbFormatter = new Intl.NumberFormat('th-TH');
 
 function formatJpy(price) {
   if (price === null) return 'ราคา: สอบถามหน้าร้าน';
   return `¥${jpyFormatter.format(price)}`;
 }
 
-function createCard(entry) {
+function formatThb(priceJpy, rate) {
+  if (priceJpy === null) return null;
+  const baht = convertJpyToThb(priceJpy, rate);
+  if (baht === null) return null;
+  return `฿${thbFormatter.format(baht)}`;
+}
+
+function createCard(entry, rate) {
   const card = document.createElement('article');
   card.className = 'card';
 
   const startingPrice = getStartingPriceJpy(entry);
+  const thb = formatThb(startingPrice, rate);
   const hasImage = Array.isArray(entry.images) && entry.images.length > 0;
   const subtitle = [entry.nameJa, entry.nameRomaji].filter(Boolean).join(' · ');
 
@@ -46,7 +64,8 @@ function createCard(entry) {
       <p class="card__name-ja">${subtitle}</p>
       <p class="card__price">
         <span class="card__price-label">ราคาเริ่มต้น</span>
-        ${formatJpy(startingPrice)}
+        <span class="card__price-jpy">${formatJpy(startingPrice)}</span>
+        ${thb ? `<span class="card__price-thb">${thb}</span>` : ''}
       </p>
     </div>
   `;
@@ -54,8 +73,8 @@ function createCard(entry) {
   return card;
 }
 
-function renderGrid(entries, gridEl) {
-  gridEl.replaceChildren(...entries.map(createCard));
+function renderGrid(entries, gridEl, rate) {
+  gridEl.replaceChildren(...entries.map((entry) => createCard(entry, rate)));
 }
 
 // ---- View model: ฟิลเตอร์ + ค้นหา + เรียง ----
@@ -63,6 +82,7 @@ function renderGrid(entries, gridEl) {
 const filterState = { category: '', city: '', query: '', sort: null };
 
 let allEntries = [];
+let currentRate = FALLBACK_RATE;
 
 /** เติม <option> ให้ select จากรายการ {value,label} โดยคงตัวเลือกแรก ("ทั้งหมด") ไว้ */
 function populateSelect(selectEl, options) {
@@ -107,7 +127,7 @@ function applyView(gridEl, statusEl) {
     return;
   }
 
-  renderGrid(view, gridEl);
+  renderGrid(view, gridEl, currentRate);
   setStatus(statusEl, null);
 }
 
@@ -152,6 +172,41 @@ function setupFilters(gridEl, statusEl) {
   }
 }
 
+/**
+ * ดึงเรต JPY→THB สดตอนโหลด; ถ้าล้มเหลวคืนเรตสำรอง (isFallback: true) — เว็บต้องไม่พัง
+ * @returns {Promise<{ rate: number, asOf: string|null, isFallback: boolean }>}
+ */
+async function loadRate() {
+  try {
+    const res = await fetch(RATE_API_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const rate = data?.rates?.THB;
+    if (typeof rate !== 'number' || !Number.isFinite(rate)) {
+      throw new Error('ไม่พบเรต THB ใน response');
+    }
+    return { rate, asOf: data.time_last_update_utc ?? null, isFallback: false };
+  } catch (err) {
+    console.warn('ดึงเรตแลกเปลี่ยนไม่สำเร็จ ใช้เรตสำรอง:', err);
+    return { rate: FALLBACK_RATE, asOf: null, isFallback: true };
+  }
+}
+
+function renderRateLabel(labelEl, { rate, asOf, isFallback }) {
+  const rateText = `¥1 ≈ ฿${rate.toFixed(4)}`;
+  if (isFallback) {
+    labelEl.textContent = `${rateText} · เรตโดยประมาณ (ดึงเรตสดไม่สำเร็จ)`;
+  } else {
+    const asOfDate = asOf ? new Date(asOf) : null;
+    const asOfText =
+      asOfDate && !Number.isNaN(asOfDate.getTime())
+        ? asOfDate.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' })
+        : null;
+    labelEl.textContent = asOfText ? `${rateText} · เรต ณ ${asOfText}` : rateText;
+  }
+  labelEl.hidden = false;
+}
+
 function setStatus(statusEl, message, isError = false) {
   statusEl.textContent = message ?? '';
   statusEl.classList.toggle('status--error', isError);
@@ -161,6 +216,10 @@ function setStatus(statusEl, message, isError = false) {
 async function init() {
   const gridEl = document.getElementById('card-grid');
   const statusEl = document.getElementById('grid-status');
+  const rateLabelEl = document.getElementById('rate-label');
+
+  // ดึงเรตคู่ขนานกับข้อมูล; เรตมี fallback ในตัวจึงไม่ทำให้ init ล้มเหลว
+  const ratePromise = loadRate();
 
   try {
     const res = await fetch('data.json');
@@ -168,7 +227,11 @@ async function init() {
     const data = await res.json();
     const entries = data.entries ?? [];
 
+    const rateInfo = await ratePromise;
+    renderRateLabel(rateLabelEl, rateInfo);
+
     allEntries = entries;
+    currentRate = rateInfo.rate;
 
     setupFilters(gridEl, statusEl);
     applyView(gridEl, statusEl);
