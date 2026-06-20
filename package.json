@@ -1,0 +1,14 @@
+{
+  "name": "travel-japan",
+  "version": "0.1.0",
+  "description": "เว็บแนะนำการท่องเที่ยวญี่ปุ่นแบบ interactive",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.8"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "entries": [
+    {
+      "id": "super-potato-akihabara",
+      "nameTh": "ซูเปอร์โปเตโต้ อากิฮาบาระ",
+      "nameJa": "スーパーポテト 秋葉原店",
+      "nameRomaji": "Super Potato Akihabara",
+      "category": "games",
+      "city": "tokyo",
+      "description": "ร้านเกมเรโทรชื่อดังย่านอากิฮาบาระ ขายเครื่องเกมและตลับเกมมือสองตั้งแต่ยุคแฟมิคอมจนถึงปัจจุบัน มีโซนเกมเซ็นเตอร์ย้อนยุคที่ชั้นบน",
+      "lat": 35.69906,
+      "lng": 139.77155,
+      "address": {
+        "th": "1-11-2 โซโตคันดะ เขตชิโยดะ โตเกียว",
+        "ja": "東京都千代田区外神田1-11-2"
+      },
+      "images": [],
+      "products": [
+        { "nameTh": "ตลับเกมแฟมิคอม (มือสอง)", "priceJpy": 500, "condition": "used" },
+        { "nameTh": "จอยซูเปอร์แฟมิคอม (มือสอง)", "priceJpy": 1800, "condition": "used" },
+        { "nameTh": "เครื่องเกมเรโทรสภาพดี (มือสอง)", "priceJpy": 9800, "condition": "used" }
+      ],
+      "sourceUrl": "https://www.superpotato.com/"
+    },
+    {
+      "id": "tokyo-skytree",
+      "nameTh": "โตเกียวสกายทรี",
+      "nameJa": "東京スカイツリー",
+      "nameRomaji": "Tokyo Skytree",
+      "category": "sightseeing",
+      "city": "tokyo",
+      "description": "หอคอยกระจายสัญญาณสูง 634 เมตร จุดชมวิวที่สูงที่สุดในญี่ปุ่น มองเห็นเมืองโตเกียวได้รอบทิศ ด้านล่างมีห้างสรรพสินค้าและพิพิธภัณฑ์สัตว์น้ำ",
+      "lat": 35.71006,
+      "lng": 139.81069,
+      "address": {
+        "th": "1-1-2 โอชิอาเกะ เขตซูมิดะ โตเกียว",
+        "ja": "東京都墨田区押上1-1-2"
+      },
+      "images": [],
+      "products": [
+        { "nameTh": "บัตรชมวิวชั้น Tembo Deck (350 ม.)", "priceJpy": 2100 },
+        { "nameTh": "บัตรชมวิวรวม Tembo Galleria (450 ม.)", "priceJpy": 3100 }
+      ],
+      "sourceUrl": "https://www.tokyo-skytree.jp/"
+    },
+    {
+      "id": "ichiran-dotonbori",
+      "nameTh": "อิจิรัน สาขาโดทงโบริ",
+      "nameJa": "一蘭 道頓堀店",
+      "nameRomaji": "Ichiran Dotonbori",
+      "category": "food",
+      "city": "osaka",
+      "description": "ร้านราเมงทงคตสึชื่อดังแบบนั่งเดี่ยวในคูหา สั่งและปรับความเข้มข้นของน้ำซุปได้เอง เปิด 24 ชั่วโมง อยู่ใจกลางย่านโดทงโบริ",
+      "lat": 34.66873,
+      "lng": 135.50118,
+      "address": {
+        "th": "7-18 โซเอมงโจ เขตชูโอ โอซาก้า",
+        "ja": "大阪府大阪市中央区宗右衛門町7-18"
+      },
+      "images": [],
+      "products": [
+        { "nameTh": "ราเมงทงคตสึ (ชามมาตรฐาน)", "priceJpy": 980 },
+        { "nameTh": "ไข่ต้มยางมะตูม (เพิ่ม)", "priceJpy": 140 },
+        { "nameTh": "เพิ่มเส้น (คาเอดามะ)", "priceJpy": 210 }
+      ],
+      "sourceUrl": "https://ichiran.com/"
+    }
+  ]
+}
