@@ -28,6 +28,26 @@ const CITY_LABELS = {
 const jpyFormatter = new Intl.NumberFormat('ja-JP');
 const thbFormatter = new Intl.NumberFormat('th-TH');
 
+const CONDITION_LABELS = {
+  new: { text: 'มือ 1', cls: 'cond--new' },
+  used: { text: 'มือ 2', cls: 'cond--used' },
+};
+
+/** เครดิต/ลิขสิทธิ์ของรูป รวมเป็นบรรทัดเดียว (ตามข้อกำหนด PRD ต้องให้เครดิต/ระบุ license) */
+function imageCreditText(image) {
+  return [image?.credit, image?.license].filter(Boolean).join(' · ');
+}
+
+/** escape ข้อความก่อนยัดลง innerHTML กันมาร์กอัป/quote ในข้อมูลทำ DOM พัง */
+function escapeHtml(str) {
+  return String(str ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
 function formatJpy(price) {
   if (price === null) return 'ราคา: สอบถามหน้าร้าน';
   return `¥${jpyFormatter.format(price)}`;
@@ -43,6 +63,10 @@ function formatThb(priceJpy, rate) {
 function createCard(entry, rate) {
   const card = document.createElement('article');
   card.className = 'card';
+  card.dataset.id = entry.id;
+  card.setAttribute('role', 'button');
+  card.setAttribute('tabindex', '0');
+  card.setAttribute('aria-label', `ดูรายละเอียด ${entry.nameTh}`);
 
   const startingPrice = getStartingPriceJpy(entry);
   const thb = formatThb(startingPrice, rate);
@@ -82,6 +106,7 @@ function renderGrid(entries, gridEl, rate) {
 const filterState = { category: '', city: '', query: '', sort: null };
 
 let allEntries = [];
+let entryById = new Map();
 let currentRate = FALLBACK_RATE;
 
 /** เติม <option> ให้ select จากรายการ {value,label} โดยคงตัวเลือกแรก ("ทั้งหมด") ไว้ */
@@ -172,6 +197,175 @@ function setupFilters(gridEl, statusEl) {
   }
 }
 
+// ---- โมดัลรายละเอียด + แกลเลอรีรูป (Issue 05) ----
+let modalMap = null; // instance ของ Leaflet แผนที่ย่อ; สร้างใหม่ทุกครั้งที่เปิด ทำลายตอนปิด
+let lastFocused = null; // element ที่โฟกัสอยู่ก่อนเปิดโมดัล เพื่อคืนโฟกัสตอนปิด
+
+/** แกลเลอรีรูป: หลายรูปเลื่อนดูได้ (prev/next); ถ้าไม่มีรูปใช้ placeholder */
+function buildGalleryHtml(entry) {
+  const images = Array.isArray(entry.images) ? entry.images : [];
+  if (images.length === 0) {
+    return `<div class="gallery gallery--empty"><span class="gallery__placeholder" aria-hidden="true">🗾</span></div>`;
+  }
+  const first = images[0];
+  const multi = images.length > 1;
+  return `
+    <div class="gallery">
+      <img class="gallery__img" src="${escapeHtml(first.url)}" alt="${escapeHtml(entry.nameTh)}" />
+      ${
+        multi
+          ? `<button type="button" class="gallery__nav gallery__nav--prev" data-gallery-prev aria-label="รูปก่อนหน้า">‹</button>
+             <button type="button" class="gallery__nav gallery__nav--next" data-gallery-next aria-label="รูปถัดไป">›</button>
+             <span class="gallery__counter"><span data-gallery-index>1</span>/${images.length}</span>`
+          : ''
+      }
+      <p class="gallery__credit" data-gallery-credit>${escapeHtml(imageCreditText(first))}</p>
+    </div>`;
+}
+
+/** ผูกปุ่ม prev/next ของแกลเลอรีให้สลับรูป + อัปเดตตัวนับและเครดิต (วนรอบ) */
+function setupGallery(root, entry) {
+  const images = Array.isArray(entry.images) ? entry.images : [];
+  if (images.length <= 1) return;
+
+  const imgEl = root.querySelector('.gallery__img');
+  const idxEl = root.querySelector('[data-gallery-index]');
+  const creditEl = root.querySelector('[data-gallery-credit]');
+  let i = 0;
+
+  const show = (n) => {
+    i = (n + images.length) % images.length;
+    imgEl.src = images[i].url;
+    if (idxEl) idxEl.textContent = String(i + 1);
+    if (creditEl) creditEl.textContent = imageCreditText(images[i]);
+  };
+
+  root.querySelector('[data-gallery-prev]')?.addEventListener('click', () => show(i - 1));
+  root.querySelector('[data-gallery-next]')?.addEventListener('click', () => show(i + 1));
+}
+
+/** ลิสต์สินค้า/เมนูพร้อมราคา ¥ และ ฿; หมวดเกมแสดงป้ายมือหนึ่ง/มือสอง */
+function buildProductsHtml(products, rate) {
+  if (!Array.isArray(products) || products.length === 0) {
+    return '<p class="modal__empty">ไม่มีข้อมูลราคาสินค้า/เมนู</p>';
+  }
+  const rows = products
+    .map((p) => {
+      const priceJpy = typeof p.priceJpy === 'number' ? p.priceJpy : null;
+      const thb = formatThb(priceJpy, rate);
+      const cond = CONDITION_LABELS[p.condition];
+      const condHtml = cond ? `<span class="cond ${cond.cls}">${cond.text}</span>` : '';
+      return `
+        <li class="product">
+          <span class="product__name">${escapeHtml(p.nameTh ?? '')}${condHtml}</span>
+          <span class="product__price">
+            <span class="product__jpy">${formatJpy(priceJpy)}</span>
+            ${thb ? `<span class="product__thb">${thb}</span>` : ''}
+          </span>
+        </li>`;
+    })
+    .join('');
+  return `<ul class="products">${rows}</ul>`;
+}
+
+/** เปิดโมดัลรายละเอียดของ entry: ประกอบเนื้อหา → แสดง → ตั้งแผนที่ย่อ → จัดโฟกัส */
+function openModal(entry) {
+  const modalEl = document.getElementById('modal');
+  const bodyEl = document.getElementById('modal-body');
+  const subtitle = [entry.nameJa, entry.nameRomaji].filter(Boolean).join(' · ');
+  const addr = entry.address ?? {};
+  const hasCoords = typeof entry.lat === 'number' && typeof entry.lng === 'number';
+
+  bodyEl.innerHTML = `
+    ${buildGalleryHtml(entry)}
+    <div class="modal__info">
+      <div class="card__badges">
+        <span class="badge badge--category">${CATEGORY_LABELS[entry.category] ?? entry.category}</span>
+        <span class="badge">${CITY_LABELS[entry.city] ?? entry.city}</span>
+      </div>
+      <h2 id="modal-title" class="modal__title">${escapeHtml(entry.nameTh ?? '')}</h2>
+      ${subtitle ? `<p class="modal__subtitle">${escapeHtml(subtitle)}</p>` : ''}
+      ${entry.description ? `<p class="modal__desc">${escapeHtml(entry.description)}</p>` : ''}
+
+      <h3 class="modal__heading">สินค้า / เมนูตัวอย่าง</h3>
+      ${buildProductsHtml(entry.products, currentRate)}
+
+      <h3 class="modal__heading">ที่อยู่</h3>
+      <p class="modal__address">
+        ${addr.th ? `<span>${escapeHtml(addr.th)}</span>` : ''}
+        ${addr.ja ? `<span class="modal__address-ja">${escapeHtml(addr.ja)}</span>` : ''}
+      </p>
+      ${hasCoords ? '<div id="modal-map" class="modal__map"></div>' : ''}
+
+      ${
+        entry.sourceUrl
+          ? `<p class="modal__source"><a href="${escapeHtml(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">แหล่งอ้างอิง ↗</a></p>`
+          : ''
+      }
+    </div>
+  `;
+
+  setupGallery(bodyEl, entry);
+
+  lastFocused = document.activeElement;
+  modalEl.hidden = false;
+  document.body.classList.add('modal-open');
+
+  // แผนที่ย่อ: สร้างหลังโมดัลแสดงแล้ว (container มีขนาด) แล้ว invalidateSize กันเรนเดอร์เพี้ยน
+  if (hasCoords && window.L) {
+    modalMap = L.map('modal-map', { scrollWheelZoom: false }).setView([entry.lat, entry.lng], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap',
+    }).addTo(modalMap);
+    L.marker([entry.lat, entry.lng]).addTo(modalMap);
+    setTimeout(() => modalMap?.invalidateSize(), 50);
+  }
+
+  modalEl.querySelector('.modal__close')?.focus();
+}
+
+/** ปิดโมดัล: ทำลายแผนที่ย่อ คืนสถานะหน้า และคืนโฟกัสให้ element เดิม */
+function closeModal() {
+  const modalEl = document.getElementById('modal');
+  if (modalEl.hidden) return;
+  if (modalMap) {
+    modalMap.remove();
+    modalMap = null;
+  }
+  modalEl.hidden = true;
+  document.body.classList.remove('modal-open');
+  lastFocused?.focus?.();
+  lastFocused = null;
+}
+
+/** ผูก event เปิดโมดัล (คลิก/Enter/Space ที่การ์ด) และปิดโมดัล (ปุ่ม/พื้นหลัง/Esc) ครั้งเดียว */
+function setupModal(gridEl) {
+  const modalEl = document.getElementById('modal');
+
+  const openFromCard = (target) => {
+    const card = target.closest('.card');
+    if (!card) return;
+    const entry = entryById.get(card.dataset.id);
+    if (entry) openModal(entry);
+  };
+
+  gridEl.addEventListener('click', (e) => openFromCard(e.target));
+  gridEl.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (!e.target.closest('.card')) return;
+    e.preventDefault();
+    openFromCard(e.target);
+  });
+
+  modalEl.addEventListener('click', (e) => {
+    if (e.target.closest('[data-modal-close]')) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+}
+
 /**
  * ดึงเรต JPY→THB สดตอนโหลด; ถ้าล้มเหลวคืนเรตสำรอง (isFallback: true) — เว็บต้องไม่พัง
  * @returns {Promise<{ rate: number, asOf: string|null, isFallback: boolean }>}
@@ -231,9 +425,11 @@ async function init() {
     renderRateLabel(rateLabelEl, rateInfo);
 
     allEntries = entries;
+    entryById = new Map(entries.map((entry) => [entry.id, entry]));
     currentRate = rateInfo.rate;
 
     setupFilters(gridEl, statusEl);
+    setupModal(gridEl);
     applyView(gridEl, statusEl);
   } catch (err) {
     console.error('โหลดข้อมูลไม่สำเร็จ:', err);

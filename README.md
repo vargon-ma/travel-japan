@@ -3,7 +3,8 @@
 เว็บ static แบบ interactive รวมร้านและสถานที่แนะนำในญี่ปุ่นสำหรับนักท่องเที่ยวไทย
 แสดงเป็นกริดการ์ด ราคาทั้งเยน (¥) และบาท (฿) พร้อมแผนที่และบุ๊กมาร์ก
 
-> สถานะปัจจุบัน: **walking skeleton (Issue 01)** — กริดการ์ดจาก `data.json` ผ่าน pure logic
+> สถานะปัจจุบัน: เสร็จ **Issue 01–03 + Issue 05** — กริดการ์ด + แปลงค่าเงิน ¥/฿ + ฟิลเตอร์/ค้นหา/เรียง + โมดัลรายละเอียดพร้อมแกลเลอรีรูปและแผนที่ย่อ (Leaflet)
+> ยังไม่ทำ: **Issue 04** (แผนที่หลักที่ปักหมุดทุก entry และ sync กับฟิลเตอร์) — โมดัลโหลด Leaflet ไว้แล้ว สไลซ์นี้จะมาต่อภายหลัง
 
 ## การรันเว็บ
 
@@ -37,9 +38,9 @@ npm run test:watch   # รันแบบ watch ระหว่างพัฒ�
 
 | ไฟล์ | หน้าที่ |
 | --- | --- |
-| `index.html` | โครงหน้า + โหลด `app.js` (ES module) |
-| `style.css` | สไตล์ทั้งหมด (ธีมสว่าง มินิมอล, responsive) |
-| `app.js` | ชั้น side-effect: `fetch`, render DOM (ต่อไปจะมี Leaflet, localStorage) |
+| `index.html` | โครงหน้า + โหลด Leaflet (CDN) + `app.js` (ES module) + โครงโมดัล |
+| `style.css` | สไตล์ทั้งหมด (ธีมสว่าง มินิมอล, responsive) รวมโมดัล/แกลเลอรี |
+| `app.js` | ชั้น side-effect: `fetch`, render DOM, โมดัลรายละเอียด + แผนที่ย่อ Leaflet (ต่อไปจะมี localStorage) |
 | `logic.js` | ชั้น pure functions — seam สำหรับเทสต์ (ไม่แตะ DOM/network) |
 | `logic.test.js` | เทสต์ของ `logic.js` (Vitest) |
 | `data.json` | dataset ร้าน/สถานที่ (ราคาเก็บเป็น JPY เสมอ) |
