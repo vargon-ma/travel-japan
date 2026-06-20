@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { getStartingPriceJpy } from './logic.js';
+import {
+  getStartingPriceJpy,
+  filterEntries,
+  sortByPrice,
+  searchMatches,
+} from './logic.js';
 
 describe('getStartingPriceJpy', () => {
   it('คืนราคาต่ำสุดเมื่อมีหลาย products', () => {
@@ -39,5 +44,164 @@ describe('getStartingPriceJpy', () => {
   it('คืน null เมื่อไม่มี priceJpy ที่ใช้ได้เลย', () => {
     const entry = { products: [{ nameTh: 'ก', priceJpy: null }] };
     expect(getStartingPriceJpy(entry)).toBe(null);
+  });
+});
+
+const SAMPLE = [
+  {
+    id: 'super-potato',
+    nameTh: 'ซูเปอร์โปเตโต้',
+    nameJa: 'スーパーポテト',
+    nameRomaji: 'Super Potato',
+    category: 'games',
+    city: 'tokyo',
+    products: [
+      { nameTh: 'ตลับเกมแฟมิคอม', priceJpy: 500 },
+      { nameTh: 'เครื่องเกมเรโทร', priceJpy: 9800 },
+    ],
+  },
+  {
+    id: 'skytree',
+    nameTh: 'โตเกียวสกายทรี',
+    nameJa: '東京スカイツリー',
+    nameRomaji: 'Tokyo Skytree',
+    category: 'sightseeing',
+    city: 'tokyo',
+    products: [{ nameTh: 'บัตรชมวิว', priceJpy: 2100 }],
+  },
+  {
+    id: 'ichiran',
+    nameTh: 'อิจิรัน',
+    nameJa: '一蘭',
+    nameRomaji: 'Ichiran',
+    category: 'food',
+    city: 'osaka',
+    products: [{ nameTh: 'ราเมงทงคตสึ', priceJpy: 980 }],
+  },
+];
+
+describe('filterEntries', () => {
+  it('คืนทุก entry เมื่อไม่มีเงื่อนไข', () => {
+    expect(filterEntries(SAMPLE, {})).toHaveLength(3);
+    expect(filterEntries(SAMPLE, { category: '', city: '', query: '' })).toHaveLength(3);
+  });
+
+  it('กรองตามหมวดเดียว', () => {
+    const result = filterEntries(SAMPLE, { category: 'games' });
+    expect(result.map((e) => e.id)).toEqual(['super-potato']);
+  });
+
+  it('กรองตามเมืองเดียว', () => {
+    const result = filterEntries(SAMPLE, { city: 'tokyo' });
+    expect(result.map((e) => e.id)).toEqual(['super-potato', 'skytree']);
+  });
+
+  it('ค้นหาเจอจากชื่อไทย (case-insensitive + ตัดช่องว่าง)', () => {
+    const result = filterEntries(SAMPLE, { query: '  อิจิ ' });
+    expect(result.map((e) => e.id)).toEqual(['ichiran']);
+  });
+
+  it('ค้นหาเจอจากชื่อโรมาจิแบบไม่สนตัวพิมพ์', () => {
+    const result = filterEntries(SAMPLE, { query: 'skytree' });
+    expect(result.map((e) => e.id)).toEqual(['skytree']);
+  });
+
+  it('ค้นหาเจอจากชื่อสินค้า', () => {
+    const result = filterEntries(SAMPLE, { query: 'ราเมง' });
+    expect(result.map((e) => e.id)).toEqual(['ichiran']);
+  });
+
+  it('ค้นหาไม่เจอ → คืนผลว่าง', () => {
+    expect(filterEntries(SAMPLE, { query: 'ไม่มีคำนี้แน่นอน' })).toEqual([]);
+  });
+
+  it('combine หลายเงื่อนไข (หมวด + เมือง + ค้นหา)', () => {
+    const result = filterEntries(SAMPLE, {
+      category: 'games',
+      city: 'tokyo',
+      query: 'potato',
+    });
+    expect(result.map((e) => e.id)).toEqual(['super-potato']);
+  });
+
+  it('combine ที่ไม่มีอะไรตรง → ผลว่าง', () => {
+    const result = filterEntries(SAMPLE, { category: 'games', city: 'osaka' });
+    expect(result).toEqual([]);
+  });
+
+  it('ไม่แก้ไข array ต้นฉบับ', () => {
+    const copy = [...SAMPLE];
+    filterEntries(SAMPLE, { category: 'food' });
+    expect(SAMPLE).toEqual(copy);
+  });
+});
+
+describe('sortByPrice', () => {
+  it('เรียงถูก→แพง (asc) ตามราคาเริ่มต้น', () => {
+    const result = sortByPrice(SAMPLE, 'asc');
+    expect(result.map((e) => e.id)).toEqual(['super-potato', 'ichiran', 'skytree']);
+  });
+
+  it('เรียงแพง→ถูก (desc) ตามราคาเริ่มต้น', () => {
+    const result = sortByPrice(SAMPLE, 'desc');
+    expect(result.map((e) => e.id)).toEqual(['skytree', 'ichiran', 'super-potato']);
+  });
+
+  it('entry ที่ไม่มี products ถูกดันไปท้ายสุดทั้งสองทิศ', () => {
+    const withEmpty = [
+      { id: 'no-price', products: [] },
+      ...SAMPLE,
+    ];
+    expect(sortByPrice(withEmpty, 'asc').map((e) => e.id)).toEqual([
+      'super-potato',
+      'ichiran',
+      'skytree',
+      'no-price',
+    ]);
+    expect(sortByPrice(withEmpty, 'desc').map((e) => e.id)).toEqual([
+      'skytree',
+      'ichiran',
+      'super-potato',
+      'no-price',
+    ]);
+  });
+
+  it('ราคาเท่ากันคงลำดับเดิม (stable)', () => {
+    const tie = [
+      { id: 'a', products: [{ priceJpy: 1000 }] },
+      { id: 'b', products: [{ priceJpy: 1000 }] },
+      { id: 'c', products: [{ priceJpy: 500 }] },
+    ];
+    expect(sortByPrice(tie, 'asc').map((e) => e.id)).toEqual(['c', 'a', 'b']);
+  });
+
+  it('ไม่แก้ไข array ต้นฉบับ', () => {
+    const copy = [...SAMPLE];
+    sortByPrice(SAMPLE, 'asc');
+    expect(SAMPLE).toEqual(copy);
+  });
+});
+
+describe('searchMatches', () => {
+  const entry = SAMPLE[0]; // ซูเปอร์โปเตโต้ / Super Potato / ตลับเกมแฟมิคอม
+
+  it('คืน true เมื่อคำค้นว่างหรือมีแต่ช่องว่าง', () => {
+    expect(searchMatches(entry, '')).toBe(true);
+    expect(searchMatches(entry, '   ')).toBe(true);
+    expect(searchMatches(entry, undefined)).toBe(true);
+  });
+
+  it('ค้นเจอจากชื่อไทย / ญี่ปุ่น / โรมาจิ (ไม่สนตัวพิมพ์)', () => {
+    expect(searchMatches(entry, 'ซูเปอร์')).toBe(true);
+    expect(searchMatches(entry, 'スーパー')).toBe(true);
+    expect(searchMatches(entry, 'SUPER potato')).toBe(true);
+  });
+
+  it('ค้นเจอจากชื่อสินค้า และตัดช่องว่างหัวท้าย', () => {
+    expect(searchMatches(entry, '  ตลับเกม ')).toBe(true);
+  });
+
+  it('คืน false เมื่อไม่ตรงคำค้น', () => {
+    expect(searchMatches(entry, 'ราเมง')).toBe(false);
   });
 });

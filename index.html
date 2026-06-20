@@ -13,6 +13,43 @@
     </header>
 
     <main class="container">
+      <section class="filters" aria-label="ตัวกรองและค้นหา">
+        <div class="filters__row">
+          <label class="filters__field">
+            <span class="filters__label">หมวด</span>
+            <select id="filter-category">
+              <option value="">ทุกหมวด</option>
+            </select>
+          </label>
+          <label class="filters__field">
+            <span class="filters__label">เมือง</span>
+            <select id="filter-city">
+              <option value="">ทุกเมือง</option>
+            </select>
+          </label>
+          <label class="filters__field filters__field--search">
+            <span class="filters__label">ค้นหา</span>
+            <input
+              id="filter-search"
+              type="search"
+              placeholder="ชื่อร้าน สถานที่ หรือสินค้า…"
+              autocomplete="off"
+            />
+          </label>
+          <div class="filters__field">
+            <span class="filters__label">เรียงราคา</span>
+            <div class="sort" role="group" aria-label="เรียงตามราคา">
+              <button type="button" class="sort__btn" data-direction="asc" aria-pressed="false">
+                ถูก→แพง
+              </button>
+              <button type="button" class="sort__btn" data-direction="desc" aria-pressed="false">
+                แพง→ถูก
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="grid-status" class="status" aria-live="polite">กำลังโหลดข้อมูล…</section>
       <section id="card-grid" class="card-grid" aria-label="รายการร้านและสถานที่"></section>
     </main>
