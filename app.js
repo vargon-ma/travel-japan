@@ -275,7 +275,7 @@ function applyView(gridEl, statusEl) {
 
   if (allEntries.length === 0) {
     gridEl.replaceChildren();
-    setStatus(statusEl, 'ยังไม่มีรายการ');
+    setStatus(statusEl, 'ยังไม่มีรายการ', 'empty');
     return;
   }
 
@@ -285,7 +285,7 @@ function applyView(gridEl, statusEl) {
       filterState.bookmarkedOnly && bookmarkedIds.size === 0
         ? 'ยังไม่มีรายการที่บุ๊กมาร์ก — กดปุ่ม ♡ บนการ์ดหรือในรายละเอียดเพื่อบันทึก'
         : 'ไม่พบรายการที่ตรงกับเงื่อนไข — ลองปรับฟิลเตอร์หรือคำค้นหา';
-    setStatus(statusEl, msg);
+    setStatus(statusEl, msg, 'empty');
     return;
   }
 
@@ -630,9 +630,15 @@ function renderCredits(entries) {
   }
 }
 
-function setStatus(statusEl, message, isError = false) {
+/**
+ * อัปเดตแถบสถานะ (โหลด/ว่าง/ผิดพลาด). variant: 'loading' | 'empty' | 'error' | null
+ * แต่ละ variant ผูกกับสไตล์ของตัวเอง (spinner ตอนโหลด, การ์ดว่างตอน empty)
+ */
+function setStatus(statusEl, message, variant = null) {
   statusEl.textContent = message ?? '';
-  statusEl.classList.toggle('status--error', isError);
+  statusEl.classList.toggle('status--loading', variant === 'loading');
+  statusEl.classList.toggle('status--empty', variant === 'empty');
+  statusEl.classList.toggle('status--error', variant === 'error');
   statusEl.hidden = !message;
 }
 
@@ -641,6 +647,9 @@ async function init() {
   const statusEl = document.getElementById('grid-status');
   const rateLabelEl = document.getElementById('rate-label');
   const priceNoteEl = document.getElementById('price-note');
+
+  // แสดงสถานะกำลังโหลด (spinner) ระหว่าง fetch ข้อมูล/เรต
+  setStatus(statusEl, 'กำลังโหลดข้อมูล…', 'loading');
 
   // ดึงเรตคู่ขนานกับข้อมูล; เรตมี fallback ในตัวจึงไม่ทำให้ init ล้มเหลว
   const ratePromise = loadRate();
@@ -671,7 +680,7 @@ async function init() {
     setStatus(
       statusEl,
       'โหลดข้อมูลไม่สำเร็จ — ต้องเปิดเว็บผ่าน local web server (ดู README) ไม่ใช่เปิดไฟล์ตรงๆ',
-      true,
+      'error',
     );
   }
 }
