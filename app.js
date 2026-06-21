@@ -106,11 +106,13 @@ function escapeHtml(str) {
 
 function formatJpy(price) {
   if (price === null) return 'ราคา: สอบถามหน้าร้าน';
+  if (price === 0) return 'ฟรี / ไม่มีค่าเข้า';
   return `¥${jpyFormatter.format(price)}`;
 }
 
 function formatThb(priceJpy, rate) {
   if (priceJpy === null) return null;
+  if (priceJpy === 0) return null; // ฟรี: ไม่ต้องแสดงราคาบาท
   const baht = convertJpyToThb(priceJpy, rate);
   if (baht === null) return null;
   return `฿${thbFormatter.format(baht)}`;
