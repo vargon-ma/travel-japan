@@ -101,6 +101,78 @@ function renderGrid(entries, gridEl, rate) {
   gridEl.replaceChildren(...entries.map((entry) => createCard(entry, rate)));
 }
 
+// ---- แผนที่ Leaflet sync กับ view (Issue 04) ----
+const JAPAN_CENTER = [36.2, 138.25]; // จุดกึ่งกลางญี่ปุ่นโดยประมาณ ใช้เป็น view เริ่มต้น
+let map = null;
+let markerLayer = null; // layer group เก็บหมุดทั้งหมด; ล้างแล้วเติมใหม่ทุกครั้งที่ view เปลี่ยน
+
+/** เนื้อหา popup ของหมุด: ชื่อ (TH+JA) + รูปย่อ + ราคาเริ่มต้น (¥/฿) + ปุ่มเปิดโมดัล */
+function buildPopupHtml(entry) {
+  const startingPrice = getStartingPriceJpy(entry);
+  const thb = formatThb(startingPrice, currentRate);
+  const subtitle = [entry.nameJa, entry.nameRomaji].filter(Boolean).join(' · ');
+  const hasImage = Array.isArray(entry.images) && entry.images.length > 0;
+  const media = hasImage
+    ? `<img class="map-popup__img" src="${escapeHtml(entry.images[0].url)}" alt="${escapeHtml(entry.nameTh)}" />`
+    : '';
+
+  return `
+    <div class="map-popup">
+      ${media}
+      <h3 class="map-popup__name">${escapeHtml(entry.nameTh ?? '')}</h3>
+      ${subtitle ? `<p class="map-popup__sub">${escapeHtml(subtitle)}</p>` : ''}
+      <p class="map-popup__price">
+        <span class="map-popup__jpy">${formatJpy(startingPrice)}</span>
+        ${thb ? `<span class="map-popup__thb">${thb}</span>` : ''}
+      </p>
+      <button type="button" class="map-popup__btn" data-modal-open="${escapeHtml(entry.id)}">
+        ดูรายละเอียด
+      </button>
+    </div>`;
+}
+
+/** สร้างแผนที่ครั้งเดียวตอน init; ปุ่มเปิดโมดัลใน popup ผูกด้วย event delegation ที่ container */
+function setupMap() {
+  if (!window.L) {
+    console.warn('โหลด Leaflet ไม่สำเร็จ — ข้ามการแสดงแผนที่');
+    return;
+  }
+  map = L.map('map', { scrollWheelZoom: false }).setView(JAPAN_CENTER, 5);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap',
+  }).addTo(map);
+  markerLayer = L.layerGroup().addTo(map);
+
+  // popup ถูกสร้าง/ทำลายโดย Leaflet จึงผูกปุ่มแบบ delegation ที่ container ครั้งเดียว
+  map.getContainer().addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-modal-open]');
+    if (!btn) return;
+    const entry = entryById.get(btn.dataset.modalOpen);
+    if (entry) openModal(entry);
+  });
+}
+
+/** ปักหมุดทุก entry ใน view (ที่มีพิกัด) แล้วซูมให้พอดี — sync หมุดกับกริด */
+function renderMap(entries) {
+  if (!map || !markerLayer) return;
+  markerLayer.clearLayers();
+
+  const markers = [];
+  for (const entry of entries) {
+    if (typeof entry.lat !== 'number' || typeof entry.lng !== 'number') continue;
+    const marker = L.marker([entry.lat, entry.lng]).bindPopup(buildPopupHtml(entry));
+    markerLayer.addLayer(marker);
+    markers.push(marker);
+  }
+
+  // ปรับมุมมองให้ครอบหมุดที่ผ่านฟิลเตอร์; ถ้าไม่มีหมุดคงมุมมองเดิมไว้
+  if (markers.length > 0) {
+    const bounds = L.featureGroup(markers).getBounds();
+    map.fitBounds(bounds.pad(0.2), { maxZoom: 14 });
+  }
+}
+
 // ---- View model: ฟิลเตอร์ + ค้นหา + เรียง ----
 // สถานะของตัวกรองปัจจุบัน; sort = null คือไม่เรียง (คงลำดับใน data.json)
 const filterState = { category: '', city: '', query: '', sort: null };
@@ -139,13 +211,16 @@ function getViewModel() {
 
 /** render กริดตาม view model ปัจจุบัน พร้อม empty state ที่เข้าใจง่าย */
 function applyView(gridEl, statusEl) {
+  // คำนวณ view ครั้งเดียวแล้ว sync ทั้งกริดและแผนที่ให้ตรงกันเสมอ
+  const view = allEntries.length === 0 ? [] : getViewModel();
+  renderMap(view);
+
   if (allEntries.length === 0) {
     gridEl.replaceChildren();
     setStatus(statusEl, 'ยังไม่มีรายการ');
     return;
   }
 
-  const view = getViewModel();
   if (view.length === 0) {
     gridEl.replaceChildren();
     setStatus(statusEl, 'ไม่พบรายการที่ตรงกับเงื่อนไข — ลองปรับฟิลเตอร์หรือคำค้นหา');
@@ -430,6 +505,7 @@ async function init() {
 
     setupFilters(gridEl, statusEl);
     setupModal(gridEl);
+    setupMap();
     applyView(gridEl, statusEl);
   } catch (err) {
     console.error('โหลดข้อมูลไม่สำเร็จ:', err);

@@ -141,6 +141,75 @@ body {
   color: var(--accent);
 }
 
+/* Map (Issue 04) */
+.map-section {
+  margin: 16px 0 24px;
+}
+
+.map {
+  height: 380px;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  /* ทับ z-index เริ่มต้นของ Leaflet ไม่ให้ลอยทับโมดัล */
+  z-index: 0;
+}
+
+/* Popup ของหมุดบนแผนที่ */
+.map-popup {
+  width: 190px;
+  text-align: left;
+}
+
+.map-popup__img {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+
+.map-popup__name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.map-popup__sub {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.map-popup__price {
+  margin: 6px 0 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.map-popup__thb {
+  color: var(--accent);
+}
+
+.map-popup__btn {
+  margin-top: 10px;
+  width: 100%;
+  font: inherit;
+  cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.map-popup__btn:hover {
+  background: #c92f41;
+}
+
 /* Card grid */
 .card-grid {
   display: grid;
