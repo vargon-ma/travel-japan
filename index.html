@@ -26,6 +26,7 @@
 
     <main class="container">
       <p id="rate-label" class="rate-label" aria-live="polite" hidden></p>
+      <p id="price-note" class="price-note" hidden></p>
 
       <section class="filters" aria-label="ตัวกรองและค้นหา">
         <div class="filters__row">
@@ -83,6 +84,29 @@
       <section id="grid-status" class="status" aria-live="polite">กำลังโหลดข้อมูล…</section>
       <section id="card-grid" class="card-grid" aria-label="รายการร้านและสถานที่"></section>
     </main>
+
+    <footer class="credits container" aria-label="รวมเครดิตและแหล่งอ้างอิง">
+      <h2 class="credits__title">รวมเครดิต &amp; แหล่งอ้างอิง</h2>
+      <p class="credits__intro">
+        ข้อมูลร้าน/สถานที่ ราคา และพิกัด รวบรวมจากแหล่งอ้างอิงด้านล่าง (เว็บไซต์ทางการของร้าน/สถานที่
+        และคู่มือท่องเที่ยว) ราคาเป็นค่าโดยประมาณและอาจเปลี่ยนแปลงได้
+      </p>
+      <div class="credits__cols">
+        <section class="credits__block">
+          <h3 class="credits__heading">แหล่งข้อมูลแต่ละรายการ</h3>
+          <ul id="credits-sources" class="credits__list"></ul>
+        </section>
+        <section class="credits__block">
+          <h3 class="credits__heading">ที่มารูปภาพ</h3>
+          <ul id="credits-images" class="credits__list"></ul>
+          <p class="credits__meta">
+            รูปภาพทั้งหมดมาจาก Wikimedia Commons ภายใต้สัญญาอนุญาตครีเอทีฟคอมมอนส์/สาธารณสมบัติ
+            ให้เครดิตผู้สร้างตามลิขสิทธิ์ · รายการที่ไม่มีรูปจะใช้ภาพแทน (placeholder)
+          </p>
+        </section>
+      </div>
+      <p class="credits__meta">แผนที่: Leaflet · ข้อมูลแผนที่ © OpenStreetMap contributors</p>
+    </footer>
 
     <div id="modal" class="modal" hidden>
       <div class="modal__backdrop" data-modal-close></div>

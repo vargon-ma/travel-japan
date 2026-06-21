@@ -573,6 +573,63 @@ function renderRateLabel(labelEl, { rate, asOf, isFallback }) {
   labelEl.hidden = false;
 }
 
+/** แสดงหมายเหตุ "ราคาโดยประมาณ" จาก data.json (ถ้าไม่มีใช้ข้อความ default) */
+function renderPriceNote(noteEl, note) {
+  if (!noteEl) return;
+  const text =
+    note ?? 'ราคาทั้งหมดเป็นค่าโดยประมาณ (เยน) อาจเปลี่ยนแปลงได้ตามช่วงเวลาและร้าน';
+  noteEl.textContent = `ℹ︎ ${text}`;
+  noteEl.hidden = false;
+}
+
+/** ประกอบหน้ารวมเครดิต: ลิงก์แหล่งข้อมูลต่อ entry + รายการที่มารูปภาพ (ผู้สร้าง/license) */
+function renderCredits(entries) {
+  const sourcesEl = document.getElementById('credits-sources');
+  const imagesEl = document.getElementById('credits-images');
+
+  if (sourcesEl) {
+    sourcesEl.replaceChildren(
+      ...entries
+        .filter((entry) => entry.sourceUrl)
+        .map((entry) => {
+          const li = document.createElement('li');
+          const name = [entry.nameTh, entry.nameRomaji].filter(Boolean).join(' · ');
+          const a = document.createElement('a');
+          a.href = entry.sourceUrl;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = name || entry.sourceUrl;
+          li.appendChild(a);
+          return li;
+        }),
+    );
+  }
+
+  if (imagesEl) {
+    const items = [];
+    for (const entry of entries) {
+      for (const image of Array.isArray(entry.images) ? entry.images : []) {
+        const li = document.createElement('li');
+        li.append(`${entry.nameTh} — `);
+        // ลิงก์ไปหน้าไฟล์บน Commons เพื่อให้ตรวจสอบเครดิต/ลิขสิทธิ์ได้ (verifiable attribution)
+        if (image.source) {
+          const a = document.createElement('a');
+          a.href = image.source;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = image.credit ?? 'ดูที่มา';
+          li.appendChild(a);
+          if (image.license) li.append(` · ${image.license}`);
+        } else {
+          li.append([image.credit, image.license].filter(Boolean).join(' · '));
+        }
+        items.push(li);
+      }
+    }
+    imagesEl.replaceChildren(...items);
+  }
+}
+
 function setStatus(statusEl, message, isError = false) {
   statusEl.textContent = message ?? '';
   statusEl.classList.toggle('status--error', isError);
@@ -583,6 +640,7 @@ async function init() {
   const gridEl = document.getElementById('card-grid');
   const statusEl = document.getElementById('grid-status');
   const rateLabelEl = document.getElementById('rate-label');
+  const priceNoteEl = document.getElementById('price-note');
 
   // ดึงเรตคู่ขนานกับข้อมูล; เรตมี fallback ในตัวจึงไม่ทำให้ init ล้มเหลว
   const ratePromise = loadRate();
@@ -595,6 +653,8 @@ async function init() {
 
     const rateInfo = await ratePromise;
     renderRateLabel(rateLabelEl, rateInfo);
+    renderPriceNote(priceNoteEl, data.priceNote);
+    renderCredits(entries);
 
     allEntries = entries;
     entryById = new Map(entries.map((entry) => [entry.id, entry]));
