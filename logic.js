@@ -55,20 +55,25 @@ export function searchMatches(entry, query) {
 }
 
 /**
- * กรองรายการตามหมวด/เมือง/คำค้น — combine ได้หลายเงื่อนไข (AND)
+ * กรองรายการตามหมวด/เมือง/คำค้น/บุ๊กมาร์ก — combine ได้หลายเงื่อนไข (AND)
  * เงื่อนไขที่เป็นค่าว่าง/undefined จะถูกข้าม (ไม่กรอง)
+ * เป็น pure: id ที่บุ๊กมาร์กถูกส่งเข้ามาเป็น argument (ไม่อ่าน localStorage ในชั้นนี้)
  * @param {Array<object>} entries
- * @param {{ category?: string, city?: string, query?: string }} criteria
+ * @param {{ category?: string, city?: string, query?: string,
+ *           bookmarkedOnly?: boolean, bookmarkedIds?: Array<string>|Set<string> }} criteria
  * @returns {Array<object>} array ใหม่ของ entries ที่ผ่านเงื่อนไข
  */
 export function filterEntries(entries, criteria = {}) {
   if (!Array.isArray(entries)) return [];
-  const { category, city, query } = criteria;
+  const { category, city, query, bookmarkedOnly, bookmarkedIds } = criteria;
+  // รับได้ทั้ง array และ Set — แปลงเป็น Set เพื่อเช็คสมาชิกแบบ O(1)
+  const bookmarked = bookmarkedIds instanceof Set ? bookmarkedIds : new Set(bookmarkedIds ?? []);
 
   return entries.filter((entry) => {
     if (category && entry?.category !== category) return false;
     if (city && entry?.city !== city) return false;
     if (!searchMatches(entry, query)) return false;
+    if (bookmarkedOnly && !bookmarked.has(entry?.id)) return false;
     return true;
   });
 }

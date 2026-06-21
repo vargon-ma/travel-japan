@@ -168,6 +168,44 @@ describe('filterEntries', () => {
     filterEntries(SAMPLE, { category: 'food' });
     expect(SAMPLE).toEqual(copy);
   });
+
+  it('bookmarkedOnly: true กรองเฉพาะ id ที่อยู่ใน bookmarkedIds', () => {
+    const result = filterEntries(SAMPLE, {
+      bookmarkedOnly: true,
+      bookmarkedIds: ['skytree', 'ichiran'],
+    });
+    expect(result.map((e) => e.id)).toEqual(['skytree', 'ichiran']);
+  });
+
+  it('bookmarkedOnly: false ไม่กรองด้วยบุ๊กมาร์ก (คืนทุก entry แม้ส่ง bookmarkedIds มา)', () => {
+    const result = filterEntries(SAMPLE, {
+      bookmarkedOnly: false,
+      bookmarkedIds: ['skytree'],
+    });
+    expect(result).toHaveLength(3);
+  });
+
+  it('bookmarkedOnly: true แต่ไม่มี id ที่บุ๊กมาร์ก → ผลว่าง', () => {
+    expect(filterEntries(SAMPLE, { bookmarkedOnly: true, bookmarkedIds: [] })).toEqual([]);
+    expect(filterEntries(SAMPLE, { bookmarkedOnly: true })).toEqual([]);
+  });
+
+  it('รองรับ bookmarkedIds เป็น Set', () => {
+    const result = filterEntries(SAMPLE, {
+      bookmarkedOnly: true,
+      bookmarkedIds: new Set(['super-potato']),
+    });
+    expect(result.map((e) => e.id)).toEqual(['super-potato']);
+  });
+
+  it('combine bookmarkedOnly กับหมวด/ค้นหา (AND)', () => {
+    const result = filterEntries(SAMPLE, {
+      category: 'sightseeing',
+      bookmarkedOnly: true,
+      bookmarkedIds: ['skytree', 'ichiran'],
+    });
+    expect(result.map((e) => e.id)).toEqual(['skytree']);
+  });
 });
 
 describe('sortByPrice', () => {

@@ -33,6 +33,62 @@ const CONDITION_LABELS = {
   used: { text: 'มือ 2', cls: 'cond--used' },
 };
 
+// ---- บุ๊กมาร์ก (เก็บใน localStorage) ----
+const BOOKMARKS_KEY = 'travel-japan:bookmarks';
+let bookmarkedIds = new Set(); // id ที่ผู้ใช้ถูกใจไว้; โหลด/บันทึกผ่าน localStorage
+
+/** อ่าน id ที่บุ๊กมาร์กจาก localStorage; ถ้าพัง/ไม่มีให้คืน Set ว่าง (เว็บต้องไม่พัง) */
+function loadBookmarks() {
+  try {
+    const raw = localStorage.getItem(BOOKMARKS_KEY);
+    const ids = raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(ids) ? ids.filter((id) => typeof id === 'string') : []);
+  } catch (err) {
+    console.warn('อ่านบุ๊กมาร์กจาก localStorage ไม่สำเร็จ:', err);
+    return new Set();
+  }
+}
+
+/** บันทึก id ที่บุ๊กมาร์กลง localStorage (ล้มเหลวเงียบ ๆ ไม่ให้ทำหน้าเว็บพัง) */
+function saveBookmarks() {
+  try {
+    localStorage.setItem(BOOKMARKS_KEY, JSON.stringify([...bookmarkedIds]));
+  } catch (err) {
+    console.warn('บันทึกบุ๊กมาร์กลง localStorage ไม่สำเร็จ:', err);
+  }
+}
+
+/** ปุ่มถูกใจ/บุ๊กมาร์ก ใช้ทั้งบนการ์ด (variant 'card') และในโมดัล (variant 'modal') */
+function bookmarkButtonHtml(id, variant) {
+  const on = bookmarkedIds.has(id);
+  return `
+    <button
+      type="button"
+      class="bookmark-btn bookmark-btn--${variant}${on ? ' is-active' : ''}"
+      data-bookmark-toggle="${escapeHtml(String(id))}"
+      aria-pressed="${on}"
+      aria-label="${on ? 'เอาออกจากบุ๊กมาร์ก' : 'เพิ่มลงบุ๊กมาร์ก'}"
+    >
+      <span class="bookmark-btn__icon" aria-hidden="true">${on ? '♥' : '♡'}</span>
+      ${variant === 'modal' ? `<span class="bookmark-btn__label">${on ? 'บันทึกแล้ว' : 'บุ๊กมาร์ก'}</span>` : ''}
+    </button>`;
+}
+
+/** อัปเดตปุ่มบุ๊กมาร์กทุกตัวของ id เดียวกัน (การ์ด + โมดัล) ให้สถานะตรงกัน */
+function syncBookmarkButtons(id) {
+  const on = bookmarkedIds.has(id);
+  for (const btn of document.querySelectorAll('[data-bookmark-toggle]')) {
+    if (btn.dataset.bookmarkToggle !== id) continue;
+    btn.classList.toggle('is-active', on);
+    btn.setAttribute('aria-pressed', String(on));
+    btn.setAttribute('aria-label', on ? 'เอาออกจากบุ๊กมาร์ก' : 'เพิ่มลงบุ๊กมาร์ก');
+    const icon = btn.querySelector('.bookmark-btn__icon');
+    if (icon) icon.textContent = on ? '♥' : '♡';
+    const label = btn.querySelector('.bookmark-btn__label');
+    if (label) label.textContent = on ? 'บันทึกแล้ว' : 'บุ๊กมาร์ก';
+  }
+}
+
 /** เครดิต/ลิขสิทธิ์ของรูป รวมเป็นบรรทัดเดียว (ตามข้อกำหนด PRD ต้องให้เครดิต/ระบุ license) */
 function imageCreditText(image) {
   return [image?.credit, image?.license].filter(Boolean).join(' · ');
@@ -78,7 +134,7 @@ function createCard(entry, rate) {
     : '<span class="card__placeholder" aria-hidden="true">🗾</span>';
 
   card.innerHTML = `
-    <div class="card__media">${media}</div>
+    <div class="card__media">${media}${bookmarkButtonHtml(entry.id, 'card')}</div>
     <div class="card__body">
       <div class="card__badges">
         <span class="badge badge--category">${CATEGORY_LABELS[entry.category] ?? entry.category}</span>
@@ -175,7 +231,7 @@ function renderMap(entries) {
 
 // ---- View model: ฟิลเตอร์ + ค้นหา + เรียง ----
 // สถานะของตัวกรองปัจจุบัน; sort = null คือไม่เรียง (คงลำดับใน data.json)
-const filterState = { category: '', city: '', query: '', sort: null };
+const filterState = { category: '', city: '', query: '', sort: null, bookmarkedOnly: false };
 
 let allEntries = [];
 let entryById = new Map();
@@ -205,6 +261,8 @@ function getViewModel() {
     category: filterState.category,
     city: filterState.city,
     query: filterState.query,
+    bookmarkedOnly: filterState.bookmarkedOnly,
+    bookmarkedIds,
   });
   return filterState.sort ? sortByPrice(filtered, filterState.sort) : filtered;
 }
@@ -223,7 +281,11 @@ function applyView(gridEl, statusEl) {
 
   if (view.length === 0) {
     gridEl.replaceChildren();
-    setStatus(statusEl, 'ไม่พบรายการที่ตรงกับเงื่อนไข — ลองปรับฟิลเตอร์หรือคำค้นหา');
+    const msg =
+      filterState.bookmarkedOnly && bookmarkedIds.size === 0
+        ? 'ยังไม่มีรายการที่บุ๊กมาร์ก — กดปุ่ม ♡ บนการ์ดหรือในรายละเอียดเพื่อบันทึก'
+        : 'ไม่พบรายการที่ตรงกับเงื่อนไข — ลองปรับฟิลเตอร์หรือคำค้นหา';
+    setStatus(statusEl, msg);
     return;
   }
 
@@ -270,6 +332,38 @@ function setupFilters(gridEl, statusEl) {
       applyView(gridEl, statusEl);
     });
   }
+}
+
+/** สลับสถานะบุ๊กมาร์กของ id: อัปเดต state → persist → sync ปุ่ม → re-render ถ้ากำลังกรอง */
+function toggleBookmark(id, gridEl, statusEl) {
+  if (bookmarkedIds.has(id)) bookmarkedIds.delete(id);
+  else bookmarkedIds.add(id);
+  saveBookmarks();
+
+  // ถ้ากำลังกรองเฉพาะที่บุ๊กมาร์ก รายการที่เพิ่งเอาออกต้องหายจากกริด/แผนที่
+  if (filterState.bookmarkedOnly) applyView(gridEl, statusEl);
+  // sync ปุ่มที่เหลือ (การ์ดที่ไม่ได้ rebuild + ปุ่มในโมดัล) ให้สถานะตรงกัน
+  syncBookmarkButtons(id);
+}
+
+/** ผูกปุ่มบุ๊กมาร์ก (การ์ด + โมดัล แบบ delegation) และ toggle "เฉพาะที่บุ๊กมาร์ก" */
+function setupBookmarks(gridEl, statusEl) {
+  const onToggleClick = (e) => {
+    const btn = e.target.closest('[data-bookmark-toggle]');
+    if (!btn) return;
+    e.stopPropagation(); // กันไม่ให้คลิกบนการ์ดเปิดโมดัล
+    toggleBookmark(btn.dataset.bookmarkToggle, gridEl, statusEl);
+  };
+  gridEl.addEventListener('click', onToggleClick);
+  document.getElementById('modal').addEventListener('click', onToggleClick);
+
+  const toggleBtn = document.getElementById('filter-bookmarked');
+  toggleBtn.addEventListener('click', () => {
+    filterState.bookmarkedOnly = !filterState.bookmarkedOnly;
+    toggleBtn.setAttribute('aria-pressed', String(filterState.bookmarkedOnly));
+    toggleBtn.classList.toggle('is-active', filterState.bookmarkedOnly);
+    applyView(gridEl, statusEl);
+  });
 }
 
 // ---- โมดัลรายละเอียด + แกลเลอรีรูป (Issue 05) ----
@@ -360,6 +454,7 @@ function openModal(entry) {
       </div>
       <h2 id="modal-title" class="modal__title">${escapeHtml(entry.nameTh ?? '')}</h2>
       ${subtitle ? `<p class="modal__subtitle">${escapeHtml(subtitle)}</p>` : ''}
+      <div class="modal__actions">${bookmarkButtonHtml(entry.id, 'modal')}</div>
       ${entry.description ? `<p class="modal__desc">${escapeHtml(entry.description)}</p>` : ''}
 
       <h3 class="modal__heading">สินค้า / เมนูตัวอย่าง</h3>
@@ -419,6 +514,7 @@ function setupModal(gridEl) {
   const modalEl = document.getElementById('modal');
 
   const openFromCard = (target) => {
+    if (target.closest('[data-bookmark-toggle]')) return; // ปุ่มบุ๊กมาร์กจัดการเอง
     const card = target.closest('.card');
     if (!card) return;
     const entry = entryById.get(card.dataset.id);
@@ -428,6 +524,7 @@ function setupModal(gridEl) {
   gridEl.addEventListener('click', (e) => openFromCard(e.target));
   gridEl.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (e.target.closest('[data-bookmark-toggle]')) return; // ปล่อยให้ปุ่มบุ๊กมาร์กทำงานเอง
     if (!e.target.closest('.card')) return;
     e.preventDefault();
     openFromCard(e.target);
@@ -502,9 +599,11 @@ async function init() {
     allEntries = entries;
     entryById = new Map(entries.map((entry) => [entry.id, entry]));
     currentRate = rateInfo.rate;
+    bookmarkedIds = loadBookmarks();
 
     setupFilters(gridEl, statusEl);
     setupModal(gridEl);
+    setupBookmarks(gridEl, statusEl);
     setupMap();
     applyView(gridEl, statusEl);
   } catch (err) {
