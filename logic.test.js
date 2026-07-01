@@ -509,10 +509,19 @@ describe('validateEntry', () => {
     expect(errs.some((e) => e.includes('license'))).toBe(true);
   });
 
-  it('image ไม่มีทั้ง credit และ source → error', () => {
+  it('image ไม่มี credit → error (ADR-0001 บังคับ credit เสมอ)', () => {
     const errs = validateEntry(
       makeValidEntry({
         images: [{ url: 'https://x/y.jpg', license: 'CC0' }],
+      }),
+    );
+    expect(errs.some((e) => e.toLowerCase().includes('credit'))).toBe(true);
+  });
+
+  it('image ที่มี source แต่ไม่มี credit → ยัง error (source ไม่แทน credit)', () => {
+    const errs = validateEntry(
+      makeValidEntry({
+        images: [{ url: 'https://x/y.jpg', source: 'https://commons.example/File:Y', license: 'CC0' }],
       }),
     );
     expect(errs.some((e) => e.toLowerCase().includes('credit'))).toBe(true);
@@ -588,6 +597,14 @@ describe('data.json (dataset guard)', () => {
     for (const e of dataset.entries) {
       expect(CATEGORIES).toContain(e.category);
       expect(CITIES).toContain(e.city);
+    }
+  });
+
+  it('ทุกหมวดมี entry อย่างน้อย 3 รายการ (floor ≥ 3 กัน empty-state)', () => {
+    const counts = Object.fromEntries(CATEGORIES.map((c) => [c, 0]));
+    for (const e of dataset.entries) counts[e.category]++;
+    for (const c of CATEGORIES) {
+      expect(counts[c], `หมวด ${c} มี ${counts[c]} รายการ (ต้อง ≥ 3)`).toBeGreaterThanOrEqual(3);
     }
   });
 });

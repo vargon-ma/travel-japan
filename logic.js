@@ -239,9 +239,8 @@ export function validateEntry(entry) {
     } else {
       entry.images.forEach((img, i) => {
         if (!isNonEmptyString(img?.url)) errors.push(`image[${i}] ขาด url`);
-        if (!isNonEmptyString(img?.credit) && !isNonEmptyString(img?.source)) {
-          errors.push(`image[${i}] ขาด credit/source`);
-        }
+        // ADR-0001: ทุกรูปต้องให้ `credit` เสมอ (`source` มีก็ดีแต่ไม่บังคับ)
+        if (!isNonEmptyString(img?.credit)) errors.push(`image[${i}] ขาด credit`);
         if (!isNonEmptyString(img?.license)) errors.push(`image[${i}] ขาด license`);
       });
     }

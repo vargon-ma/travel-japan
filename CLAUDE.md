@@ -65,7 +65,8 @@ Pure functions: `getStartingPriceJpy(entry)`, `getPriceLevel(jpy)`, `filterEntri
 `sortByPrice(entries, direction)`, `convertJpyToThb(jpy, rate)`, `searchMatches` (now also matches `tags`),
 `validateEntry(entry)` → `string[]` (quality/DoD guard; empty = passes) and `validateDataset(entries)`
 → `string[]` (runs `validateEntry` per entry + flags duplicate `id`s). Closed sets are exported as
-`CATEGORIES` / `CITIES`. Tests live in `logic.test.js`, grouped with `describe` per function — one test
+`CATEGORIES` / `CITIES`, and the rough coordinate box as `JAPAN_BOUNDS`. Every image must carry
+`credit` + `license` (`source` optional) per ADR-0001. Tests live in `logic.test.js`, grouped with `describe` per function — one test
 file per logic module. A **dataset guard test** imports `data.json` and asserts `validateDataset` returns
 zero errors, so a malformed/thin entry turns `npm test` red before it ships.
 
@@ -79,8 +80,9 @@ Each entry in `data.json`: `id`, `nameTh`, `nameJa`, `nameRomaji`, `category`
 `true` marks a context/illustrative image that is **not** an actual photo of the place; the UI shows an
 "ภาพประกอบ" badge on the card and in the modal gallery. See `docs/adr/0003`),
 `products[]` (each `nameTh`, `priceJpy`, optional `condition` `new`/`used`), and `sourceUrl`.
-Optional enrichment fields: `hours`, `station` (access), `tags[]`, `tips[]`, `bestTime`,
-`googleMapsUrl`, `editorsPick` (boolean) + `editorsPickReason`. **Prices are always stored as JPY**;
+Enrichment fields — `hours`, `station` (access), `tags[]` (≥2), `tips[]` (≥1) are **required by
+`validateEntry`** (the Definition of Done); `bestTime`, `googleMapsUrl`, `editorsPick` (boolean) +
+`editorsPickReason` remain optional. **Prices are always stored as JPY**;
 THB and `priceLevel` (¥/¥¥/¥¥¥) are computed at runtime. `editorsPick` entries appear in the
 Featured strip. New categories may be empty in the dataset and show a "coming soon" empty-state.
 

@@ -945,6 +945,543 @@
         { "nameTh": "อุนาจู", "priceJpy": 3000 }
       ],
       "sourceUrl": "https://guide.michelin.com/us/en/kyoto-region/kyoto/restaurant/kyogoku-kaneyo"
+    },
+    {
+      "id": "donki-dotonbori",
+      "nameTh": "ดองกิโฮเต้ สาขาโดตงโบริ (ดองกี้)",
+      "nameJa": "ドン・キホーテ 道頓堀店",
+      "nameRomaji": "Don Quijote Dotonbori",
+      "category": "shopping",
+      "city": "osaka",
+      "description": "ร้านดิสเคานต์เปิด 24 ชั่วโมง ขายทุกอย่างตั้งแต่ขนม เครื่องสำอาง ของฝาก ไปจนของใช้ไฟฟ้าชิ้นเล็ก จุดเด่นคือชิงช้าสวรรค์ \"เอบิสึทาวเวอร์\" ริมคลองโดตงโบริ เหมาะตะลุยซื้อของฝากรอบเดียวจบ",
+      "lat": 34.66897,
+      "lng": 135.50175,
+      "address": {
+        "th": "7-13 โซเอมงโจ เขตชูโอ โอซาก้า",
+        "ja": "大阪市中央区宗右衛門町7-13"
+      },
+      "hours": "เปิด 24 ชั่วโมง (โดยประมาณ)",
+      "station": "เดินจากสถานี Namba / Nipponbashi ~5 นาที",
+      "tags": [
+        "ของฝากครบ",
+        "เปิด 24 ชม.",
+        "ปลอดภาษี"
+      ],
+      "tips": [
+        "โชว์พาสปอร์ตรับสิทธิ์ปลอดภาษีเมื่อซื้อครบตามเงื่อนไข",
+        "ชั้นบนมีชิงช้าสวรรค์เอบิสึทาวเวอร์ วิวย่านโดตงโบริ"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.66897,135.50175",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Don_Quijote_Dotonbori_Midosuji_store.JPG",
+          "source": "https://commons.wikimedia.org/wiki/File:Don_Quijote_Dotonbori_Midosuji_store.JPG",
+          "credit": "ภาพ: Tokumeigakarinoaoshima / Wikimedia Commons",
+          "license": "CC0"
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "คิทแคทรสชาเขียว (กล่องของฝาก)",
+          "priceJpy": 700
+        },
+        {
+          "nameTh": "เครื่องสำอาง/ยาสามัญยอดฮิต",
+          "priceJpy": 900
+        },
+        {
+          "nameTh": "ตั๋วชิงช้าสวรรค์เอบิสึทาวเวอร์",
+          "priceJpy": 600
+        }
+      ],
+      "sourceUrl": "https://www.donki.com/"
+    },
+    {
+      "id": "shibuya-109",
+      "nameTh": "ชิบุยะ 109",
+      "nameJa": "SHIBUYA109",
+      "nameRomaji": "Shibuya 109",
+      "category": "shopping",
+      "city": "tokyo",
+      "description": "ห้างแฟชั่นไอคอนของสาววัยรุ่นโตเกียว อาคารทรงกระบอกริมแยกชิบุยะ รวมแบรนด์เสื้อผ้า เครื่องประดับ และเครื่องสำอางญี่ปุ่นสไตล์สตรีทหลายร้อยร้านในตึกเดียว",
+      "lat": 35.65953,
+      "lng": 139.69746,
+      "address": {
+        "th": "2-29-1 โดเก็นซากะ เขตชิบุยะ โตเกียว",
+        "ja": "東京都渋谷区道玄坂2-29-1"
+      },
+      "hours": "10:00–21:00 (โดยประมาณ)",
+      "station": "ติดสถานี Shibuya (ทางออกฮาจิโก) ~3 นาที",
+      "tags": [
+        "แฟชั่นวัยรุ่น",
+        "แลนด์มาร์กชิบุยะ"
+      ],
+      "tips": [
+        "ชั้น B2–B3 มีของกินและคาเฟ่ พักเดินช้อปได้",
+        "ช่วงเซลปีใหม่/กลางปีลดราคาหนัก"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.65953,139.69746",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/7/7f/Shibuya_109_-_3.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Shibuya_109_-_3.jpg",
+          "credit": "ภาพ: Kakidai / Wikimedia Commons",
+          "license": "CC BY-SA 4.0"
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "เสื้อยืดแฟชั่นสตรีท",
+          "priceJpy": 2500
+        },
+        {
+          "nameTh": "เครื่องประดับ/กิ๊บติดผม",
+          "priceJpy": 1200
+        }
+      ],
+      "sourceUrl": "https://www.shibuya109.jp/"
+    },
+    {
+      "id": "shinsaibashi-suji",
+      "nameTh": "ชินไซบาชิซูจิ (ถนนช้อปมีหลังคา)",
+      "nameJa": "心斎橋筋商店街",
+      "nameRomaji": "Shinsaibashi-suji",
+      "category": "shopping",
+      "city": "osaka",
+      "description": "ถนนช้อปปิ้งมีหลังคายาวกว่า 600 เมตรใจกลางโอซาก้า รวมแบรนด์แฟชั่น ร้านเครื่องสำอาง ร้านรองเท้า ของฝาก และร้านอาหาร เชื่อมต่อย่านโดตงโบริ เดินช้อปได้ทุกสภาพอากาศ",
+      "lat": 34.673,
+      "lng": 135.501,
+      "address": {
+        "th": "ชินไซบาชิซูจิ เขตชูโอ โอซาก้า",
+        "ja": "大阪市中央区心斎橋筋"
+      },
+      "hours": "ร้านส่วนใหญ่ 11:00–20:00 (โดยประมาณ)",
+      "station": "ติดสถานี Shinsaibashi (สาย Midosuji) ~1 นาที",
+      "tags": [
+        "ถนนช้อปมีหลังคา",
+        "ช้อปได้ทุกสภาพอากาศ",
+        "ของฝาก"
+      ],
+      "tips": [
+        "เชื่อมตรงถึงโดตงโบริ เดินต่อไปกินของได้",
+        "วันธรรมดาคนน้อยกว่าเสาร์–อาทิตย์"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.673,135.501",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Shinsaibashi-suji_201408.JPG",
+          "source": "https://commons.wikimedia.org/wiki/File:Shinsaibashi-suji_201408.JPG",
+          "credit": "ภาพ: Mc681 / Wikimedia Commons",
+          "license": "CC BY-SA 4.0"
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "ของฝาก/ขนมโอซาก้า",
+          "priceJpy": 800
+        },
+        {
+          "nameTh": "เครื่องสำอางญี่ปุ่น",
+          "priceJpy": 1500
+        }
+      ],
+      "sourceUrl": "https://www.shinsaibashi.or.jp/"
+    },
+    {
+      "id": "nakamise-dori",
+      "nameTh": "ถนนนาคามิเสะ (อาซากุสะ)",
+      "nameJa": "仲見世通り",
+      "nameRomaji": "Nakamise-dori",
+      "category": "shopping",
+      "city": "tokyo",
+      "description": "ถนนร้านค้าเก่าแก่ยาว ~250 เมตร ทอดจากประตูคามินาริมงถึงวัดเซนโซจิ รวมร้านของฝาก ขนมญี่ปุ่นทำสด (เซมเบ้ ดังโงะ นิงเงียวยากิ) และของที่ระลึกสไตล์ญี่ปุ่นดั้งเดิม",
+      "lat": 35.71145,
+      "lng": 139.79634,
+      "address": {
+        "th": "1-36-3 อาซากุสะ เขตไทโต โตเกียว",
+        "ja": "東京都台東区浅草1-36-3"
+      },
+      "hours": "ร้านส่วนใหญ่ 9:00–19:00 (โดยประมาณ)",
+      "station": "เดินจากสถานี Asakusa ~2 นาที",
+      "tags": [
+        "ของฝากญี่ปุ่นดั้งเดิม",
+        "ขนมทำสด",
+        "ถ่ายรูปสวย"
+      ],
+      "tips": [
+        "กินของทำสดหน้าร้านตามธรรมเนียม ไม่เดินกินไป",
+        "สุดถนนคือวัดเซนโซจิ เที่ยวต่อได้เลย"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.71145,139.79634",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Nakamise-dori_Street.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Nakamise-dori_Street.jpg",
+          "credit": "ภาพ: Alexeyevitch / Wikimedia Commons",
+          "license": "CC BY-SA 4.0"
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "นิงเงียวยากิ (ขนมรูปตุ๊กตา)",
+          "priceJpy": 500
+        },
+        {
+          "nameTh": "เซมเบ้ย่างสด",
+          "priceJpy": 300
+        },
+        {
+          "nameTh": "ของที่ระลึก (พัด/ผ้าเทนุงุอิ)",
+          "priceJpy": 800
+        }
+      ],
+      "sourceUrl": "https://www.gotokyo.org/en/spot/24/index.html"
+    },
+    {
+      "id": "teramachi-kyogoku",
+      "nameTh": "ถนนช้อปเทระมาจิ–ชินเคียวโกกุ",
+      "nameJa": "寺町京極商店街",
+      "nameRomaji": "Teramachi-Kyogoku",
+      "category": "shopping",
+      "city": "kyoto",
+      "description": "คู่ถนนช้อปปิ้งมีหลังคาใจกลางเกียวโต (เทระมาจิ + ชินเคียวโกกุ) รวมร้านของฝาก เสื้อผ้า เครื่องเขียน ร้านหนังสือ ขนม และของที่ระลึก อยู่ติดตลาดนิชิกิ เดินช้อปต่อเนื่องได้",
+      "lat": 35.0055,
+      "lng": 135.7663,
+      "address": {
+        "th": "ถนนเทระมาจิ/ชินเคียวโกกุ เขตนาคาเงียว เกียวโต",
+        "ja": "京都市中京区寺町通・新京極通"
+      },
+      "hours": "ร้านส่วนใหญ่ 10:00–20:00 (โดยประมาณ)",
+      "station": "เดินจากสถานี Kawaramachi (Hankyu) ~3 นาที",
+      "tags": [
+        "ถนนช้อปมีหลังคา",
+        "ติดตลาดนิชิกิ",
+        "ของฝากเกียวโต"
+      ],
+      "tips": [
+        "เชื่อมกับตลาดนิชิกิ เดินทะลุถึงกันได้",
+        "มีร้านเครื่องเขียน/ของฝากเกียวโตเฉพาะถิ่น"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.0055,135.7663",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/6/63/Teramachi_shopping_street%2C_Kyoto%2C_May_2017.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Teramachi_shopping_street,_Kyoto,_May_2017.jpg",
+          "credit": "ภาพ: Celuici / Wikimedia Commons",
+          "license": "CC BY-SA 3.0"
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "ของฝากเกียวโต (ขนมยัตสึฮาชิ)",
+          "priceJpy": 600
+        },
+        {
+          "nameTh": "เครื่องเขียน/ของที่ระลึก",
+          "priceJpy": 700
+        }
+      ],
+      "sourceUrl": "https://www.kyoto-teramachi.or.jp/"
+    },
+    {
+      "id": "arabica-kyoto-higashiyama",
+      "nameTh": "% อาราบิก้า เกียวโต ฮิงาชิยามะ",
+      "nameJa": "% アラビカ 京都 東山",
+      "nameRomaji": "% Arabica Kyoto Higashiyama",
+      "category": "cafe",
+      "city": "kyoto",
+      "description": "คาเฟ่กาแฟสเปเชียลตี้ชื่อดังระดับโลกที่ถือกำเนิดในเกียวโต สาขาฮิงาชิยามะอยู่ใกล้เจดีย์ยาซากะ ดีไซน์มินิมอลสีขาว ขึ้นชื่อเรื่องลาเต้และเมล็ดคั่วเอง เหมาะแวะจิบระหว่างเดินย่านเมืองเก่า",
+      "lat": 34.99818,
+      "lng": 135.78086,
+      "address": {
+        "th": "87-5 โฮชิโนโจ เขตฮิงาชิยามะ เกียวโต",
+        "ja": "京都市東山区星野町87-5"
+      },
+      "hours": "8:00–18:00 (โดยประมาณ)",
+      "station": "เดินจากสถานี Kiyomizu-Gojo (Keihan) ~12 นาที",
+      "tags": [
+        "กาแฟสเปเชียลตี้",
+        "ใกล้เจดีย์ยาซากะ",
+        "ถ่ายรูปสวย"
+      ],
+      "tips": [
+        "คิวยาวช่วงกลางวัน ไปเช้าคนน้อยกว่า",
+        "สั่งลาเต้ซิกเนเจอร์แล้วถ่ายคู่วิวเจดีย์ยาซากะ"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.99818,135.78086",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Cappuccino_with_latte_art_on_Coffee_Right_in_Brno%2C_Brno-City_District.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Cappuccino_with_latte_art_on_Coffee_Right_in_Brno,_Brno-City_District.jpg",
+          "credit": "ภาพประกอบ: Frettie / Wikimedia Commons",
+          "license": "CC BY 3.0",
+          "isIllustrative": true
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "คาเฟ่ลาเต้",
+          "priceJpy": 600
+        },
+        {
+          "nameTh": "อเมริกาโน่",
+          "priceJpy": 500
+        },
+        {
+          "nameTh": "เมล็ดกาแฟคั่ว (ถุง)",
+          "priceJpy": 1500
+        }
+      ],
+      "sourceUrl": "https://arabica.coffee/"
+    },
+    {
+      "id": "blue-bottle-kiyosumi",
+      "nameTh": "บลูบอตเทิล คอฟฟี่ คิโยสุมิ–ชิรากาวะ",
+      "nameJa": "ブルーボトルコーヒー 清澄白河",
+      "nameRomaji": "Blue Bottle Coffee Kiyosumi-Shirakawa",
+      "category": "cafe",
+      "city": "tokyo",
+      "description": "คาเฟ่โรงคั่วเรือธงสาขาแรกในญี่ปุ่นของ Blue Bottle จากสหรัฐฯ ตั้งในโกดังเก่าย่านคิโยสุมิ บรรยากาศโปร่งโล่ง เน้นกาแฟดริปทีละแก้ว เป็นหมุดหมายของสายกาแฟในโตเกียว",
+      "lat": 35.68089,
+      "lng": 139.79957,
+      "address": {
+        "th": "1-4-8 ฮิราโนะ เขตโคโต โตเกียว",
+        "ja": "東京都江東区平野1-4-8"
+      },
+      "hours": "8:00–19:00 (โดยประมาณ)",
+      "station": "เดินจากสถานี Kiyosumi-shirakawa ~7 นาที",
+      "tags": [
+        "กาแฟดริป",
+        "โรงคั่วเรือธง",
+        "ย่านคาเฟ่"
+      ],
+      "tips": [
+        "ย่านคิโยสุมิมีคาเฟ่หลายร้าน เดินตระเวนได้",
+        "ลองกาแฟดริปซิงเกิลออริจิน"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.68089,139.79957",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Cappuccino_latte_art_2006-04-14.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Cappuccino_latte_art_2006-04-14.jpg",
+          "credit": "ภาพประกอบ: Lukas Kolbe / Wikimedia Commons",
+          "license": "CC BY-SA 2.5",
+          "isIllustrative": true
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "กาแฟดริป (Pour Over)",
+          "priceJpy": 600
+        },
+        {
+          "nameTh": "คาเฟ่ลาเต้",
+          "priceJpy": 650
+        }
+      ],
+      "sourceUrl": "https://bluebottlecoffee.jp/"
+    },
+    {
+      "id": "lilo-coffee-osaka",
+      "nameTh": "ลิโล คอฟฟี่ โรสเตอร์ส (อเมริกามูระ)",
+      "nameJa": "LiLo Coffee Roasters",
+      "nameRomaji": "LiLo Coffee Roasters",
+      "category": "cafe",
+      "city": "osaka",
+      "description": "โรงคั่วกาแฟสเปเชียลตี้ยอดนิยมย่านอเมริกามูระ โอซาก้า มีเมล็ดกาแฟหลากหลายให้เลือก บาริสต้าฝีมือดี บรรยากาศสบาย ๆ เหมาะแวะจิบและซื้อเมล็ดกลับ",
+      "lat": 34.67206,
+      "lng": 135.498,
+      "address": {
+        "th": "2-10-28 นิชิชินไซบาชิ เขตชูโอ โอซาก้า",
+        "ja": "大阪市中央区西心斎橋2-10-28"
+      },
+      "hours": "11:00–20:00 (โดยประมาณ)",
+      "station": "เดินจากสถานี Shinsaibashi ~5 นาที",
+      "tags": [
+        "โรงคั่วกาแฟ",
+        "ย่านอเมริกามูระ",
+        "เมล็ดหลากหลาย"
+      ],
+      "tips": [
+        "เลือกเมล็ดได้หลายซิงเกิลออริจิน ถามบาริสต้าแนะนำ",
+        "อยู่ใกล้ย่านช้อปชินไซบาชิ เดินต่อได้"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.67206,135.498",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/0/0e/D%C3%BClmen%2C_Privatr%C3%B6sterei_Schr%C3%B6er_--_2018_--_0553.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Dülmen,_Privatrösterei_Schröer_--_2018_--_0553.jpg",
+          "credit": "ภาพประกอบ: Dietmar Rabich / Wikimedia Commons",
+          "license": "CC BY-SA 4.0",
+          "isIllustrative": true
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "เอสเพรสโซ",
+          "priceJpy": 400
+        },
+        {
+          "nameTh": "คาเฟ่ลาเต้",
+          "priceJpy": 550
+        },
+        {
+          "nameTh": "เมล็ดกาแฟคั่ว (100 ก.)",
+          "priceJpy": 1000
+        }
+      ],
+      "sourceUrl": "https://lilocoffee.jp/"
+    },
+    {
+      "id": "animate-ikebukuro",
+      "nameTh": "อนิเมท สาขาอิเคะบุคุโระ (ร้านหลัก)",
+      "nameJa": "アニメイト池袋本店",
+      "nameRomaji": "Animate Ikebukuro Honten",
+      "category": "anime-goods",
+      "city": "tokyo",
+      "description": "ร้านสินค้าอนิเมะ/มังงะเรือธงที่ใหญ่ที่สุดในเครืออนิเมท ย่านอิเคะบุคุโระ (โอโตเมะโรด) หลายชั้นเต็มไปด้วยมังงะ ดีวีดี ของสะสม ฟิกเกอร์ และสินค้าตัวละคร โดดเด่นสายผู้หญิง/โดจิน",
+      "lat": 35.73135,
+      "lng": 139.71533,
+      "address": {
+        "th": "1-20-7 ฮิงาชิอิเคะบุคุโระ เขตโทชิมะ โตเกียว",
+        "ja": "東京都豊島区東池袋1-20-7"
+      },
+      "hours": "10:00–21:00 (โดยประมาณ)",
+      "station": "เดินจากสถานี Ikebukuro (ทางออกตะวันออก) ~5 นาที",
+      "tags": [
+        "มังงะ/อนิเมะ",
+        "สินค้าตัวละคร",
+        "โอโตเมะโรด"
+      ],
+      "tips": [
+        "ย่านโอโตเมะโรดมีร้านโดจิน/ของสะสมอีกหลายร้าน",
+        "ชั้นบน ๆ เป็นของสะสม/อีเวนต์เฉพาะกิจ"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.73135,139.71533",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/ANIMATE-Ikebukuro.JPG",
+          "source": "https://commons.wikimedia.org/wiki/File:ANIMATE-Ikebukuro.JPG",
+          "credit": "ภาพ: Itasan / Wikimedia Commons",
+          "license": "CC BY-SA 3.0"
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "มังงะเล่มใหม่",
+          "priceJpy": 600
+        },
+        {
+          "nameTh": "ฟิกเกอร์/อะคริลิกสแตนด์",
+          "priceJpy": 1800
+        },
+        {
+          "nameTh": "สินค้าตัวละคร (แบดจ์/พวงกุญแจ)",
+          "priceJpy": 500
+        }
+      ],
+      "sourceUrl": "https://www.animate.co.jp/shop/ikebukuro/"
+    },
+    {
+      "id": "pokemon-center-osaka",
+      "nameTh": "โปเกมอนเซ็นเตอร์ โอซาก้า",
+      "nameJa": "ポケモンセンターオーサカ",
+      "nameRomaji": "Pokémon Center Osaka",
+      "category": "anime-goods",
+      "city": "osaka",
+      "description": "ร้านทางการของโปเกมอนในห้างไดมารุ อูเมดะ ชั้น 13 รวมตุ๊กตา ฟิกเกอร์ การ์ด เสื้อผ้า และของที่ระลึกโปเกมอนครบครัน มีสินค้าลิมิเต็ดเฉพาะสาขา เหมาะแฟนโปเกมอนทุกวัย",
+      "lat": 34.70207,
+      "lng": 135.49723,
+      "address": {
+        "th": "ไดมารุ อูเมดะ ชั้น 13, 3-1-1 อูเมดะ เขตคิตะ โอซาก้า",
+        "ja": "大阪市北区梅田3-1-1 大丸梅田店13F"
+      },
+      "hours": "10:00–20:00 (โดยประมาณ)",
+      "station": "ติดสถานี Osaka / Umeda (ในห้างไดมารุ)",
+      "tags": [
+        "สินค้าโปเกมอน",
+        "ของลิมิเต็ด",
+        "เหมาะครอบครัว"
+      ],
+      "tips": [
+        "มีสินค้าเฉพาะสาขาโอซาก้า มองหารุ่นลิมิเต็ด",
+        "อยู่ในห้างติดสถานีหลัก ไปง่ายมาก"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.70207,135.49723",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Osaka_Pok%C3%A9mon_Center.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Osaka_Pokémon_Center.jpg",
+          "credit": "ภาพ: Aaron Lai / Wikimedia Commons",
+          "license": "CC BY 2.0"
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "ตุ๊กตาโปเกมอน (พลัช)",
+          "priceJpy": 1800
+        },
+        {
+          "nameTh": "การ์ดเกมโปเกมอน (ซอง)",
+          "priceJpy": 200
+        },
+        {
+          "nameTh": "ของที่ระลึกเฉพาะสาขา",
+          "priceJpy": 900
+        }
+      ],
+      "sourceUrl": "https://www.pokemon.co.jp/gp/pokecen/osaka/"
+    },
+    {
+      "id": "animate-kyoto",
+      "nameTh": "อนิเมท สาขาเกียวโต",
+      "nameJa": "アニメイト京都",
+      "nameRomaji": "Animate Kyoto",
+      "category": "anime-goods",
+      "city": "kyoto",
+      "description": "สาขาเกียวโตของเครือร้านอนิเมท ใจกลางย่านช้อปปิ้งคาวารามาจิ/เทระมาจิ รวมมังงะ สินค้าตัวละคร ฟิกเกอร์ และของสะสมอนิเมะ สะดวกสำหรับสายโอตาคุที่เที่ยวเกียวโต",
+      "lat": 35.0069,
+      "lng": 135.76855,
+      "address": {
+        "th": "ย่านคาวารามาจิ เขตนาคาเงียว เกียวโต",
+        "ja": "京都市中京区（河原町周辺）"
+      },
+      "hours": "10:00–20:00 (โดยประมาณ)",
+      "station": "เดินจากสถานี Kyoto-Kawaramachi (Hankyu) ~5 นาที",
+      "tags": [
+        "มังงะ/อนิเมะ",
+        "สินค้าตัวละคร",
+        "ใจกลางเกียวโต"
+      ],
+      "tips": [
+        "อยู่ใกล้ถนนช้อปเทระมาจิ เดินต่อได้",
+        "มีของสะสม/กาชาปองสินค้าอนิเมะหน้าร้าน"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.0069,135.76855",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Capsule_toys_%28521036671%29.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Capsule_toys_(521036671).jpg",
+          "credit": "ภาพประกอบ: 元 / Wikimedia Commons",
+          "license": "CC BY 2.0",
+          "isIllustrative": true
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "มังงะเล่มใหม่",
+          "priceJpy": 600
+        },
+        {
+          "nameTh": "กาชาปองสินค้าอนิเมะ (ต่อครั้ง)",
+          "priceJpy": 400
+        },
+        {
+          "nameTh": "สินค้าตัวละคร (แบดจ์/สแตนด์)",
+          "priceJpy": 700
+        }
+      ],
+      "sourceUrl": "https://www.animate.co.jp/shop/kyoto/"
     }
   ]
 }
