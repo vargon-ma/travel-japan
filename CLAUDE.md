@@ -56,20 +56,33 @@ Multi-file static ES-module app, no bundler. CSS and JS are in their own files (
 - `app.js` — **side-effect layer**: orchestration, DOM rendering, Leaflet, `fetch`, localStorage
 - `logic.js` — **pure-function layer**: the single test seam. No DOM / network / Leaflet.
 - `data.json` — the dataset (entries embedded from research)
-- `package.json` — Vitest only (the live site has no runtime deps beyond the Leaflet CDN)
+- `package.json` — Vitest only. The live site's only CDN deps are Leaflet and Google Fonts
+  (Kanit + Noto Sans Thai); no bundler or runtime JS deps.
 
 The core boundary: **`logic.js` holds all pure logic and is the only thing tested.** `app.js`
 imports it, calls it, and renders the result; the side-effect layer is not unit-tested directly.
-Planned pure functions: `getStartingPriceJpy(entry)`, `filterEntries(entries, criteria)`,
-`sortByPrice(entries, direction)`, `convertJpyToThb(jpy, rate)`, and possibly `searchMatches`.
-Tests live in `logic.test.js`, grouped with `describe` per function — one test file per logic module.
+Pure functions: `getStartingPriceJpy(entry)`, `getPriceLevel(jpy)`, `filterEntries(entries, criteria)`,
+`sortByPrice(entries, direction)`, `convertJpyToThb(jpy, rate)`, `searchMatches` (now also matches `tags`),
+`validateEntry(entry)` → `string[]` (quality/DoD guard; empty = passes) and `validateDataset(entries)`
+→ `string[]` (runs `validateEntry` per entry + flags duplicate `id`s). Closed sets are exported as
+`CATEGORIES` / `CITIES`. Tests live in `logic.test.js`, grouped with `describe` per function — one test
+file per logic module. A **dataset guard test** imports `data.json` and asserts `validateDataset` returns
+zero errors, so a malformed/thin entry turns `npm test` red before it ships.
+
+> Domain terms are defined in `CONTEXT.md`; significant decisions live in `docs/adr/`.
 
 ### Data model — the unit is an "entry" (a shop/place)
 Each entry in `data.json`: `id`, `nameTh`, `nameJa`, `nameRomaji`, `category`
-(`sightseeing | games | cosplay | electronics | food`), `city` (`tokyo | osaka | kyoto | …`),
-`description` (Thai), `lat`/`lng`, `address`, `images[]` (each with `url` + `credit`/`license`),
-`products[]` (each `nameTh`, `priceJpy`, optional `condition` `new`/`used` for games),
-and `sourceUrl`. **Prices are always stored as JPY**; THB is computed at runtime.
+(`sightseeing | food | games | cosplay | electronics | anime-goods | cafe | shopping` — 8 categories),
+`city` (`tokyo | osaka | kyoto`), `description` (Thai), `lat`/`lng`, `address`,
+`images[]` (each with `url` + `source`/`credit`/`license`, plus optional `isIllustrative` boolean —
+`true` marks a context/illustrative image that is **not** an actual photo of the place; the UI shows an
+"ภาพประกอบ" badge on the card and in the modal gallery. See `docs/adr/0003`),
+`products[]` (each `nameTh`, `priceJpy`, optional `condition` `new`/`used`), and `sourceUrl`.
+Optional enrichment fields: `hours`, `station` (access), `tags[]`, `tips[]`, `bestTime`,
+`googleMapsUrl`, `editorsPick` (boolean) + `editorsPickReason`. **Prices are always stored as JPY**;
+THB and `priceLevel` (¥/¥¥/¥¥¥) are computed at runtime. `editorsPick` entries appear in the
+Featured strip. New categories may be empty in the dataset and show a "coming soon" empty-state.
 
 ### Currency — store JPY, compute THB live with a fallback
 On load, `fetch` a keyless JPY→THB rate and compute baht via `convertJpyToThb(jpy, rate)`. Show
@@ -86,6 +99,13 @@ popup shows name + image + starting price + an open-modal button.
 - **Thai-first UI**, with Japanese/romaji names alongside. Keep new copy in Thai to match the PRD.
 - Data is edited directly in `data.json` — there is no CMS, backend, or in-UI editing.
 - **Test only `logic.js`'s external behavior** (input → output). No DOM/Leaflet/fetch/E2E tests.
-- v1 is intentionally small: ~15 entries (~3 per category), no hosting/deploy, no multi-language UI.
-- Images must come from Wikimedia Commons (with license/credit) or a polite placeholder — never
-  hotlink copyrighted images. Prices are approximate and should be labeled as such.
+- Scope is growing toward ~50 entries across 8 categories (see `docs/adr/0002`); still no
+  hosting/deploy and no multi-language UI. Build in phases: design first, then data expansion.
+- Images come from Wikimedia Commons **or other free sources** (e.g. Unsplash/Pexels) — always
+  store `source`/`credit`/`license` and give credit; never hotlink copyrighted images. Per-entry
+  image preference order: (1) a real free photo → (2) a free **illustrative** image flagged
+  `isIllustrative: true` → (3) the polite per-category emoji placeholder (last-resort fallback).
+  An illustrative image still needs full `source`/`credit`/`license`; the flag only drives the
+  "ภาพประกอบ" badge so users are never misled. Prices/hours are approximate and labeled as such.
+  See `docs/adr/0001` (sourcing) and `docs/adr/0003` (illustrative images).
+- **No invented ratings.** Don't fabricate star ratings/review counts; link to Google Maps instead.

@@ -3,7 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>เที่ยวญี่ปุ่น — ร้านและสถานที่แนะนำ</title>
+    <title>เที่ยวญี่ปุ่น — ร้านและสถานที่แนะนำสำหรับคนไทย</title>
+    <meta
+      name="description"
+      content="รวมร้านและสถานที่เด็ดในโตเกียว โอซาก้า เกียวโต สำหรับนักท่องเที่ยวไทย — เที่ยว เกม อนิเมะ คอสเพลย์ คาเฟ่ ของกิน พร้อมราคา ¥/฿ และแผนที่"
+    />
+
+    <!-- ฟอนต์ดิสเพลย์ภาษาไทย (Kanit) + เนื้อความ (Noto Sans Thai) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -20,94 +33,123 @@
   </head>
   <body>
     <header class="hero">
-      <h1>เที่ยวญี่ปุ่น</h1>
-      <p class="hero__subtitle">รวมร้านและสถานที่แนะนำสำหรับนักท่องเที่ยวสายเกม อนิเมะ และของกิน</p>
+      <div class="hero__inner">
+        <span class="hero__kicker">⛩ Travel Japan · สำหรับนักเดินทางไทย</span>
+        <h1 class="hero__title">เที่ยว<span class="accent">ญี่ปุ่น</span>ให้สุดทุกสาย</h1>
+        <p class="hero__subtitle">
+          รวมสถานที่เที่ยว ร้านเกม อนิเมะ คอสเพลย์ คาเฟ่ และของกินเด็ด ๆ
+          ในโตเกียว โอซาก้า และเกียวโต — พร้อมราคาเทียบ ¥/฿ และแผนที่ปักหมุดทุกจุด
+        </p>
+        <div class="hero__stats" id="hero-stats" hidden>
+          <div class="hero__stat"><b data-stat="entries">–</b><span>สถานที่/ร้าน</span></div>
+          <div class="hero__stat"><b data-stat="categories">8</b><span>หมวด</span></div>
+          <div class="hero__stat"><b data-stat="cities">3</b><span>เมือง</span></div>
+        </div>
+      </div>
     </header>
 
-    <main class="container">
-      <p id="rate-label" class="rate-label" aria-live="polite" hidden></p>
-      <p id="price-note" class="price-note" hidden></p>
+    <!-- แถบชิปหมวด (sticky) -->
+    <nav class="catbar" aria-label="เลือกหมวด">
+      <div class="catbar__inner" id="catbar"></div>
+    </nav>
 
-      <section class="filters" aria-label="ตัวกรองและค้นหา">
-        <div class="filters__row">
-          <label class="filters__field">
-            <span class="filters__label">หมวด</span>
-            <select id="filter-category">
-              <option value="">ทุกหมวด</option>
-            </select>
-          </label>
-          <label class="filters__field">
-            <span class="filters__label">เมือง</span>
-            <select id="filter-city">
-              <option value="">ทุกเมือง</option>
-            </select>
-          </label>
-          <label class="filters__field filters__field--search">
-            <span class="filters__label">ค้นหา</span>
+    <main>
+      <div class="container">
+        <p class="rate-bar">
+          <span id="rate-label" class="rate-label" aria-live="polite" hidden></span>
+          <span id="price-note" class="price-note" hidden></span>
+        </p>
+      </div>
+
+      <!-- Featured: Editor's Pick -->
+      <section class="section container" id="featured-section" aria-label="ที่แนะนำพิเศษ" hidden>
+        <div class="section__head">
+          <h2 class="section__title"><span class="emoji">⭐</span> ห้ามพลาด</h2>
+          <p class="section__hint">คัดมาให้แล้วโดยทีมงาน</p>
+        </div>
+        <div class="featured__track" id="featured-track"></div>
+      </section>
+
+      <!-- Toolbar + view -->
+      <section class="section container" aria-label="ค้นหาและกรอง">
+        <div class="toolbar">
+          <label class="toolbar__search">
+            <span class="sr-only"></span>
             <input
               id="filter-search"
               type="search"
-              placeholder="ชื่อร้าน สถานที่ หรือสินค้า…"
+              placeholder="ค้นหาชื่อร้าน สถานที่ สินค้า หรือแท็ก…"
               autocomplete="off"
+              aria-label="ค้นหา"
             />
           </label>
-          <div class="filters__field">
-            <span class="filters__label">เรียงราคา</span>
-            <div class="sort" role="group" aria-label="เรียงตามราคา">
-              <button type="button" class="sort__btn" data-direction="asc" aria-pressed="false">
-                ถูก→แพง
-              </button>
-              <button type="button" class="sort__btn" data-direction="desc" aria-pressed="false">
-                แพง→ถูก
-              </button>
-            </div>
+
+          <select id="filter-city" class="select" aria-label="เลือกเมือง">
+            <option value="">ทุกเมือง</option>
+          </select>
+
+          <div class="sort" role="group" aria-label="เรียงตามราคา">
+            <button type="button" class="sort__btn" data-direction="asc" aria-pressed="false">
+              ถูก→แพง
+            </button>
+            <button type="button" class="sort__btn" data-direction="desc" aria-pressed="false">
+              แพง→ถูก
+            </button>
           </div>
-          <div class="filters__field">
-            <span class="filters__label">บุ๊กมาร์ก</span>
-            <button
-              type="button"
-              id="filter-bookmarked"
-              class="bookmark-toggle"
-              aria-pressed="false"
-            >
-              <span class="bookmark-toggle__icon" aria-hidden="true">♥</span>
-              เฉพาะที่บุ๊กมาร์ก
+
+          <button type="button" id="filter-bookmarked" class="bookmark-toggle" aria-pressed="false">
+            <span class="bookmark-toggle__icon" aria-hidden="true">♥</span> บุ๊กมาร์ก
+          </button>
+
+          <div class="viewtoggle" role="group" aria-label="สลับมุมมอง">
+            <button type="button" class="viewtoggle__btn" data-view="grid" aria-pressed="true">
+              ▦ กริด
+            </button>
+            <button type="button" class="viewtoggle__btn" data-view="map" aria-pressed="false">
+              🗺 แผนที่
             </button>
           </div>
         </div>
-      </section>
 
-      <section class="map-section" aria-label="แผนที่ร้านและสถานที่">
-        <div id="map" class="map"></div>
-      </section>
+        <p id="result-count" class="result-count" aria-live="polite"></p>
 
-      <section id="grid-status" class="status status--loading" aria-live="polite">
-        กำลังโหลดข้อมูล…
+        <div class="view" id="view">
+          <div class="view__grid">
+            <section id="grid-status" class="status status--loading" aria-live="polite">
+              กำลังโหลดข้อมูล…
+            </section>
+            <section id="card-grid" class="card-grid" aria-label="รายการร้านและสถานที่"></section>
+          </div>
+          <div class="view__map">
+            <div id="map" class="map"></div>
+          </div>
+        </div>
       </section>
-      <section id="card-grid" class="card-grid" aria-label="รายการร้านและสถานที่"></section>
     </main>
 
-    <footer class="credits container" aria-label="รวมเครดิตและแหล่งอ้างอิง">
-      <h2 class="credits__title">รวมเครดิต &amp; แหล่งอ้างอิง</h2>
-      <p class="credits__intro">
-        ข้อมูลร้าน/สถานที่ ราคา และพิกัด รวบรวมจากแหล่งอ้างอิงด้านล่าง (เว็บไซต์ทางการของร้าน/สถานที่
-        และคู่มือท่องเที่ยว) ราคาเป็นค่าโดยประมาณและอาจเปลี่ยนแปลงได้
-      </p>
-      <div class="credits__cols">
-        <section class="credits__block">
-          <h3 class="credits__heading">แหล่งข้อมูลแต่ละรายการ</h3>
-          <ul id="credits-sources" class="credits__list"></ul>
-        </section>
-        <section class="credits__block">
-          <h3 class="credits__heading">ที่มารูปภาพ</h3>
-          <ul id="credits-images" class="credits__list"></ul>
-          <p class="credits__meta">
-            รูปภาพทั้งหมดมาจาก Wikimedia Commons ภายใต้สัญญาอนุญาตครีเอทีฟคอมมอนส์/สาธารณสมบัติ
-            ให้เครดิตผู้สร้างตามลิขสิทธิ์ · รายการที่ไม่มีรูปจะใช้ภาพแทน (placeholder)
-          </p>
-        </section>
+    <footer class="credits" aria-label="รวมเครดิตและแหล่งอ้างอิง">
+      <div class="container">
+        <h2 class="credits__title">รวมเครดิต &amp; แหล่งอ้างอิง</h2>
+        <p class="credits__intro">
+          ข้อมูลร้าน/สถานที่ ราคา และพิกัด รวบรวมจากแหล่งอ้างอิงด้านล่าง (เว็บไซต์ทางการและคู่มือท่องเที่ยว)
+          ราคาเป็นค่าโดยประมาณและอาจเปลี่ยนแปลงได้
+        </p>
+        <div class="credits__cols">
+          <section class="credits__block">
+            <h3 class="credits__heading">แหล่งข้อมูลแต่ละรายการ</h3>
+            <ul id="credits-sources" class="credits__list"></ul>
+          </section>
+          <section class="credits__block">
+            <h3 class="credits__heading">ที่มารูปภาพ</h3>
+            <ul id="credits-images" class="credits__list"></ul>
+            <p class="credits__meta">
+              รูปภาพมาจาก Wikimedia Commons และแหล่งรูปฟรี (เช่น Unsplash/Pexels)
+              ให้เครดิตผู้สร้างตามสัญญาอนุญาต · รายการที่ไม่มีรูปใช้ภาพแทน (placeholder)
+            </p>
+          </section>
+        </div>
+        <p class="credits__meta">แผนที่: Leaflet · ข้อมูลแผนที่ © OpenStreetMap contributors · ฟอนต์: Kanit / Noto Sans Thai (Google Fonts)</p>
       </div>
-      <p class="credits__meta">แผนที่: Leaflet · ข้อมูลแผนที่ © OpenStreetMap contributors</p>
     </footer>
 
     <div id="modal" class="modal" hidden>

@@ -1,13 +1,46 @@
+/* ============================================================
+   Travel Japan — ธีม "Vivid Japan"
+   โทนชาดญี่ปุ่น (vermilion) + ม่วงไลแลค, ไล่สีต่อหมวด, รูปใหญ่
+   ============================================================ */
+
 :root {
-  --bg: #f7f8fa;
+  /* พื้นหลัง/พื้นผิว — โทนกระดาษอุ่น */
+  --bg: #fff7f3;
+  --bg-2: #ffeee9;
   --surface: #ffffff;
-  --text: #1f2430;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --accent: #e23b4e;
-  --radius: 14px;
-  --shadow: 0 1px 3px rgba(16, 24, 40, 0.06), 0 6px 16px rgba(16, 24, 40, 0.06);
+  --text: #1d1b2b;
+  --muted: #6f6b80;
+  --border: #efe6e2;
+  --border-strong: #e3d6d0;
+
+  /* สีหลัก: ชาดญี่ปุ่น + ม่วง */
+  --accent: #e5304a;
+  --accent-strong: #c41f3c;
+  --violet: #7c3aed;
+  --violet-soft: #f3ecff;
+  --gold: #f5a524;
+
+  --radius: 16px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgba(45, 20, 30, 0.05), 0 4px 12px rgba(45, 20, 30, 0.06);
+  --shadow-md: 0 8px 24px rgba(45, 20, 30, 0.12);
+  --shadow-lg: 0 24px 60px rgba(45, 20, 30, 0.22);
+
+  /* ค่าเริ่มต้นของสีหมวด (ใช้เมื่อไม่ระบุ data-category) */
+  --cat: var(--accent);
+  --cat-soft: #fde9ec;
 }
+
+/* ---- แผนที่สี/ไอคอนต่อหมวด: ตั้ง --cat ตาม data-category ---- */
+[data-category="sightseeing"] { --cat: #e5304a; --cat-soft: #fde7ea; }
+[data-category="food"]        { --cat: #ef6c1a; --cat-soft: #ffeede; }
+[data-category="games"]       { --cat: #7c3aed; --cat-soft: #f1e9ff; }
+[data-category="cosplay"]     { --cat: #db2d86; --cat-soft: #fde6f1; }
+[data-category="electronics"] { --cat: #2563eb; --cat-soft: #e3edff; }
+[data-category="anime-goods"] { --cat: #0d9488; --cat-soft: #d8f3f0; }
+[data-category="cafe"]        { --cat: #a16207; --cat-soft: #f7ecd5; }
+[data-category="shopping"]    { --cat: #16a34a; --cat-soft: #ddf5e4; }
 
 * {
   box-sizing: border-box;
@@ -15,272 +48,523 @@
 
 body {
   margin: 0;
-  font-family: "Segoe UI", "Noto Sans Thai", "Hiragino Sans", system-ui, sans-serif;
+  font-family: "Noto Sans Thai", "Segoe UI", "Hiragino Sans", system-ui, sans-serif;
   color: var(--text);
-  background: var(--bg);
-  line-height: 1.55;
+  background-color: var(--bg);
+  /* ลายจุดบาง ๆ ให้พื้นไม่แบน */
+  background-image: radial-gradient(rgba(229, 48, 74, 0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
+  line-height: 1.6;
 }
 
-/* Hero */
+h1, h2, h3, .font-display {
+  font-family: "Kanit", "Noto Sans Thai", system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+a { color: var(--accent); }
+
+/* ============================================================
+   HERO
+   ============================================================ */
 .hero {
-  padding: 56px 24px 40px;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  background: linear-gradient(135deg, #e5304a 0%, #c01f6f 52%, #7c3aed 100%);
   text-align: center;
-  background: linear-gradient(135deg, #fff5f6 0%, #f7f8fa 100%);
-  border-bottom: 1px solid var(--border);
+  padding: 72px 24px 84px;
+  isolation: isolate;
 }
 
-.hero h1 {
-  margin: 0 0 8px;
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  letter-spacing: 0.5px;
+/* ลายคลื่นเซย์ไกฮะ (seigaiha) จำลองด้วย radial-gradient ซ้อน — กลิ่นอายญี่ปุ่นโดยไม่ใช้รูป */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.35;
+  background-image:
+    radial-gradient(circle at 10px 18px, transparent 7px, rgba(255, 255, 255, 0.25) 8px, transparent 9px),
+    radial-gradient(circle at 30px 18px, transparent 7px, rgba(255, 255, 255, 0.25) 8px, transparent 9px);
+  background-size: 40px 22px;
+  background-position: 0 0, 20px 11px;
+}
+
+/* แสงวงนุ่ม ๆ มุมบน */
+.hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 460px;
+  height: 460px;
+  top: -180px;
+  right: -120px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.35), transparent 65%);
+}
+
+.hero__inner {
+  max-width: 760px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.hero__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(4px);
+  margin-bottom: 18px;
+}
+
+.hero__title {
+  margin: 0 0 14px;
+  font-size: clamp(2.3rem, 6vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.1;
+  text-shadow: 0 2px 20px rgba(80, 10, 40, 0.25);
+}
+
+.hero__title .accent {
+  color: #ffe066;
 }
 
 .hero__subtitle {
-  margin: 0;
-  color: var(--muted);
-  font-size: 1rem;
-}
-
-/* Layout */
-.container {
-  max-width: 1120px;
   margin: 0 auto;
-  padding: 32px 24px 64px;
+  max-width: 56ch;
+  font-size: clamp(1rem, 2.2vw, 1.18rem);
+  color: rgba(255, 255, 255, 0.92);
 }
 
-.rate-label {
-  margin: 0 0 4px;
+.hero__stats {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px 30px;
+  margin-top: 30px;
+}
+
+.hero__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.hero__stat b {
+  font-family: "Kanit", system-ui, sans-serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.hero__stat span {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section {
+  margin: 38px auto;
+}
+
+.section__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.section__title {
+  margin: 0;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section__title .emoji {
+  font-size: 1.2em;
+}
+
+.section__hint {
+  margin: 0;
   color: var(--muted);
   font-size: 0.85rem;
 }
 
-.price-note {
-  margin: 0 0 14px;
-  color: var(--muted);
-  font-size: 0.82rem;
-}
-
-/* Filter bar */
-.filters {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 16px 18px;
-  margin-bottom: 8px;
-}
-
-.filters__row {
+.rate-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px 18px;
-  align-items: flex-end;
-}
-
-.filters__field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 150px;
-}
-
-.filters__field--search {
-  flex: 1 1 220px;
-}
-
-.filters__label {
-  font-size: 0.78rem;
+  gap: 6px 16px;
+  align-items: center;
+  margin: 20px auto 0;
+  font-size: 0.82rem;
   color: var(--muted);
 }
 
-.filters select,
-.filters input[type="search"] {
+.rate-bar .rate-label {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.rate-bar [hidden] {
+  display: none;
+}
+
+/* ============================================================
+   แถบชิปหมวด (category chips)
+   ============================================================ */
+.catbar {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  /* พื้นทึบ (ไม่ใช้ backdrop-filter) — blur บน sticky ทำให้ repaint ทุกเฟรมตอนเลื่อน = กระตุก */
+  background: #fff6f1;
+  border-bottom: 1px solid var(--border);
+  margin-top: -28px;
+}
+
+.catbar__inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.catbar__inner::-webkit-scrollbar { height: 6px; }
+.catbar__inner::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 999px; }
+
+.chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: inherit;
+  font-size: 0.92rem;
+  cursor: pointer;
+  white-space: nowrap;
+  padding: 9px 16px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  transition: transform 0.12s, border-color 0.15s, background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.chip__icon { font-size: 1.05rem; line-height: 1; }
+
+.chip:hover {
+  transform: translateY(-1px);
+  border-color: var(--cat);
+}
+
+.chip.is-active {
+  background: var(--cat);
+  border-color: var(--cat);
+  color: #fff;
+  box-shadow: 0 6px 16px -4px var(--cat);
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--cat);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   FEATURED STRIP (Editor's Pick)
+   ============================================================ */
+.featured__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(290px, 1fr);
+  gap: 18px;
+  overflow-x: auto;
+  padding: 6px 4px 16px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+
+.featured__track::-webkit-scrollbar { height: 8px; }
+.featured__track::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 999px; }
+
+.feat-card {
+  scroll-snap-align: start;
+  position: relative;
+  min-height: 230px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: var(--shadow-sm);
+  background: linear-gradient(135deg, var(--cat), #2a1340);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.feat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.feat-card:focus-visible {
+  outline: 3px solid var(--cat);
+  outline-offset: 2px;
+}
+
+.feat-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* ไล่เฉดดำด้านล่างให้ตัวอักษรอ่านออกบนรูป */
+.feat-card__shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(20, 8, 20, 0.88) 0%, rgba(20, 8, 20, 0.25) 45%, transparent 75%);
+}
+
+.feat-card__body {
+  position: relative;
+  z-index: 2;
+  padding: 16px 18px 18px;
+}
+
+.feat-card__ribbon {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--gold);
+  color: #3a2400;
+  box-shadow: var(--shadow-sm);
+}
+
+.feat-card__name {
+  margin: 0 0 4px;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.feat-card__reason {
+  margin: 0 0 8px;
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.9);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.feat-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+}
+
+.feat-card__price { font-weight: 700; }
+
+/* ============================================================
+   TOOLBAR (ค้นหา / เมือง / เรียง / บุ๊กมาร์ก / สลับมุมมอง)
+   ============================================================ */
+.toolbar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 14px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.toolbar__search {
+  position: relative;
+  flex: 1 1 240px;
+  min-width: 200px;
+}
+
+.toolbar__search input {
+  width: 100%;
   font: inherit;
   color: var(--text);
   background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 9px 12px;
-  width: 100%;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  padding: 11px 16px 11px 42px;
 }
 
-.filters select:focus,
-.filters input[type="search"]:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
+.toolbar__search::before {
+  content: "🔍";
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.6;
+  font-size: 0.95rem;
 }
+
+.toolbar__search input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(229, 48, 74, 0.15);
+}
+
+.select {
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.select:focus { outline: none; border-color: var(--accent); }
 
 .sort {
-  display: flex;
-  gap: 8px;
+  display: inline-flex;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
 }
 
 .sort__btn {
   font: inherit;
+  font-size: 0.9rem;
   cursor: pointer;
   background: var(--bg);
   color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 9px 14px;
+  border: none;
+  padding: 10px 14px;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.sort__btn + .sort__btn { border-left: 1.5px solid var(--border-strong); }
+.sort__btn:hover { background: var(--bg-2); }
+.sort__btn[aria-pressed="true"] { background: var(--accent); color: #fff; }
+
+.bookmark-toggle {
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  padding: 10px 16px;
   white-space: nowrap;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
-.sort__btn:hover {
-  border-color: var(--accent);
+.bookmark-toggle:hover { border-color: var(--accent); }
+.bookmark-toggle__icon { color: var(--accent); line-height: 1; }
+.bookmark-toggle.is-active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.bookmark-toggle.is-active .bookmark-toggle__icon { color: #fff; }
+
+/* ปุ่มสลับมุมมอง กริด ↔ แผนที่ */
+.viewtoggle {
+  margin-left: auto;
+  display: inline-flex;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
 }
 
-.sort__btn[aria-pressed="true"] {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
-
-/* ปุ่ม toggle "เฉพาะที่บุ๊กมาร์ก" ในแถบฟิลเตอร์ */
-.bookmark-toggle {
+.viewtoggle__btn {
   font: inherit;
+  font-size: 0.9rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background: var(--bg);
   color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 9px 14px;
-  white-space: nowrap;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  border: none;
+  padding: 10px 16px;
+  transition: background 0.15s, color 0.15s;
 }
 
-.bookmark-toggle:hover {
-  border-color: var(--accent);
-}
+.viewtoggle__btn + .viewtoggle__btn { border-left: 1.5px solid var(--border-strong); }
+.viewtoggle__btn[aria-pressed="true"] { background: var(--violet); color: #fff; }
 
-.bookmark-toggle__icon {
-  color: var(--accent);
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.bookmark-toggle.is-active {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
-
-.bookmark-toggle.is-active .bookmark-toggle__icon {
-  color: #fff;
-}
-
-.status {
-  color: var(--muted);
-  padding: 12px 0;
-  font-size: 0.95rem;
-}
-
-.status[hidden] {
-  display: none;
-}
-
-.status--error {
-  color: var(--accent);
-}
-
-/* สถานะกำลังโหลด: spinner เล็ก ๆ ข้างข้อความ */
-.status--loading {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.status--loading::before {
-  content: "";
-  flex: none;
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Empty state: การ์ดกลางจอ พร้อมไอคอน เพื่อให้รู้ว่าไม่ใช่เว็บพัง */
-.status--empty {
-  text-align: center;
-  padding: 44px 20px;
-  background: var(--surface);
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
-}
-
-.status--empty::before {
-  content: "🔍";
-  display: block;
-  font-size: 2rem;
-  margin-bottom: 8px;
-  opacity: 0.75;
-}
-
-/* Map (Issue 04) */
-.map-section {
-  margin: 16px 0 24px;
-}
+/* ============================================================
+   มุมมอง: กริด / แผนที่ (สลับด้วยคลาสบน .view)
+   ============================================================ */
+.view { margin-top: 18px; }
+.view__map { display: none; }
+.view.is-map .view__grid { display: none; }
+.view.is-map .view__map { display: block; }
 
 .map {
-  height: 380px;
+  height: 560px;
   width: 100%;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  /* ทับ z-index เริ่มต้นของ Leaflet ไม่ให้ลอยทับโมดัล */
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
   z-index: 0;
 }
 
-/* Popup ของหมุดบนแผนที่ */
-.map-popup {
-  width: 190px;
-  text-align: left;
+.result-count {
+  margin: 0 2px 12px;
+  font-size: 0.86rem;
+  color: var(--muted);
 }
 
+.result-count b { color: var(--text); }
+
+/* ---- popup ของหมุดบนแผนที่ ---- */
+.map-popup { width: 200px; text-align: left; }
 .map-popup__img {
   width: 100%;
-  height: 110px;
+  height: 112px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 10px;
   margin-bottom: 6px;
 }
-
-.map-popup__name {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.map-popup__sub {
-  margin: 2px 0 0;
-  color: var(--muted);
-  font-size: 0.8rem;
-}
-
-.map-popup__price {
-  margin: 6px 0 0;
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  font-weight: 600;
-}
-
-.map-popup__thb {
-  color: var(--accent);
-}
-
+.map-popup__name { margin: 0; font-size: 1rem; font-weight: 600; }
+.map-popup__sub { margin: 2px 0 0; color: var(--muted); font-size: 0.8rem; }
+.map-popup__price { margin: 6px 0 0; display: flex; align-items: baseline; gap: 8px; font-weight: 700; }
+.map-popup__thb { color: var(--accent); }
 .map-popup__btn {
   margin-top: 10px;
   width: 100%;
@@ -289,129 +573,217 @@ body {
   background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 9px;
   padding: 8px 12px;
 }
+.map-popup__btn:hover { background: var(--accent-strong); }
 
-.map-popup__btn:hover {
-  background: #c92f41;
+/* ============================================================
+   STATUS (loading / empty / error)
+   ============================================================ */
+.status { color: var(--muted); padding: 14px 0; font-size: 0.95rem; }
+.status[hidden] { display: none; }
+.status--error { color: var(--accent); }
+
+.status--loading { display: flex; align-items: center; gap: 10px; }
+.status--loading::before {
+  content: "";
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.status--empty {
+  text-align: center;
+  padding: 52px 20px;
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+}
+.status--empty::before {
+  content: "🗺️";
+  display: block;
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+  opacity: 0.85;
 }
 
-/* Card grid */
+/* ============================================================
+   CARD GRID
+   ============================================================ */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 22px;
 }
 
 .card {
+  position: relative;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.16s, box-shadow 0.16s, border-color 0.16s;
+  animation: card-enter 0.3s ease backwards;
+  /* ข้ามการเรนเดอร์การ์ดที่อยู่นอกจอ (เร็วขึ้นมากเมื่อมีการ์ดเยอะ) */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 360px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--cat);
+}
+
+.card:focus-visible {
+  outline: 2.5px solid var(--cat);
+  outline-offset: 2px;
 }
 
 .card__media {
   position: relative;
   aspect-ratio: 16 / 10;
-  background: linear-gradient(135deg, #eef1f5, #dde3ec);
+  background: linear-gradient(135deg, var(--cat-soft), #fff);
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .card__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.4s ease;
 }
 
-.card__placeholder {
-  font-size: 2.4rem;
-  opacity: 0.5;
+.card:hover .card__media img { transform: scale(1.05); }
+
+.card__placeholder { font-size: 2.8rem; opacity: 0.55; }
+
+/* ชิปหมวดลอยมุมซ้ายบนของรูป */
+.card__cat {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: var(--radius-pill);
+  background: var(--cat);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
 }
+
+/* ป้ายระดับราคา ¥/¥¥/¥¥¥ มุมขวาล่างของรูป */
+.card__pricelevel {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  z-index: 1;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+.card__pricelevel .on { color: var(--cat); }
+.card__pricelevel .off { opacity: 0.3; }
+
+/* ป้าย "ภาพประกอบ" มุมรูป — บอกว่าไม่ใช่ภาพจริงของสถานที่
+   บนการ์ด วางมุมขวาล่าง (เลี่ยงชนปุ่มบุ๊กมาร์ก/ชิปหมวด/ป้ายราคา) */
+.img-badge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: rgba(20, 8, 20, 0.62);
+  color: #fff;
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+}
+.img-badge::before { content: "🖼"; font-size: 0.72rem; }
+.img-badge[hidden] { display: none; }
+/* ในแกลเลอรีโมดัล มุมขวาบนมีปุ่มปิด, ขวาล่างมี counter → วางป้ายมุมซ้ายบน */
+.img-badge--gallery { top: 10px; left: 10px; right: auto; bottom: auto; }
 
 .card__body {
-  padding: 16px 18px 18px;
+  padding: 15px 17px 17px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   flex: 1;
 }
 
-.card__badges {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.card__city {
+  font-size: 0.78rem;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.badge {
-  font-size: 0.75rem;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: #f0f2f5;
-  color: var(--muted);
+.card__name-th { margin: 0; font-size: 1.12rem; font-weight: 600; line-height: 1.35; }
+.card__name-ja { margin: 0; font-size: 0.82rem; color: var(--muted); }
+
+.card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.tag {
+  font-size: 0.72rem;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--cat-soft);
+  color: var(--cat);
   white-space: nowrap;
 }
 
-.badge--category {
-  background: #fdeaec;
-  color: var(--accent);
-}
-
-.card__name-th {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.card__name-ja {
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-
-.card__price {
+.card__foot {
   margin-top: auto;
-  font-size: 1.05rem;
-  font-weight: 600;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-strong);
   display: flex;
   align-items: baseline;
-  flex-wrap: wrap;
-  gap: 4px 8px;
+  justify-content: space-between;
+  gap: 8px;
 }
 
-.card__price-label {
-  font-size: 0.75rem;
-  font-weight: 400;
-  color: var(--muted);
-  flex-basis: 100%;
-}
+.card__price-wrap { display: flex; flex-direction: column; }
+.card__price-label { font-size: 0.7rem; color: var(--muted); }
+.card__price { font-size: 1.05rem; font-weight: 700; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.card__price-thb { color: var(--accent); }
 
-.card__price-thb {
-  color: var(--accent);
-}
-
-/* Card clickable (เปิดโมดัล) */
-.card {
-  cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
-}
-
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 22px rgba(16, 24, 40, 0.12);
-}
-
-.card:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* ปุ่มบุ๊กมาร์ก (การ์ด + โมดัล) */
+/* ============================================================
+   ปุ่มบุ๊กมาร์ก
+   ============================================================ */
 .bookmark-btn {
   font: inherit;
   cursor: pointer;
@@ -424,73 +796,41 @@ body {
   padding: 0;
 }
 
-/* ปุ่มบนการ์ด: วงกลมลอยมุมขวาบนของรูป */
 .bookmark-btn--card {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 1;
-  width: 38px;
-  height: 38px;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: var(--shadow);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow-sm);
   transition: transform 0.12s, background 0.12s;
 }
 
-.bookmark-btn--card:hover {
-  transform: scale(1.08);
-  background: #fff;
-}
+.bookmark-btn--card:hover { transform: scale(1.1); background: #fff; }
+.bookmark-btn__icon { font-size: 1.3rem; line-height: 1; }
+.bookmark-btn.is-active .bookmark-btn__icon { color: var(--accent); }
+.bookmark-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.bookmark-btn__icon {
-  font-size: 1.25rem;
-  line-height: 1;
-}
-
-.bookmark-btn.is-active .bookmark-btn__icon {
-  color: var(--accent);
-}
-
-.bookmark-btn:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* ปุ่มในโมดัล: แบบ pill มีข้อความกำกับ */
-.modal__actions {
-  margin: 4px 0 0;
-}
-
+.modal__actions { margin: 4px 0 0; }
 .bookmark-btn--modal {
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 7px 16px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
   background: var(--surface);
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
+.bookmark-btn--modal:hover { border-color: var(--accent); }
+.bookmark-btn--modal.is-active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.bookmark-btn--modal.is-active .bookmark-btn__icon { color: #fff; }
+.bookmark-btn__label { font-size: 0.9rem; font-weight: 600; }
 
-.bookmark-btn--modal:hover {
-  border-color: var(--accent);
-}
-
-.bookmark-btn--modal.is-active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-
-.bookmark-btn--modal.is-active .bookmark-btn__icon {
-  color: #fff;
-}
-
-.bookmark-btn__label {
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-/* Modal */
+/* ============================================================
+   MODAL
+   ============================================================ */
 .modal {
   position: fixed;
   inset: 0;
@@ -500,65 +840,50 @@ body {
   justify-content: center;
   padding: 20px;
 }
-
-.modal[hidden] {
-  display: none;
-}
-
-body.modal-open {
-  overflow: hidden;
-}
+.modal[hidden] { display: none; }
+body.modal-open { overflow: hidden; }
 
 .modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(16, 24, 40, 0.55);
+  background: rgba(30, 12, 24, 0.62);
   animation: modal-fade 0.18s ease;
 }
 
 .modal__dialog {
   position: relative;
   width: 100%;
-  max-width: 720px;
+  max-width: 740px;
   max-height: 90vh;
   overflow-y: auto;
   background: var(--surface);
-  border-radius: var(--radius);
-  box-shadow: 0 20px 60px rgba(16, 24, 40, 0.3);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
   animation: modal-pop 0.2s ease;
 }
 
 .modal__close {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 2;
-  width: 36px;
-  height: 36px;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  width: 38px;
+  height: 38px;
   border: none;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   color: var(--text);
   font-size: 1.1rem;
   cursor: pointer;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
 }
+.modal__close:hover { background: #fff; }
 
-.modal__close:hover {
-  background: #fff;
-}
+@keyframes modal-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modal-pop { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes card-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
-@keyframes modal-fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes modal-pop {
-  from { opacity: 0; transform: translateY(8px) scale(0.98); }
-  to { opacity: 1; transform: none; }
-}
-
-/* Gallery */
+/* ---- gallery ---- */
 .gallery {
   position: relative;
   aspect-ratio: 16 / 9;
@@ -566,56 +891,41 @@ body.modal-open {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: linear-gradient(135deg, #eef1f5, #dde3ec);
-  border-radius: var(--radius) var(--radius) 0 0;
+  background: linear-gradient(135deg, var(--cat-soft), #fff);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
-
-.gallery__img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.gallery__placeholder {
-  font-size: 3rem;
-  opacity: 0.5;
-}
-
+.gallery__img { width: 100%; height: 100%; object-fit: cover; }
+.gallery__placeholder { font-size: 3.4rem; opacity: 0.5; }
 .gallery__nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.85);
-  font-size: 1.4rem;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
 }
-
-.gallery__nav:hover {
-  background: #fff;
-}
-
-.gallery__nav--prev { left: 10px; }
-.gallery__nav--next { right: 10px; }
-
+.gallery__nav:hover { background: #fff; }
+.gallery__nav--prev { left: 12px; }
+.gallery__nav--next { right: 12px; }
 .gallery__counter {
   position: absolute;
-  bottom: 10px;
-  right: 12px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: rgba(16, 24, 40, 0.6);
+  bottom: 12px;
+  right: 14px;
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  background: rgba(20, 8, 20, 0.62);
   color: #fff;
   font-size: 0.8rem;
 }
-
 .gallery__credit {
   position: absolute;
   bottom: 0;
@@ -623,312 +933,165 @@ body.modal-open {
   max-width: 70%;
   margin: 0;
   padding: 4px 10px;
-  background: rgba(16, 24, 40, 0.45);
+  background: rgba(20, 8, 20, 0.5);
   color: #fff;
   font-size: 0.7rem;
 }
+.gallery__credit:empty { display: none; }
 
-.gallery__credit:empty {
-  display: none;
-}
+/* ---- modal content ---- */
+.modal__info { display: flex; flex-direction: column; gap: 10px; padding: 22px 24px 26px; }
 
-/* Modal content */
-.modal__info {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 20px 22px 24px;
-}
-
-.modal__title {
-  margin: 4px 0 0;
-  font-size: 1.4rem;
-}
-
-.modal__subtitle {
-  margin: 0;
+.modal__badges { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.badge {
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: #f3f0f5;
   color: var(--muted);
-  font-size: 0.9rem;
+  white-space: nowrap;
 }
+.badge--category { background: var(--cat); color: #fff; }
+.badge--price { background: var(--cat-soft); color: var(--cat); font-weight: 700; letter-spacing: 1px; }
 
-.modal__desc {
-  margin: 6px 0 0;
+.modal__title { margin: 4px 0 0; font-size: 1.6rem; }
+.modal__subtitle { margin: 0; color: var(--muted); font-size: 0.92rem; }
+.modal__desc { margin: 6px 0 0; }
+
+.modal__tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 4px 0 0; }
+
+/* แถบข้อมูลด่วน: เวลาเปิด / สถานี / เวลาที่ควรไป */
+.factgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin: 12px 0 2px;
 }
+.fact {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.fact__icon { font-size: 1.1rem; line-height: 1.3; }
+.fact__label { font-size: 0.72rem; color: var(--muted); }
+.fact__value { font-size: 0.9rem; font-weight: 600; }
+
+/* ทิป */
+.tips { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.tips li {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  font-size: 0.9rem;
+  background: var(--violet-soft);
+  border-radius: 10px;
+  padding: 9px 12px;
+}
+.tips li::before { content: "💡"; flex: none; }
 
 .modal__heading {
-  margin: 14px 0 0;
-  font-size: 1rem;
+  margin: 16px 0 0;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
+.modal__empty { margin: 4px 0 0; color: var(--muted); }
 
-.modal__empty {
-  margin: 4px 0 0;
-  color: var(--muted);
-}
-
-.products {
-  list-style: none;
-  margin: 4px 0 0;
-  padding: 0;
-}
-
+.products { list-style: none; margin: 6px 0 0; padding: 0; }
 .product {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 12px;
-  padding: 8px 0;
+  padding: 9px 0;
   border-bottom: 1px solid var(--border);
 }
+.product:last-child { border-bottom: none; }
+.product__name { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.product__price { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
+.product__thb { color: var(--accent); font-weight: 700; }
 
-.product:last-child {
-  border-bottom: none;
-}
+.cond { font-size: 0.7rem; padding: 2px 8px; border-radius: var(--radius-pill); }
+.cond--used { background: #eef2ff; color: #4f46e5; }
+.cond--new { background: #ecfdf5; color: #059669; }
 
-.product__name {
-  display: flex;
+.modal__address { display: flex; flex-direction: column; gap: 2px; margin: 4px 0 0; }
+.modal__address-ja { color: var(--muted); font-size: 0.9rem; }
+
+.modal__map { height: 230px; margin-top: 8px; border-radius: 12px; z-index: 0; }
+
+.modal__links { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 0; }
+.btn-link {
+  display: inline-flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.product__price {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  white-space: nowrap;
-}
-
-.product__thb {
-  color: var(--accent);
-  font-weight: 600;
-}
-
-.cond {
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  border-radius: 999px;
-}
-
-.cond--used {
-  background: #eef2ff;
-  color: #4f46e5;
-}
-
-.cond--new {
-  background: #ecfdf5;
-  color: #059669;
-}
-
-.modal__address {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin: 4px 0 0;
-}
-
-.modal__address-ja {
-  color: var(--muted);
+  gap: 7px;
   font-size: 0.9rem;
-}
-
-.modal__map {
-  height: 220px;
-  margin-top: 6px;
-  border-radius: 10px;
-  z-index: 0;
-}
-
-.modal__source {
-  margin: 12px 0 0;
-}
-
-.modal__source a {
-  color: var(--accent);
   font-weight: 600;
   text-decoration: none;
+  padding: 9px 16px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--border-strong);
+  color: var(--text);
+  background: var(--surface);
+  transition: border-color 0.15s, background 0.15s;
 }
+.btn-link:hover { border-color: var(--accent); background: var(--bg); }
+.btn-link--map { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-link--map:hover { background: var(--accent-strong); }
 
-.modal__source a:hover {
-  text-decoration: underline;
-}
-
-/* Credits & sources */
+/* ============================================================
+   CREDITS FOOTER
+   ============================================================ */
 .credits {
-  border-top: 1px solid var(--border);
-  padding-top: 32px;
+  margin-top: 56px;
+  background: #2a1326;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 40px 0 48px;
+}
+.credits .container { max-width: 1180px; }
+.credits__title { margin: 0 0 6px; font-size: 1.3rem; color: #fff; }
+.credits__intro { margin: 0 0 22px; max-width: 70ch; color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; }
+.credits__cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; margin-bottom: 18px; }
+.credits__heading { margin: 0 0 10px; font-size: 1rem; color: #fff; }
+.credits__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; }
+.credits__list a { color: #ffb3c0; text-decoration: none; }
+.credits__list a:hover { text-decoration: underline; }
+.credits__meta { margin: 10px 0 0; color: rgba(255, 255, 255, 0.55); font-size: 0.78rem; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 760px) {
+  .hero { padding: 52px 18px 60px; }
+  .container { padding: 0 16px; }
+  .catbar { margin-top: -20px; }
+  .map { height: 420px; }
+  .card-grid { grid-template-columns: 1fr; gap: 16px; }
+  .viewtoggle { margin-left: 0; width: 100%; }
+  .viewtoggle__btn { flex: 1; justify-content: center; }
+  .toolbar__search { flex: 1 1 100%; }
+
+  .modal { padding: 0; align-items: stretch; }
+  .modal__dialog { max-width: none; max-height: 100vh; border-radius: 0; }
+  .modal__info { padding: 18px 16px 22px; }
+  .modal__map { height: 190px; }
 }
 
-.credits__title {
-  margin: 0 0 6px;
-  font-size: 1.3rem;
-}
-
-.credits__intro {
-  margin: 0 0 20px;
-  max-width: 70ch;
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
-.credits__cols {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 28px;
-  margin-bottom: 18px;
-}
-
-.credits__heading {
-  margin: 0 0 10px;
-  font-size: 1rem;
-}
-
-.credits__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 0.85rem;
-}
-
-.credits__list a {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-.credits__list a:hover {
-  text-decoration: underline;
-}
-
-.credits__meta {
-  margin: 10px 0 0;
-  color: var(--muted);
-  font-size: 0.78rem;
-}
-
-/* ===== Polish: แอนิเมชันตอนกรอง/render การ์ด (Issue 08) ===== */
-/* การ์ดถูกสร้างใหม่ทุกครั้งที่ view เปลี่ยน → แอนิเมชันจึงเล่นซ้ำ ให้ความรู้สึก fade/slide ตอนกรอง.
-   ใช้ fill-mode backwards: ซ่อนการ์ดช่วง delay ก่อนเริ่ม แต่หลังจบคืนค่า base เพื่อไม่บล็อก transform ตอน hover */
-@keyframes card-enter {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.card {
-  animation: card-enter 0.28s ease backwards;
-}
-
-/* stagger เล็กน้อยสำหรับการ์ดแรก ๆ ให้ไหลเป็นจังหวะ (จำกัดไว้ไม่ให้ดีเลย์ยาวตอนพิมพ์ค้นหา) */
-.card:nth-child(2) {
-  animation-delay: 0.03s;
-}
-.card:nth-child(3) {
-  animation-delay: 0.06s;
-}
-.card:nth-child(4) {
-  animation-delay: 0.09s;
-}
-.card:nth-child(5) {
-  animation-delay: 0.12s;
-}
-.card:nth-child(6) {
-  animation-delay: 0.15s;
-}
-.card:nth-child(n + 7) {
-  animation-delay: 0.18s;
-}
-
-/* ===== Responsive ===== */
-/* แท็บเล็ต/มือถือแนวนอน: บีบสเปซ ลดความสูงแผนที่ ฟิลเตอร์ยืดเต็มแถว */
-@media (max-width: 720px) {
-  .hero {
-    padding: 40px 18px 28px;
-  }
-
-  .container {
-    padding: 22px 16px 48px;
-  }
-
-  .filters {
-    padding: 14px;
-  }
-
-  .filters__field {
-    min-width: 0;
-    flex: 1 1 140px;
-  }
-
-  .filters__field--search {
-    flex: 1 1 100%;
-  }
-
-  .sort {
-    width: 100%;
-  }
-
-  .sort__btn {
-    flex: 1;
-  }
-
-  .map {
-    height: 300px;
-  }
-
-  .card-grid {
-    /* บนจอแคบ minmax(280px) อาจล้นแนวนอน → บังคับคอลัมน์เดียว */
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  /* โมดัลเต็มจอบนมือถือ อ่าน/เลื่อนสะดวกกว่ากล่องลอยกลางจอ */
-  .modal {
-    padding: 0;
-    align-items: stretch;
-  }
-
-  .modal__dialog {
-    max-width: none;
-    max-height: 100vh;
-    border-radius: 0;
-  }
-
-  .modal__info {
-    padding: 18px 16px 22px;
-  }
-
-  .modal__map {
-    height: 180px;
-  }
-}
-
-/* มือถือจอเล็ก: ฟิลเตอร์ทุกช่องเต็มแถว, hero/หัวข้อย่อลง */
 @media (max-width: 460px) {
-  .filters__field {
-    flex: 1 1 100%;
-  }
-
-  .bookmark-toggle {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .credits__cols {
-    gap: 18px;
-  }
+  .toolbar { gap: 10px; }
+  .select, .sort, .bookmark-toggle { flex: 1 1 100%; justify-content: center; }
+  .sort, .viewtoggle { display: flex; }
+  .sort__btn, .viewtoggle__btn { flex: 1; justify-content: center; }
 }
 
-/* ===== เคารพการตั้งค่าลดการเคลื่อนไหวของผู้ใช้ ===== */
+/* เคารพการตั้งค่าลดการเคลื่อนไหว */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;

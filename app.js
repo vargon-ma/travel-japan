@@ -1,23 +1,30 @@
-// app.js — ชั้น side-effect: fetch ข้อมูล, render DOM
+// app.js — ชั้น side-effect: fetch ข้อมูล, render DOM, Leaflet, localStorage
 // เรียกใช้ pure functions จาก logic.js แล้วเอาผลไป render
 import {
   getStartingPriceJpy,
+  getPriceLevel,
   convertJpyToThb,
   filterEntries,
   sortByPrice,
+  wikiThumbUrl,
 } from './logic.js';
 
 // เรต JPY→THB ดึงสดจาก API ที่ไม่ต้องใช้ key; ถ้าล้มเหลวใช้เรตสำรองด้านล่าง
 const RATE_API_URL = 'https://open.er-api.com/v6/latest/JPY';
 const FALLBACK_RATE = 0.22; // เรตโดยประมาณ ใช้เมื่อดึงเรตสดไม่สำเร็จ
 
-const CATEGORY_LABELS = {
-  sightseeing: 'ท่องเที่ยว',
-  games: 'เกม',
-  cosplay: 'คอสเพลย์',
-  electronics: 'เครื่องใช้ไฟฟ้า',
-  food: 'อาหาร',
+// หมวดทั้ง 8: ป้ายไทย + ไอคอน (สีกำหนดใน CSS ผ่าน [data-category])
+const CATEGORY_META = {
+  sightseeing: { label: 'ท่องเที่ยว', icon: '⛩️' },
+  food: { label: 'ของกิน', icon: '🍜' },
+  games: { label: 'เกม', icon: '🎮' },
+  cosplay: { label: 'คอสเพลย์', icon: '🎭' },
+  electronics: { label: 'เครื่องใช้ไฟฟ้า', icon: '🔌' },
+  'anime-goods': { label: 'ของอนิเมะ', icon: '🧸' },
+  cafe: { label: 'คาเฟ่', icon: '☕' },
+  shopping: { label: 'ช้อปปิ้ง', icon: '🛍️' },
 };
+const CATEGORY_ORDER = Object.keys(CATEGORY_META);
 
 const CITY_LABELS = {
   tokyo: 'โตเกียว',
@@ -33,9 +40,19 @@ const CONDITION_LABELS = {
   used: { text: 'มือ 2', cls: 'cond--used' },
 };
 
+function categoryLabel(cat) {
+  return CATEGORY_META[cat]?.label ?? cat;
+}
+function categoryIcon(cat) {
+  return CATEGORY_META[cat]?.icon ?? '📍';
+}
+function cityLabel(city) {
+  return CITY_LABELS[city] ?? city;
+}
+
 // ---- บุ๊กมาร์ก (เก็บใน localStorage) ----
 const BOOKMARKS_KEY = 'travel-japan:bookmarks';
-let bookmarkedIds = new Set(); // id ที่ผู้ใช้ถูกใจไว้; โหลด/บันทึกผ่าน localStorage
+let bookmarkedIds = new Set();
 
 /** อ่าน id ที่บุ๊กมาร์กจาก localStorage; ถ้าพัง/ไม่มีให้คืน Set ว่าง (เว็บต้องไม่พัง) */
 function loadBookmarks() {
@@ -89,9 +106,15 @@ function syncBookmarkButtons(id) {
   }
 }
 
-/** เครดิต/ลิขสิทธิ์ของรูป รวมเป็นบรรทัดเดียว (ตามข้อกำหนด PRD ต้องให้เครดิต/ระบุ license) */
+/** เครดิต/ลิขสิทธิ์ของรูป รวมเป็นบรรทัดเดียว */
 function imageCreditText(image) {
   return [image?.credit, image?.license].filter(Boolean).join(' · ');
+}
+
+/** ป้าย "ภาพประกอบ" มุมรูป เมื่อรูปนั้นเป็นภาพประกอบบริบท (ไม่ใช่ภาพร้านจริง) */
+function illustrativeBadgeHtml(image) {
+  if (!image?.isIllustrative) return '';
+  return '<span class="img-badge" title="ภาพประกอบบริบท ไม่ใช่ภาพจริงของสถานที่">ภาพประกอบ</span>';
 }
 
 /** escape ข้อความก่อนยัดลง innerHTML กันมาร์กอัป/quote ในข้อมูลทำ DOM พัง */
@@ -105,53 +128,81 @@ function escapeHtml(str) {
 }
 
 function formatJpy(price) {
-  if (price === null) return 'ราคา: สอบถามหน้าร้าน';
-  if (price === 0) return 'ฟรี / ไม่มีค่าเข้า';
+  if (price === null) return 'สอบถามหน้าร้าน';
+  if (price === 0) return 'ฟรี';
   return `¥${jpyFormatter.format(price)}`;
 }
 
 function formatThb(priceJpy, rate) {
-  if (priceJpy === null) return null;
-  if (priceJpy === 0) return null; // ฟรี: ไม่ต้องแสดงราคาบาท
+  if (priceJpy === null || priceJpy === 0) return null; // ฟรี/ไม่มีราคา: ไม่แสดงบาท
   const baht = convertJpyToThb(priceJpy, rate);
   if (baht === null) return null;
   return `฿${thbFormatter.format(baht)}`;
 }
 
+/** ป้ายระดับราคา ¥/¥¥/¥¥¥ (เน้นจำนวน ¥ ตามระดับ) */
+function priceLevelHtml(level) {
+  if (!level) return '';
+  const dots = [1, 2, 3]
+    .map((n) => `<span class="${n <= level ? 'on' : 'off'}">¥</span>`)
+    .join('');
+  return `<span class="card__pricelevel" title="ระดับราคา ${level}/3">${dots}</span>`;
+}
+
+function tagsHtml(tags, limit = 3) {
+  if (!Array.isArray(tags) || tags.length === 0) return '';
+  const items = tags
+    .slice(0, limit)
+    .map((t) => `<span class="tag">${escapeHtml(t)}</span>`)
+    .join('');
+  return `<div class="card__tags">${items}</div>`;
+}
+
+// ============================================================
+//  การ์ดในกริด
+// ============================================================
 function createCard(entry, rate) {
   const card = document.createElement('article');
   card.className = 'card';
   card.dataset.id = entry.id;
+  card.dataset.category = entry.category;
   card.setAttribute('role', 'button');
   card.setAttribute('tabindex', '0');
   card.setAttribute('aria-label', `ดูรายละเอียด ${entry.nameTh}`);
 
   const startingPrice = getStartingPriceJpy(entry);
+  const level = getPriceLevel(startingPrice);
   const thb = formatThb(startingPrice, rate);
   const hasImage = Array.isArray(entry.images) && entry.images.length > 0;
   const subtitle = [entry.nameJa, entry.nameRomaji].filter(Boolean).join(' · ');
 
   const media = hasImage
-    ? `<img src="${entry.images[0].url}" alt="${entry.nameTh}" loading="lazy" />`
+    ? `<img src="${escapeHtml(wikiThumbUrl(entry.images[0].url, 500))}" alt="${escapeHtml(entry.nameTh)}" loading="lazy" decoding="async" />${illustrativeBadgeHtml(entry.images[0])}`
     : '<span class="card__placeholder" aria-hidden="true">🗾</span>';
 
   card.innerHTML = `
-    <div class="card__media">${media}${bookmarkButtonHtml(entry.id, 'card')}</div>
+    <div class="card__media">
+      ${media}
+      <span class="card__cat"><span aria-hidden="true">${categoryIcon(entry.category)}</span>${escapeHtml(categoryLabel(entry.category))}</span>
+      ${priceLevelHtml(level)}
+      ${bookmarkButtonHtml(entry.id, 'card')}
+    </div>
     <div class="card__body">
-      <div class="card__badges">
-        <span class="badge badge--category">${CATEGORY_LABELS[entry.category] ?? entry.category}</span>
-        <span class="badge">${CITY_LABELS[entry.city] ?? entry.city}</span>
+      <span class="card__city">📍 ${escapeHtml(cityLabel(entry.city))}</span>
+      <h3 class="card__name-th">${escapeHtml(entry.nameTh)}</h3>
+      ${subtitle ? `<p class="card__name-ja">${escapeHtml(subtitle)}</p>` : ''}
+      ${tagsHtml(entry.tags)}
+      <div class="card__foot">
+        <span class="card__price-wrap">
+          <span class="card__price-label">เริ่มต้น</span>
+          <span class="card__price">
+            <span class="card__price-jpy">${formatJpy(startingPrice)}</span>
+            ${thb ? `<span class="card__price-thb">${thb}</span>` : ''}
+          </span>
+        </span>
       </div>
-      <h2 class="card__name-th">${entry.nameTh}</h2>
-      <p class="card__name-ja">${subtitle}</p>
-      <p class="card__price">
-        <span class="card__price-label">ราคาเริ่มต้น</span>
-        <span class="card__price-jpy">${formatJpy(startingPrice)}</span>
-        ${thb ? `<span class="card__price-thb">${thb}</span>` : ''}
-      </p>
     </div>
   `;
-
   return card;
 }
 
@@ -159,19 +210,68 @@ function renderGrid(entries, gridEl, rate) {
   gridEl.replaceChildren(...entries.map((entry) => createCard(entry, rate)));
 }
 
-// ---- แผนที่ Leaflet sync กับ view (Issue 04) ----
-const JAPAN_CENTER = [36.2, 138.25]; // จุดกึ่งกลางญี่ปุ่นโดยประมาณ ใช้เป็น view เริ่มต้น
-let map = null;
-let markerLayer = null; // layer group เก็บหมุดทั้งหมด; ล้างแล้วเติมใหม่ทุกครั้งที่ view เปลี่ยน
+// ============================================================
+//  Featured strip (Editor's Pick)
+// ============================================================
+function createFeatCard(entry, rate) {
+  const card = document.createElement('article');
+  card.className = 'feat-card';
+  card.dataset.id = entry.id;
+  card.dataset.category = entry.category;
+  card.setAttribute('role', 'button');
+  card.setAttribute('tabindex', '0');
+  card.setAttribute('aria-label', `ดูรายละเอียด ${entry.nameTh}`);
 
-/** เนื้อหา popup ของหมุด: ชื่อ (TH+JA) + รูปย่อ + ราคาเริ่มต้น (¥/฿) + ปุ่มเปิดโมดัล */
+  const startingPrice = getStartingPriceJpy(entry);
+  const thb = formatThb(startingPrice, rate);
+  const hasImage = Array.isArray(entry.images) && entry.images.length > 0;
+  const reason = entry.editorsPickReason || entry.description || '';
+
+  card.innerHTML = `
+    ${hasImage ? `<img class="feat-card__img" src="${escapeHtml(wikiThumbUrl(entry.images[0].url, 500))}" alt="${escapeHtml(entry.nameTh)}" loading="lazy" decoding="async" />` : ''}
+    <div class="feat-card__shade"></div>
+    <span class="feat-card__ribbon"><span aria-hidden="true">⭐</span> ห้ามพลาด</span>
+    <div class="feat-card__body">
+      <h3 class="feat-card__name">${escapeHtml(entry.nameTh)}</h3>
+      ${reason ? `<p class="feat-card__reason">${escapeHtml(reason)}</p>` : ''}
+      <div class="feat-card__meta">
+        <span>${categoryIcon(entry.category)} ${escapeHtml(categoryLabel(entry.category))}</span>
+        <span class="feat-card__price">${formatJpy(startingPrice)}${thb ? ` · ${thb}` : ''}</span>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+function renderFeatured(entries, rate) {
+  const section = document.getElementById('featured-section');
+  const track = document.getElementById('featured-track');
+  if (!section || !track) return;
+
+  const picks = entries.filter((e) => e.editorsPick);
+  if (picks.length === 0) {
+    section.hidden = true;
+    return;
+  }
+  section.hidden = false;
+  track.replaceChildren(...picks.map((entry) => createFeatCard(entry, rate)));
+}
+
+// ============================================================
+//  แผนที่ Leaflet (sync กับ view)
+// ============================================================
+const JAPAN_CENTER = [36.2, 138.25];
+let map = null;
+let markerLayer = null;
+
+/** เนื้อหา popup ของหมุด: ชื่อ + รูปย่อ + ราคาเริ่มต้น + ปุ่มเปิดโมดัล */
 function buildPopupHtml(entry) {
   const startingPrice = getStartingPriceJpy(entry);
   const thb = formatThb(startingPrice, currentRate);
   const subtitle = [entry.nameJa, entry.nameRomaji].filter(Boolean).join(' · ');
   const hasImage = Array.isArray(entry.images) && entry.images.length > 0;
   const media = hasImage
-    ? `<img class="map-popup__img" src="${escapeHtml(entry.images[0].url)}" alt="${escapeHtml(entry.nameTh)}" />`
+    ? `<img class="map-popup__img" src="${escapeHtml(wikiThumbUrl(entry.images[0].url, 250))}" alt="${escapeHtml(entry.nameTh)}" loading="lazy" decoding="async" />`
     : '';
 
   return `
@@ -189,7 +289,7 @@ function buildPopupHtml(entry) {
     </div>`;
 }
 
-/** สร้างแผนที่ครั้งเดียวตอน init; ปุ่มเปิดโมดัลใน popup ผูกด้วย event delegation ที่ container */
+/** สร้างแผนที่ครั้งเดียวตอน init */
 function setupMap() {
   if (!window.L) {
     console.warn('โหลด Leaflet ไม่สำเร็จ — ข้ามการแสดงแผนที่');
@@ -202,7 +302,6 @@ function setupMap() {
   }).addTo(map);
   markerLayer = L.layerGroup().addTo(map);
 
-  // popup ถูกสร้าง/ทำลายโดย Leaflet จึงผูกปุ่มแบบ delegation ที่ container ครั้งเดียว
   map.getContainer().addEventListener('click', (e) => {
     const btn = e.target.closest('[data-modal-open]');
     if (!btn) return;
@@ -211,7 +310,7 @@ function setupMap() {
   });
 }
 
-/** ปักหมุดทุก entry ใน view (ที่มีพิกัด) แล้วซูมให้พอดี — sync หมุดกับกริด */
+/** ปักหมุดทุก entry ใน view (ที่มีพิกัด) แล้วซูมให้พอดี */
 function renderMap(entries) {
   if (!map || !markerLayer) return;
   markerLayer.clearLayers();
@@ -224,22 +323,28 @@ function renderMap(entries) {
     markers.push(marker);
   }
 
-  // ปรับมุมมองให้ครอบหมุดที่ผ่านฟิลเตอร์; ถ้าไม่มีหมุดคงมุมมองเดิมไว้
-  if (markers.length > 0) {
+  // fitBounds ต้องการให้ container มีขนาด; ถ้าแผนที่ถูกซ่อนอยู่ค่อย fit ตอนสลับมาดู
+  if (markers.length > 0 && !isMapHidden()) {
     const bounds = L.featureGroup(markers).getBounds();
     map.fitBounds(bounds.pad(0.2), { maxZoom: 14 });
   }
 }
 
-// ---- View model: ฟิลเตอร์ + ค้นหา + เรียง ----
-// สถานะของตัวกรองปัจจุบัน; sort = null คือไม่เรียง (คงลำดับใน data.json)
+function isMapHidden() {
+  const view = document.getElementById('view');
+  return !view || !view.classList.contains('is-map');
+}
+
+// ============================================================
+//  View model: ฟิลเตอร์ + ค้นหา + เรียง
+// ============================================================
 const filterState = { category: '', city: '', query: '', sort: null, bookmarkedOnly: false };
 
 let allEntries = [];
 let entryById = new Map();
 let currentRate = FALLBACK_RATE;
+let lastView = []; // view ล่าสุด ใช้ re-render แผนที่ตอนสลับมุมมอง
 
-/** เติม <option> ให้ select จากรายการ {value,label} โดยคงตัวเลือกแรก ("ทั้งหมด") ไว้ */
 function populateSelect(selectEl, options) {
   for (const { value, label } of options) {
     const opt = document.createElement('option');
@@ -249,15 +354,13 @@ function populateSelect(selectEl, options) {
   }
 }
 
-/** สร้างตัวเลือกเมืองจากเมืองที่มีจริงใน data (เรียงตามชื่อไทย) เพื่อให้ขยายตามข้อมูล */
 function cityOptionsFrom(entries) {
   const cities = [...new Set(entries.map((e) => e.city).filter(Boolean))];
   return cities
-    .map((value) => ({ value, label: CITY_LABELS[value] ?? value }))
+    .map((value) => ({ value, label: cityLabel(value) }))
     .sort((a, b) => a.label.localeCompare(b.label, 'th'));
 }
 
-/** คำนวณ view model จาก state: กรองก่อน แล้วค่อยเรียงถ้ามีการเลือกเรียง */
 function getViewModel() {
   const filtered = filterEntries(allEntries, {
     category: filterState.category,
@@ -269,11 +372,12 @@ function getViewModel() {
   return filterState.sort ? sortByPrice(filtered, filterState.sort) : filtered;
 }
 
-/** render กริดตาม view model ปัจจุบัน พร้อม empty state ที่เข้าใจง่าย */
+/** render กริด + แผนที่ + ตัวนับ ตาม view model ปัจจุบัน */
 function applyView(gridEl, statusEl) {
-  // คำนวณ view ครั้งเดียวแล้ว sync ทั้งกริดและแผนที่ให้ตรงกันเสมอ
   const view = allEntries.length === 0 ? [] : getViewModel();
+  lastView = view;
   renderMap(view);
+  updateResultCount(view.length);
 
   if (allEntries.length === 0) {
     gridEl.replaceChildren();
@@ -283,11 +387,7 @@ function applyView(gridEl, statusEl) {
 
   if (view.length === 0) {
     gridEl.replaceChildren();
-    const msg =
-      filterState.bookmarkedOnly && bookmarkedIds.size === 0
-        ? 'ยังไม่มีรายการที่บุ๊กมาร์ก — กดปุ่ม ♡ บนการ์ดหรือในรายละเอียดเพื่อบันทึก'
-        : 'ไม่พบรายการที่ตรงกับเงื่อนไข — ลองปรับฟิลเตอร์หรือคำค้นหา';
-    setStatus(statusEl, msg, 'empty');
+    setStatus(statusEl, emptyMessage(), 'empty');
     return;
   }
 
@@ -295,23 +395,69 @@ function applyView(gridEl, statusEl) {
   setStatus(statusEl, null);
 }
 
-/** ผูก event ของแถบฟิลเตอร์เข้ากับ state แล้ว re-render กริด */
+/** ข้อความ empty-state ที่เข้าใจง่ายตามบริบทที่ทำให้ว่าง */
+function emptyMessage() {
+  if (filterState.bookmarkedOnly && bookmarkedIds.size === 0) {
+    return 'ยังไม่มีรายการที่บุ๊กมาร์ก — กดปุ่ม ♡ บนการ์ดหรือในรายละเอียดเพื่อบันทึก';
+  }
+  // หมวดที่ยังไม่มีข้อมูลเลย (เช่นหมวดใหม่ในเฟสนี้) → บอกว่ากำลังจะมา
+  if (filterState.category && !allEntries.some((e) => e.category === filterState.category)) {
+    return `หมวด "${categoryLabel(filterState.category)}" กำลังจะมาเร็ว ๆ นี้ ✨`;
+  }
+  return 'ไม่พบรายการที่ตรงกับเงื่อนไข — ลองปรับฟิลเตอร์หรือคำค้นหา';
+}
+
+function updateResultCount(n) {
+  const el = document.getElementById('result-count');
+  if (!el) return;
+  el.innerHTML = `พบ <b>${n}</b> รายการ`;
+}
+
+// ============================================================
+//  แถบชิปหมวด
+// ============================================================
+function renderCatbar(gridEl, statusEl) {
+  const bar = document.getElementById('catbar');
+  if (!bar) return;
+
+  const chips = [{ value: '', label: 'ทั้งหมด', icon: '🗾' }];
+  // เรียงตาม CATEGORY_ORDER แต่โชว์ครบทุกหมวด (แม้ยังไม่มีข้อมูลในเฟสนี้)
+  for (const cat of CATEGORY_ORDER) {
+    chips.push({ value: cat, label: categoryLabel(cat), icon: categoryIcon(cat) });
+  }
+
+  bar.replaceChildren(
+    ...chips.map(({ value, label, icon }) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'chip' + (value === filterState.category ? ' is-active' : '');
+      btn.dataset.cat = value;
+      if (value) btn.dataset.category = value; // ให้ --cat ของ CSS ทำงาน
+      btn.innerHTML = `<span class="chip__icon" aria-hidden="true">${icon}</span>${escapeHtml(label)}`;
+      return btn;
+    }),
+  );
+
+  bar.addEventListener('click', (e) => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    filterState.category = chip.dataset.cat;
+    for (const c of bar.querySelectorAll('.chip')) {
+      c.classList.toggle('is-active', c.dataset.cat === filterState.category);
+    }
+    applyView(gridEl, statusEl);
+  });
+}
+
+// ============================================================
+//  Toolbar: เมือง / ค้นหา / เรียง / สลับมุมมอง
+// ============================================================
 function setupFilters(gridEl, statusEl) {
-  const categoryEl = document.getElementById('filter-category');
   const cityEl = document.getElementById('filter-city');
   const searchEl = document.getElementById('filter-search');
   const sortButtons = [...document.querySelectorAll('.sort__btn')];
 
-  populateSelect(
-    categoryEl,
-    Object.entries(CATEGORY_LABELS).map(([value, label]) => ({ value, label })),
-  );
   populateSelect(cityEl, cityOptionsFrom(allEntries));
-
-  categoryEl.addEventListener('change', () => {
-    filterState.category = categoryEl.value;
-    applyView(gridEl, statusEl);
-  });
 
   cityEl.addEventListener('change', () => {
     filterState.city = cityEl.value;
@@ -323,7 +469,6 @@ function setupFilters(gridEl, statusEl) {
     applyView(gridEl, statusEl);
   });
 
-  // ปุ่มเรียงราคาแบบ toggle: กดปุ่มที่เลือกอยู่ซ้ำ = ยกเลิกการเรียง (กลับลำดับเดิม)
   for (const btn of sortButtons) {
     btn.addEventListener('click', () => {
       const dir = btn.dataset.direction;
@@ -336,24 +481,45 @@ function setupFilters(gridEl, statusEl) {
   }
 }
 
-/** สลับสถานะบุ๊กมาร์กของ id: อัปเดต state → persist → sync ปุ่ม → re-render ถ้ากำลังกรอง */
+/** ปุ่มสลับมุมมองกริด ↔ แผนที่ */
+function setupViewToggle() {
+  const view = document.getElementById('view');
+  const buttons = [...document.querySelectorAll('.viewtoggle__btn')];
+
+  for (const btn of buttons) {
+    btn.addEventListener('click', () => {
+      const wantMap = btn.dataset.view === 'map';
+      view.classList.toggle('is-map', wantMap);
+      for (const b of buttons) {
+        b.setAttribute('aria-pressed', String((b.dataset.view === 'map') === wantMap));
+      }
+      // แผนที่ถูกสร้างตอนถูกซ่อน → ต้อง invalidateSize + fit ใหม่เมื่อแสดง
+      if (wantMap && map) {
+        setTimeout(() => {
+          map.invalidateSize();
+          renderMap(lastView);
+        }, 0);
+      }
+    });
+  }
+}
+
+// ============================================================
+//  บุ๊กมาร์ก
+// ============================================================
 function toggleBookmark(id, gridEl, statusEl) {
   if (bookmarkedIds.has(id)) bookmarkedIds.delete(id);
   else bookmarkedIds.add(id);
   saveBookmarks();
-
-  // ถ้ากำลังกรองเฉพาะที่บุ๊กมาร์ก รายการที่เพิ่งเอาออกต้องหายจากกริด/แผนที่
   if (filterState.bookmarkedOnly) applyView(gridEl, statusEl);
-  // sync ปุ่มที่เหลือ (การ์ดที่ไม่ได้ rebuild + ปุ่มในโมดัล) ให้สถานะตรงกัน
   syncBookmarkButtons(id);
 }
 
-/** ผูกปุ่มบุ๊กมาร์ก (การ์ด + โมดัล แบบ delegation) และ toggle "เฉพาะที่บุ๊กมาร์ก" */
 function setupBookmarks(gridEl, statusEl) {
   const onToggleClick = (e) => {
     const btn = e.target.closest('[data-bookmark-toggle]');
     if (!btn) return;
-    e.stopPropagation(); // กันไม่ให้คลิกบนการ์ดเปิดโมดัล
+    e.stopPropagation();
     toggleBookmark(btn.dataset.bookmarkToggle, gridEl, statusEl);
   };
   gridEl.addEventListener('click', onToggleClick);
@@ -368,11 +534,12 @@ function setupBookmarks(gridEl, statusEl) {
   });
 }
 
-// ---- โมดัลรายละเอียด + แกลเลอรีรูป (Issue 05) ----
-let modalMap = null; // instance ของ Leaflet แผนที่ย่อ; สร้างใหม่ทุกครั้งที่เปิด ทำลายตอนปิด
-let lastFocused = null; // element ที่โฟกัสอยู่ก่อนเปิดโมดัล เพื่อคืนโฟกัสตอนปิด
+// ============================================================
+//  โมดัลรายละเอียด + แกลเลอรี
+// ============================================================
+let modalMap = null;
+let lastFocused = null;
 
-/** แกลเลอรีรูป: หลายรูปเลื่อนดูได้ (prev/next); ถ้าไม่มีรูปใช้ placeholder */
 function buildGalleryHtml(entry) {
   const images = Array.isArray(entry.images) ? entry.images : [];
   if (images.length === 0) {
@@ -382,7 +549,8 @@ function buildGalleryHtml(entry) {
   const multi = images.length > 1;
   return `
     <div class="gallery">
-      <img class="gallery__img" src="${escapeHtml(first.url)}" alt="${escapeHtml(entry.nameTh)}" />
+      <img class="gallery__img" src="${escapeHtml(wikiThumbUrl(first.url, 500))}" alt="${escapeHtml(entry.nameTh)}" decoding="async" />
+      <span class="img-badge img-badge--gallery" data-gallery-badge${first.isIllustrative ? '' : ' hidden'} title="ภาพประกอบบริบท ไม่ใช่ภาพจริงของสถานที่">ภาพประกอบ</span>
       ${
         multi
           ? `<button type="button" class="gallery__nav gallery__nav--prev" data-gallery-prev aria-label="รูปก่อนหน้า">‹</button>
@@ -394,7 +562,6 @@ function buildGalleryHtml(entry) {
     </div>`;
 }
 
-/** ผูกปุ่ม prev/next ของแกลเลอรีให้สลับรูป + อัปเดตตัวนับและเครดิต (วนรอบ) */
 function setupGallery(root, entry) {
   const images = Array.isArray(entry.images) ? entry.images : [];
   if (images.length <= 1) return;
@@ -402,20 +569,51 @@ function setupGallery(root, entry) {
   const imgEl = root.querySelector('.gallery__img');
   const idxEl = root.querySelector('[data-gallery-index]');
   const creditEl = root.querySelector('[data-gallery-credit]');
+  const badgeEl = root.querySelector('[data-gallery-badge]');
   let i = 0;
 
   const show = (n) => {
     i = (n + images.length) % images.length;
-    imgEl.src = images[i].url;
+    imgEl.src = wikiThumbUrl(images[i].url, 500);
     if (idxEl) idxEl.textContent = String(i + 1);
     if (creditEl) creditEl.textContent = imageCreditText(images[i]);
+    if (badgeEl) badgeEl.hidden = !images[i].isIllustrative;
   };
 
   root.querySelector('[data-gallery-prev]')?.addEventListener('click', () => show(i - 1));
   root.querySelector('[data-gallery-next]')?.addEventListener('click', () => show(i + 1));
 }
 
-/** ลิสต์สินค้า/เมนูพร้อมราคา ¥ และ ฿; หมวดเกมแสดงป้ายมือหนึ่ง/มือสอง */
+/** แถบข้อมูลด่วน: เวลาเปิด / การเดินทาง / ช่วงที่แนะนำ */
+function buildFactGridHtml(entry) {
+  const facts = [];
+  if (entry.hours) facts.push({ icon: '🕒', label: 'เวลาเปิด', value: entry.hours });
+  if (entry.station) facts.push({ icon: '🚉', label: 'การเดินทาง', value: entry.station });
+  if (entry.bestTime) facts.push({ icon: '🌤️', label: 'ช่วงที่แนะนำ', value: entry.bestTime });
+  if (facts.length === 0) return '';
+  const items = facts
+    .map(
+      (f) => `
+      <div class="fact">
+        <span class="fact__icon" aria-hidden="true">${f.icon}</span>
+        <span>
+          <span class="fact__label">${f.label}</span><br />
+          <span class="fact__value">${escapeHtml(f.value)}</span>
+        </span>
+      </div>`,
+    )
+    .join('');
+  return `<div class="factgrid">${items}</div>`;
+}
+
+function buildTipsHtml(tips) {
+  if (!Array.isArray(tips) || tips.length === 0) return '';
+  const items = tips.map((t) => `<li>${escapeHtml(t)}</li>`).join('');
+  return `
+    <h3 class="modal__heading">💡 ทิปจากนักเดินทาง</h3>
+    <ul class="tips">${items}</ul>`;
+}
+
 function buildProductsHtml(products, rate) {
   if (!Array.isArray(products) || products.length === 0) {
     return '<p class="modal__empty">ไม่มีข้อมูลราคาสินค้า/เมนู</p>';
@@ -439,41 +637,54 @@ function buildProductsHtml(products, rate) {
   return `<ul class="products">${rows}</ul>`;
 }
 
-/** เปิดโมดัลรายละเอียดของ entry: ประกอบเนื้อหา → แสดง → ตั้งแผนที่ย่อ → จัดโฟกัส */
+function modalTagsHtml(tags) {
+  if (!Array.isArray(tags) || tags.length === 0) return '';
+  const items = tags.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+  return `<div class="modal__tags">${items}</div>`;
+}
+
 function openModal(entry) {
   const modalEl = document.getElementById('modal');
   const bodyEl = document.getElementById('modal-body');
   const subtitle = [entry.nameJa, entry.nameRomaji].filter(Boolean).join(' · ');
   const addr = entry.address ?? {};
   const hasCoords = typeof entry.lat === 'number' && typeof entry.lng === 'number';
+  const level = getPriceLevel(getStartingPriceJpy(entry));
+  const priceBadge = level ? `<span class="badge badge--price">${'¥'.repeat(level)}</span>` : '';
+  const gmaps =
+    entry.googleMapsUrl ||
+    (hasCoords ? `https://www.google.com/maps/search/?api=1&query=${entry.lat},${entry.lng}` : '');
 
   bodyEl.innerHTML = `
     ${buildGalleryHtml(entry)}
-    <div class="modal__info">
-      <div class="card__badges">
-        <span class="badge badge--category">${CATEGORY_LABELS[entry.category] ?? entry.category}</span>
-        <span class="badge">${CITY_LABELS[entry.city] ?? entry.city}</span>
+    <div class="modal__info" data-category="${escapeHtml(entry.category)}">
+      <div class="modal__badges">
+        <span class="badge badge--category">${categoryIcon(entry.category)} ${escapeHtml(categoryLabel(entry.category))}</span>
+        <span class="badge">📍 ${escapeHtml(cityLabel(entry.city))}</span>
+        ${priceBadge}
       </div>
       <h2 id="modal-title" class="modal__title">${escapeHtml(entry.nameTh ?? '')}</h2>
       ${subtitle ? `<p class="modal__subtitle">${escapeHtml(subtitle)}</p>` : ''}
       <div class="modal__actions">${bookmarkButtonHtml(entry.id, 'modal')}</div>
       ${entry.description ? `<p class="modal__desc">${escapeHtml(entry.description)}</p>` : ''}
+      ${modalTagsHtml(entry.tags)}
+      ${buildFactGridHtml(entry)}
+      ${buildTipsHtml(entry.tips)}
 
-      <h3 class="modal__heading">สินค้า / เมนูตัวอย่าง</h3>
+      <h3 class="modal__heading">🛍️ สินค้า / เมนูตัวอย่าง</h3>
       ${buildProductsHtml(entry.products, currentRate)}
 
-      <h3 class="modal__heading">ที่อยู่</h3>
+      <h3 class="modal__heading">📌 ที่อยู่</h3>
       <p class="modal__address">
         ${addr.th ? `<span>${escapeHtml(addr.th)}</span>` : ''}
         ${addr.ja ? `<span class="modal__address-ja">${escapeHtml(addr.ja)}</span>` : ''}
       </p>
       ${hasCoords ? '<div id="modal-map" class="modal__map"></div>' : ''}
 
-      ${
-        entry.sourceUrl
-          ? `<p class="modal__source"><a href="${escapeHtml(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">แหล่งอ้างอิง ↗</a></p>`
-          : ''
-      }
+      <div class="modal__links">
+        ${gmaps ? `<a class="btn-link btn-link--map" href="${escapeHtml(gmaps)}" target="_blank" rel="noopener noreferrer">🗺 เปิดใน Google Maps</a>` : ''}
+        ${entry.sourceUrl ? `<a class="btn-link" href="${escapeHtml(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">🔗 แหล่งอ้างอิง</a>` : ''}
+      </div>
     </div>
   `;
 
@@ -483,21 +694,29 @@ function openModal(entry) {
   modalEl.hidden = false;
   document.body.classList.add('modal-open');
 
-  // แผนที่ย่อ: สร้างหลังโมดัลแสดงแล้ว (container มีขนาด) แล้ว invalidateSize กันเรนเดอร์เพี้ยน
-  if (hasCoords && window.L) {
-    modalMap = L.map('modal-map', { scrollWheelZoom: false }).setView([entry.lat, entry.lng], 15);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap',
-    }).addTo(modalMap);
-    L.marker([entry.lat, entry.lng]).addTo(modalMap);
-    setTimeout(() => modalMap?.invalidateSize(), 50);
-  }
-
   modalEl.querySelector('.modal__close')?.focus();
+
+  // สร้างแผนที่ย่อ "หลัง" โมดัลแสดง+เพนต์แล้ว (rAF) เพื่อไม่ให้การสร้าง Leaflet
+  // บล็อกแอนิเมชันเปิดโมดัล — เปิดได้ลื่นทันที แล้วแผนที่ค่อยขึ้นตาม
+  if (hasCoords && window.L) {
+    requestAnimationFrame(() => {
+      if (modalEl.hidden) return; // ผู้ใช้ปิดก่อนแผนที่จะถูกสร้าง
+      const mapContainer = document.getElementById('modal-map');
+      if (!mapContainer) return;
+      modalMap = L.map(mapContainer, { scrollWheelZoom: false }).setView(
+        [entry.lat, entry.lng],
+        15,
+      );
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap',
+      }).addTo(modalMap);
+      L.marker([entry.lat, entry.lng]).addTo(modalMap);
+      modalMap.invalidateSize();
+    });
+  }
 }
 
-/** ปิดโมดัล: ทำลายแผนที่ย่อ คืนสถานะหน้า และคืนโฟกัสให้ element เดิม */
 function closeModal() {
   const modalEl = document.getElementById('modal');
   if (modalEl.hidden) return;
@@ -511,26 +730,37 @@ function closeModal() {
   lastFocused = null;
 }
 
-/** ผูก event เปิดโมดัล (คลิก/Enter/Space ที่การ์ด) และปิดโมดัล (ปุ่ม/พื้นหลัง/Esc) ครั้งเดียว */
+/** ผูก event เปิดโมดัลจากการ์ด/featured (คลิก/Enter/Space) และปิดโมดัล (ปุ่ม/พื้นหลัง/Esc) */
 function setupModal(gridEl) {
   const modalEl = document.getElementById('modal');
+  const featuredTrack = document.getElementById('featured-track');
 
-  const openFromCard = (target) => {
-    if (target.closest('[data-bookmark-toggle]')) return; // ปุ่มบุ๊กมาร์กจัดการเอง
-    const card = target.closest('.card');
+  const openFromCard = (target, selector) => {
+    if (target.closest('[data-bookmark-toggle]')) return;
+    const card = target.closest(selector);
     if (!card) return;
     const entry = entryById.get(card.dataset.id);
     if (entry) openModal(entry);
   };
 
-  gridEl.addEventListener('click', (e) => openFromCard(e.target));
+  gridEl.addEventListener('click', (e) => openFromCard(e.target, '.card'));
   gridEl.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter' && e.key !== ' ') return;
-    if (e.target.closest('[data-bookmark-toggle]')) return; // ปล่อยให้ปุ่มบุ๊กมาร์กทำงานเอง
+    if (e.target.closest('[data-bookmark-toggle]')) return;
     if (!e.target.closest('.card')) return;
     e.preventDefault();
-    openFromCard(e.target);
+    openFromCard(e.target, '.card');
   });
+
+  if (featuredTrack) {
+    featuredTrack.addEventListener('click', (e) => openFromCard(e.target, '.feat-card'));
+    featuredTrack.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      if (!e.target.closest('.feat-card')) return;
+      e.preventDefault();
+      openFromCard(e.target, '.feat-card');
+    });
+  }
 
   modalEl.addEventListener('click', (e) => {
     if (e.target.closest('[data-modal-close]')) closeModal();
@@ -540,10 +770,9 @@ function setupModal(gridEl) {
   });
 }
 
-/**
- * ดึงเรต JPY→THB สดตอนโหลด; ถ้าล้มเหลวคืนเรตสำรอง (isFallback: true) — เว็บต้องไม่พัง
- * @returns {Promise<{ rate: number, asOf: string|null, isFallback: boolean }>}
- */
+// ============================================================
+//  เรต / หมายเหตุราคา / เครดิต / สถานะ
+// ============================================================
 async function loadRate() {
   try {
     const res = await fetch(RATE_API_URL);
@@ -575,16 +804,28 @@ function renderRateLabel(labelEl, { rate, asOf, isFallback }) {
   labelEl.hidden = false;
 }
 
-/** แสดงหมายเหตุ "ราคาโดยประมาณ" จาก data.json (ถ้าไม่มีใช้ข้อความ default) */
 function renderPriceNote(noteEl, note) {
   if (!noteEl) return;
-  const text =
-    note ?? 'ราคาทั้งหมดเป็นค่าโดยประมาณ (เยน) อาจเปลี่ยนแปลงได้ตามช่วงเวลาและร้าน';
+  const text = note ?? 'ราคาทั้งหมดเป็นค่าโดยประมาณ (เยน) อาจเปลี่ยนแปลงได้ตามช่วงเวลาและร้าน';
   noteEl.textContent = `ℹ︎ ${text}`;
   noteEl.hidden = false;
 }
 
-/** ประกอบหน้ารวมเครดิต: ลิงก์แหล่งข้อมูลต่อ entry + รายการที่มารูปภาพ (ผู้สร้าง/license) */
+function renderHeroStats(entries) {
+  const wrap = document.getElementById('hero-stats');
+  if (!wrap) return;
+  const cities = new Set(entries.map((e) => e.city).filter(Boolean));
+  const cats = new Set(entries.map((e) => e.category).filter(Boolean));
+  const set = (key, val) => {
+    const el = wrap.querySelector(`[data-stat="${key}"]`);
+    if (el) el.textContent = String(val);
+  };
+  set('entries', entries.length);
+  set('categories', Math.max(cats.size, CATEGORY_ORDER.length));
+  set('cities', cities.size || 3);
+  wrap.hidden = false;
+}
+
 function renderCredits(entries) {
   const sourcesEl = document.getElementById('credits-sources');
   const imagesEl = document.getElementById('credits-images');
@@ -613,7 +854,6 @@ function renderCredits(entries) {
       for (const image of Array.isArray(entry.images) ? entry.images : []) {
         const li = document.createElement('li');
         li.append(`${entry.nameTh} — `);
-        // ลิงก์ไปหน้าไฟล์บน Commons เพื่อให้ตรวจสอบเครดิต/ลิขสิทธิ์ได้ (verifiable attribution)
         if (image.source) {
           const a = document.createElement('a');
           a.href = image.source;
@@ -632,10 +872,6 @@ function renderCredits(entries) {
   }
 }
 
-/**
- * อัปเดตแถบสถานะ (โหลด/ว่าง/ผิดพลาด). variant: 'loading' | 'empty' | 'error' | null
- * แต่ละ variant ผูกกับสไตล์ของตัวเอง (spinner ตอนโหลด, การ์ดว่างตอน empty)
- */
 function setStatus(statusEl, message, variant = null) {
   statusEl.textContent = message ?? '';
   statusEl.classList.toggle('status--loading', variant === 'loading');
@@ -644,16 +880,16 @@ function setStatus(statusEl, message, variant = null) {
   statusEl.hidden = !message;
 }
 
+// ============================================================
+//  Init
+// ============================================================
 async function init() {
   const gridEl = document.getElementById('card-grid');
   const statusEl = document.getElementById('grid-status');
   const rateLabelEl = document.getElementById('rate-label');
   const priceNoteEl = document.getElementById('price-note');
 
-  // แสดงสถานะกำลังโหลด (spinner) ระหว่าง fetch ข้อมูล/เรต
   setStatus(statusEl, 'กำลังโหลดข้อมูล…', 'loading');
-
-  // ดึงเรตคู่ขนานกับข้อมูล; เรตมี fallback ในตัวจึงไม่ทำให้ init ล้มเหลว
   const ratePromise = loadRate();
 
   try {
@@ -665,14 +901,19 @@ async function init() {
     const rateInfo = await ratePromise;
     renderRateLabel(rateLabelEl, rateInfo);
     renderPriceNote(priceNoteEl, data.priceNote);
-    renderCredits(entries);
 
     allEntries = entries;
     entryById = new Map(entries.map((entry) => [entry.id, entry]));
     currentRate = rateInfo.rate;
     bookmarkedIds = loadBookmarks();
 
+    renderHeroStats(entries);
+    renderCredits(entries);
+    renderFeatured(entries, currentRate);
+
+    renderCatbar(gridEl, statusEl);
     setupFilters(gridEl, statusEl);
+    setupViewToggle();
     setupModal(gridEl);
     setupBookmarks(gridEl, statusEl);
     setupMap();
