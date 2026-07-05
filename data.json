@@ -1482,6 +1482,481 @@
         }
       ],
       "sourceUrl": "https://www.animate.co.jp/shop/kyoto/"
+    },
+    {
+      "id": "kani-doraku-dotonbori",
+      "nameTh": "คานิ โดราคุ โดตงโบริ (ร้านปูยักษ์)",
+      "nameJa": "かに道楽 道頓堀本店",
+      "nameRomaji": "Kani Doraku Dotonbori Honten",
+      "category": "food",
+      "city": "osaka",
+      "description": "ร้านปูชื่อดังริมคลองโดตงโบริ สัญลักษณ์คือป้ายปูยักษ์ขยับขาได้หน้าร้าน เสิร์ฟเมนูปูครบทั้งต้ม ย่าง ซูชิ และหม้อไฟ เป็นแลนด์มาร์กถ่ายรูปและมื้อพิเศษยอดฮิตของนักท่องเที่ยว",
+      "lat": 34.66869,
+      "lng": 135.50145,
+      "address": {
+        "th": "1-6-18 โดตงโบริ เขตชูโอ โอซาก้า",
+        "ja": "大阪市中央区道頓堀1-6-18"
+      },
+      "hours": "11:00–22:00 (โดยประมาณ)",
+      "station": "เดินจากสถานี Namba ~5 นาที",
+      "tags": [
+        "เมนูปู",
+        "แลนด์มาร์กโดตงโบริ",
+        "ถ่ายรูปสวย"
+      ],
+      "tips": [
+        "ป้ายปูยักษ์หน้าร้านเป็นจุดถ่ายรูปคลาสสิกของโอซาก้า",
+        "ช่วงมื้อเย็นคิวยาว จองล่วงหน้าหรือมาก่อนเวลาช่วยได้"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.66869,135.50145",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Kani_Doraku_Dotombori_honten_on_21st_October_2020.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Kani_Doraku_Dotombori_honten_on_21st_October_2020.jpg",
+          "credit": "ภาพ: Tokumeigakarinoaoshima / Wikimedia Commons",
+          "license": "CC BY-SA 4.0"
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "เซ็ตปูคอร์ส (ต้ม/ย่าง/ซูชิ)",
+          "priceJpy": 4500
+        },
+        {
+          "nameTh": "ปูย่างไม้",
+          "priceJpy": 800
+        },
+        {
+          "nameTh": "ข้าวหน้าปู (คานิด้ง)",
+          "priceJpy": 1600
+        }
+      ],
+      "sourceUrl": "https://douraku.co.jp/"
+    },
+    {
+      "id": "takoyaki-wanaka",
+      "nameTh": "ทาโกยากิ วานากะ (เซนนิจิมาเอะ)",
+      "nameJa": "たこ焼き わなか 千日前本店",
+      "nameRomaji": "Takoyaki Wanaka Sennichimae",
+      "category": "food",
+      "city": "osaka",
+      "description": "ร้านทาโกยากิเก่าแก่ยอดนิยมย่านนัมบะ/เซนนิจิมาเอะ ทาโกยากิเนื้อครีมนุ่มด้านในกรอบด้านนอก มีซอสให้เลือกหลายแบบ เป็นสตรีทฟู้ดโอซาก้าที่ต้องลอง",
+      "lat": 34.66444,
+      "lng": 135.50285,
+      "address": {
+        "th": "11-19 นัมบะเซนนิจิมาเอะ เขตชูโอ โอซาก้า",
+        "ja": "大阪市中央区難波千日前11-19"
+      },
+      "hours": "10:00–21:00 (โดยประมาณ)",
+      "station": "เดินจากสถานี Namba ~3 นาที",
+      "tags": [
+        "ทาโกยากิ",
+        "สตรีทฟู้ด",
+        "ราคาถูก"
+      ],
+      "tips": [
+        "ทาโกยากิร้อนจัด กัดระวังไส้ลวก",
+        "ลองชุดคละซอสเพื่อเทียบรสชาติ"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.66444,135.50285",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/4/45/Takoyaki_dish.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Takoyaki_dish.jpg",
+          "credit": "ภาพประกอบ: sayo ts / Wikimedia Commons",
+          "license": "CC0",
+          "isIllustrative": true
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "ทาโกยากิ 8 ลูก",
+          "priceJpy": 500
+        },
+        {
+          "nameTh": "ทาโกยากิ 12 ลูก (คละซอส)",
+          "priceJpy": 700
+        }
+      ],
+      "sourceUrl": "https://takoyaki-wanaka.com/"
+    },
+    {
+      "id": "gigo-akihabara",
+      "nameTh": "กิโก อากิฮาบาระ (เกมเซ็นเตอร์)",
+      "nameJa": "GiGO 秋葉原",
+      "nameRomaji": "GiGO Akihabara",
+      "category": "games",
+      "city": "tokyo",
+      "description": "เกมเซ็นเตอร์หลายชั้นย่านอากิฮาบาระ (เดิมคือ Sega) เต็มไปด้วยตู้คีบตุ๊กตา ตู้กาชาปอง เกมจังหวะ และเกมอาร์เคดใหม่ ๆ เป็นหมุดหมายของสายเกมและของสะสม",
+      "lat": 35.699,
+      "lng": 139.7712,
+      "address": {
+        "th": "1-11-11 โซโตคันดะ เขตชิโยดะ โตเกียว",
+        "ja": "東京都千代田区外神田1-11-11"
+      },
+      "hours": "10:00–23:00 (โดยประมาณ)",
+      "station": "เดินจากสถานี Akihabara (Electric Town) ~3 นาที",
+      "tags": [
+        "เกมเซ็นเตอร์",
+        "ตู้คีบตุ๊กตา",
+        "กาชาปอง"
+      ],
+      "tips": [
+        "แต่ละอาคารเน้นคนละแนว (ตู้คีบ/เพลง/เรโทร) เดินดูได้หลายตึก",
+        "ของรางวัลตู้คีบมีรุ่นลิมิเต็ดหมุนเวียน"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.699,139.7712",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/4/46/GiGo_Building_3_-_Akihabara_31-5-2026.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:GiGo_Building_3_-_Akihabara_31-5-2026.jpg",
+          "credit": "ภาพ: BWard 1997 / Wikimedia Commons",
+          "license": "CC BY 4.0"
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "ตู้คีบตุ๊กตา (ต่อครั้ง)",
+          "priceJpy": 100
+        },
+        {
+          "nameTh": "ตู้กาชาปอง (ต่อครั้ง)",
+          "priceJpy": 300
+        },
+        {
+          "nameTh": "เกมอาร์เคด (ต่อเกม)",
+          "priceJpy": 100
+        }
+      ],
+      "sourceUrl": "https://tempo.gendagigo.jp/"
+    },
+    {
+      "id": "taito-station-kyoto",
+      "nameTh": "ไทโต สเตชัน เกียวโต (เกมเซ็นเตอร์)",
+      "nameJa": "タイトーステーション京都",
+      "nameRomaji": "Taito Station Kyoto",
+      "category": "games",
+      "city": "kyoto",
+      "description": "เกมเซ็นเตอร์ในเครือไทโต ใจกลางย่านช้อปคาวารามาจิของเกียวโต มีตู้คีบตุ๊กตา ตู้ถ่ายพูริคุระ เกมจังหวะ และเกมอาร์เคด เหมาะแวะเล่นคลายเมื่อยระหว่างเดินเที่ยว",
+      "lat": 35.0046,
+      "lng": 135.7687,
+      "address": {
+        "th": "ย่านคาวารามาจิ เขตนาคาเงียว เกียวโต",
+        "ja": "京都市中京区（河原町通周辺）"
+      },
+      "hours": "10:00–24:00 (โดยประมาณ)",
+      "station": "เดินจากสถานี Kyoto-Kawaramachi (Hankyu) ~4 นาที",
+      "tags": [
+        "เกมเซ็นเตอร์",
+        "พูริคุระ",
+        "ใจกลางเกียวโต"
+      ],
+      "tips": [
+        "ตู้ถ่ายพูริคุระเหมาะถ่ายรูปเป็นที่ระลึกกับเพื่อน",
+        "อยู่ใกล้ถนนช้อปเทระมาจิ เดินต่อได้"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.0046,135.7687",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/98/Taito_Station_%282812431296%29.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Taito_Station_(2812431296).jpg",
+          "credit": "ภาพประกอบ: DocChewbacca / Wikimedia Commons",
+          "license": "CC BY-SA 2.0",
+          "isIllustrative": true
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "ตู้คีบตุ๊กตา (ต่อครั้ง)",
+          "priceJpy": 100
+        },
+        {
+          "nameTh": "ตู้ถ่ายพูริคุระ (ต่อครั้ง)",
+          "priceJpy": 400
+        }
+      ],
+      "sourceUrl": "https://www.taito.co.jp/store"
+    },
+    {
+      "id": "senso-ji",
+      "nameTh": "วัดเซนโซจิ (อาซากุสะ)",
+      "nameJa": "浅草寺",
+      "nameRomaji": "Sensō-ji",
+      "category": "sightseeing",
+      "city": "tokyo",
+      "description": "วัดพุทธที่เก่าแก่ที่สุดของโตเกียว จุดเด่นคือประตูคามินาริมงกับโคมแดงยักษ์ ทางเข้าต่อกับถนนนาคามิเสะ ด้านในมีหอหลักและเจดีย์ห้าชั้น เป็นแลนด์มาร์กสำคัญที่ต้องมาเยือน",
+      "lat": 35.71476,
+      "lng": 139.79665,
+      "address": {
+        "th": "2-3-1 อาซากุสะ เขตไทโต โตเกียว",
+        "ja": "東京都台東区浅草2-3-1"
+      },
+      "hours": "บริเวณวัดเปิดตลอด · หอหลัก 6:00–17:00 (โดยประมาณ)",
+      "station": "เดินจากสถานี Asakusa ~5 นาที",
+      "tags": [
+        "วัดเก่าแก่",
+        "เข้าฟรี",
+        "ถ่ายรูปสวย"
+      ],
+      "tips": [
+        "ไปเช้าก่อน 8 โมงคนน้อย ถ่ายรูปโคมแดงสวย",
+        "เดินถนนนาคามิเสะกินของทำสดก่อนเข้าวัด"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.71476,139.79665",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Asakusa_Sensoji_Kaminarimon_2012.JPG",
+          "source": "https://commons.wikimedia.org/wiki/File:Asakusa_Sensoji_Kaminarimon_2012.JPG",
+          "credit": "ภาพ: Kakidai / Wikimedia Commons",
+          "license": "CC BY-SA 3.0"
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "ค่าเข้าชม (ฟรี)",
+          "priceJpy": 0
+        },
+        {
+          "nameTh": "เซียมซีโอมิคุจิ",
+          "priceJpy": 100
+        },
+        {
+          "nameTh": "เครื่องราง (โอมาโมริ)",
+          "priceJpy": 800
+        }
+      ],
+      "sourceUrl": "https://www.senso-ji.jp/"
+    },
+    {
+      "id": "kiyomizu-dera",
+      "nameTh": "วัดคิโยมิสึเดระ",
+      "nameJa": "清水寺",
+      "nameRomaji": "Kiyomizu-dera",
+      "category": "sightseeing",
+      "city": "kyoto",
+      "description": "วัดบนเนินเขาฮิงาชิยามะ มรดกโลก จุดเด่นคือระเบียงไม้ยื่นออกจากหน้าผาโดยไม่ใช้ตะปู มองเห็นวิวเกียวโตกว้างไกล โดยรอบเป็นถนนเมืองเก่าน่าเดินเล่นและใส่กิโมโนถ่ายรูป",
+      "lat": 34.99493,
+      "lng": 135.78503,
+      "address": {
+        "th": "1-294 คิโยมิสึ เขตฮิงาชิยามะ เกียวโต",
+        "ja": "京都市東山区清水1-294"
+      },
+      "hours": "6:00–18:00 (โดยประมาณ)",
+      "station": "รถเมล์เกียวโตลงป้าย Kiyomizu-michi แล้วเดินขึ้นเนิน ~10 นาที",
+      "tags": [
+        "มรดกโลก",
+        "วิวเมือง",
+        "เมืองเก่า"
+      ],
+      "tips": [
+        "ไปเช้าตรู่หรือช่วงเย็นคนน้อย แสงสวย",
+        "ทางขึ้นเป็นเนินร้านค้า (ซันเน็นซากะ) เผื่อเวลาเดินช้อป"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.99493,135.78503",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Kiyomizu-dera%2C_Kyoto%2C_November_2016_-07.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Kiyomizu-dera,_Kyoto,_November_2016_-07.jpg",
+          "credit": "ภาพ: Martin Falbisoner / Wikimedia Commons",
+          "license": "CC BY-SA 4.0"
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "บัตรเข้าชมหอหลัก (ผู้ใหญ่)",
+          "priceJpy": 500
+        },
+        {
+          "nameTh": "เครื่องราง/โอมิคุจิ",
+          "priceJpy": 200
+        }
+      ],
+      "sourceUrl": "https://www.kiyomizudera.or.jp/"
+    },
+    {
+      "id": "dotonbori",
+      "nameTh": "ย่านโดตงโบริ (ป้ายกูลิโกะ)",
+      "nameJa": "道頓堀",
+      "nameRomaji": "Dōtonbori",
+      "category": "sightseeing",
+      "city": "osaka",
+      "description": "ย่านบันเทิงริมคลองใจกลางโอซาก้า จุดเด่นคือป้ายไฟกูลิโกะและป้ายนีออนยักษ์ริมสะพานเอบิสึบาชิ รวมร้านอาหาร สตรีทฟู้ด และแสงสีตอนกลางคืน เป็นภาพจำของโอซาก้า",
+      "lat": 34.66878,
+      "lng": 135.50123,
+      "address": {
+        "th": "โดตงโบริ เขตชูโอ โอซาก้า (รอบสะพานเอบิสึบาชิ)",
+        "ja": "大阪市中央区道頓堀（戎橋周辺）"
+      },
+      "hours": "ย่านเดินได้ตลอด · ร้านส่วนใหญ่ 11:00–23:00 (โดยประมาณ)",
+      "station": "เดินจากสถานี Namba / Nipponbashi ~5 นาที",
+      "tags": [
+        "แสงสีกลางคืน",
+        "ป้ายกูลิโกะ",
+        "สตรีทฟู้ด"
+      ],
+      "tips": [
+        "ถ่ายรูปคู่ป้ายกูลิโกะบนสะพานเอบิสึบาชิช่วงค่ำไฟสวยสุด",
+        "ล่องเรือทงโบริริเวอร์ครูซชมป้ายนีออนจากในคลอง"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.66878,135.50123",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/4/47/Dotonbori%2C_Osaka%2C_at_night%2C_November_2016.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Dotonbori,_Osaka,_at_night,_November_2016.jpg",
+          "credit": "ภาพ: Martin Falbisoner / Wikimedia Commons",
+          "license": "CC BY-SA 4.0"
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "เดินเล่นชมป้ายกูลิโกะ (ฟรี)",
+          "priceJpy": 0
+        },
+        {
+          "nameTh": "ล่องเรือทงโบริริเวอร์ครูซ",
+          "priceJpy": 1500
+        }
+      ],
+      "sourceUrl": "https://www.dotonbori.or.jp/"
+    },
+    {
+      "id": "bic-camera-shinjuku",
+      "nameTh": "บิ๊กคาเมระ สาขาชินจูกุ",
+      "nameJa": "ビックカメラ 新宿",
+      "nameRomaji": "Bic Camera Shinjuku",
+      "category": "electronics",
+      "city": "tokyo",
+      "description": "ร้านเครื่องใช้ไฟฟ้าและกล้องขนาดใหญ่ย่านชินจูกุ หลายชั้นครบทั้งกล้อง คอมพิวเตอร์ เครื่องครัว เครื่องสำอาง ยาสามัญ รองรับปลอดภาษีและมีป้ายภาษาต่างประเทศ สะดวกช้อปครบจบในที่เดียว",
+      "lat": 35.6909,
+      "lng": 139.7045,
+      "address": {
+        "th": "ย่านชินจูกุ (ฝั่งตะวันออกสถานี) เขตชินจูกุ โตเกียว",
+        "ja": "東京都新宿区（新宿駅東口周辺）"
+      },
+      "hours": "10:00–22:00 (โดยประมาณ)",
+      "station": "ติดสถานี Shinjuku (ทางออกตะวันออก)",
+      "tags": [
+        "เครื่องไฟฟ้า/กล้อง",
+        "ปลอดภาษี",
+        "ครบในที่เดียว"
+      ],
+      "tips": [
+        "โชว์พาสปอร์ตรับส่วนลด/ปลอดภาษีเมื่อซื้อครบเงื่อนไข",
+        "เทียบราคากับโยโดบาชิใกล้ ๆ ก่อนตัดสินใจ"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.6909,139.7045",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/96/Bic_Camera_Shinjuku_Station_East.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Bic_Camera_Shinjuku_Station_East.jpg",
+          "credit": "ภาพ: Ryo Fukasawa / Wikimedia Commons",
+          "license": "CC BY 2.0"
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "อุปกรณ์กล้อง/แกดเจ็ต",
+          "priceJpy": 3000
+        },
+        {
+          "nameTh": "เครื่องใช้ไฟฟ้าชิ้นเล็ก",
+          "priceJpy": 2000
+        }
+      ],
+      "sourceUrl": "https://www.biccamera.co.jp/"
+    },
+    {
+      "id": "yodobashi-umeda",
+      "nameTh": "โยโดบาชิ คาเมระ อูเมดะ",
+      "nameJa": "ヨドバシカメラ マルチメディア梅田",
+      "nameRomaji": "Yodobashi Camera Umeda",
+      "category": "electronics",
+      "city": "osaka",
+      "description": "ห้างเครื่องใช้ไฟฟ้าขนาดใหญ่ติดสถานีอูเมดะ โอซาก้า รวมกล้อง คอมพิวเตอร์ เครื่องเสียง ของเล่น และแกดเจ็ตครบครัน มีโซนร้านอาหารและช้อปปิ้งในตัวอาคาร รองรับปลอดภาษี",
+      "lat": 34.70443,
+      "lng": 135.49566,
+      "address": {
+        "th": "1-1 โอฟุกะโจ เขตคิตะ โอซาก้า",
+        "ja": "大阪市北区大深町1-1"
+      },
+      "hours": "9:30–22:00 (โดยประมาณ)",
+      "station": "ติดสถานี Osaka / Umeda (ฝั่งเหนือ)",
+      "tags": [
+        "เครื่องไฟฟ้า/กล้อง",
+        "ปลอดภาษี",
+        "ติดสถานี"
+      ],
+      "tips": [
+        "อาคารใหญ่หลายชั้น เผื่อเวลาเดิน",
+        "ชั้นบนมีร้านอาหาร แวะพักได้"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.70443,135.49566",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/7/75/Yodobashi_Camera_Multimedia_Umeda_Store_on_4th_March_2021.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Yodobashi_Camera_Multimedia_Umeda_Store_on_4th_March_2021.jpg",
+          "credit": "ภาพ: Tokumeigakarinoaoshima / Wikimedia Commons",
+          "license": "CC BY-SA 4.0"
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "กล้อง/เลนส์",
+          "priceJpy": 5000
+        },
+        {
+          "nameTh": "เครื่องใช้ไฟฟ้า/ของเล่น",
+          "priceJpy": 2500
+        }
+      ],
+      "sourceUrl": "https://www.yodobashi.com/"
+    },
+    {
+      "id": "assist-nipponbashi",
+      "nameTh": "แอสซิสต์ นิปปมบาชิ (ชุด/วิกคอสเพลย์)",
+      "nameJa": "アシスト 日本橋",
+      "nameRomaji": "Assist Nipponbashi",
+      "category": "cosplay",
+      "city": "osaka",
+      "description": "ร้านชุดและวิกคอสเพลย์ย่านเด็นเด็นทาวน์ นิปปมบาชิ โอซาก้า มีชุดตัวละคร วิกหลากสี และอุปกรณ์แต่งคอสให้เลือกครบ เหมาะสายคอสเพลย์ที่มาตามล่าชุดและวิกคุณภาพ",
+      "lat": 34.6615,
+      "lng": 135.5064,
+      "address": {
+        "th": "ย่านเด็นเด็นทาวน์ นิปปมบาชิ เขตนานิวะ โอซาก้า",
+        "ja": "大阪市浪速区日本橋（でんでんタウン周辺）"
+      },
+      "hours": "11:00–20:00 (โดยประมาณ)",
+      "station": "เดินจากสถานี Nipponbashi / Ebisucho ~5 นาที",
+      "tags": [
+        "ชุดคอสเพลย์",
+        "วิก",
+        "เด็นเด็นทาวน์"
+      ],
+      "tips": [
+        "ลองวิกและวัดไซซ์ชุดหน้าร้านก่อนซื้อ",
+        "ย่านเด็นเด็นทาวน์มีร้านโอตาคุ/คอสเพลย์อีกหลายร้าน"
+      ],
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.6615,135.5064",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/20/Manga_Games_Anime_Cosplay_Expo_2015.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Manga_Games_Anime_Cosplay_Expo_2015.jpg",
+          "credit": "ภาพประกอบ: Chongkian / Wikimedia Commons",
+          "license": "CC BY-SA 4.0",
+          "isIllustrative": true
+        }
+      ],
+      "products": [
+        {
+          "nameTh": "วิกคอสเพลย์",
+          "priceJpy": 3000
+        },
+        {
+          "nameTh": "ชุดคอสเพลย์ (ตัวละคร)",
+          "priceJpy": 6000
+        }
+      ],
+      "sourceUrl": "https://www.assist-wig.com/"
     }
   ]
 }
