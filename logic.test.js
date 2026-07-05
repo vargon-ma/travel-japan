@@ -608,18 +608,22 @@ describe('data.json (dataset guard)', () => {
     }
   });
 
-  it('Editor\'s Picks: มี 8–10 ร้าน กระจายหลายหมวด/หลายเมือง และมีเหตุผลทุกอัน', () => {
+  it('Editor\'s Picks: 8–10 ร้าน ครอบคลุมหมวดที่เดิมไม่มี + หลายเมือง และมีเหตุผลทุกอัน', () => {
     const picks = dataset.entries.filter((e) => e.editorsPick === true);
-    // 8–10 picks (คัดจาก ~49 ร้าน)
+    // 8–10 = สัญญาการคัดสรร (curation contract) ให้ Featured strip กระชับ ไม่ล้น
+    // ตั้งใจให้ขอบบน 10 แดงทันทีถ้ามีใครติดธง pick เกิน — จะได้กลับมาคัดใหม่
     expect(picks.length).toBeGreaterThanOrEqual(8);
     expect(picks.length).toBeLessThanOrEqual(10);
     // ทุก pick มี editorsPickReason ที่จับต้องได้ (ไม่ว่าง)
     for (const e of picks) {
-      expect(typeof e.editorsPickReason === 'string' && e.editorsPickReason.trim().length > 0,
-        `${e.id} ขาด editorsPickReason`).toBe(true);
+      expect(e.editorsPickReason?.trim(), `${e.id} ขาด editorsPickReason`).toBeTruthy();
     }
-    // กระจายหลายหมวด (ไม่กระจุกแนวเดียว) และมากกว่า 1 เมือง
-    expect(new Set(picks.map((e) => e.category)).size).toBeGreaterThanOrEqual(5);
+    // ต้องมี pick ในหมวดที่เดิมไม่เคยมี (กันกลับไปกระจุกแลนด์มาร์ก/อาหารเหมือนก่อน)
+    const pickedCats = new Set(picks.map((e) => e.category));
+    for (const c of ['cosplay', 'electronics', 'shopping', 'cafe']) {
+      expect(pickedCats.has(c), `ไม่มี Editor's Pick ในหมวด ${c}`).toBe(true);
+    }
+    // กระจายหลายเมือง (ไม่โตเกียวล้วน)
     expect(new Set(picks.map((e) => e.city)).size).toBeGreaterThan(1);
   });
 });
