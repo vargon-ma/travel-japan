@@ -15,10 +15,14 @@
         "th": "1-1-2 โอชิอาเกะ เขตซูมิดะ โตเกียว",
         "ja": "東京都墨田区押上1-1-2"
       },
-      "hours": "10:00–22:00 (เข้าได้ถึง 21:00)",
+      "hours": "10:00–22:00 (เข้าได้ถึง 21:00) · โดยประมาณ",
       "station": "ติดสถานี Tokyo Skytree (สาย Tobu) / Oshiage ~5 นาที",
       "bestTime": "ช่วงพระอาทิตย์ตก–ค่ำ ได้เห็นวิวกลางวันต่อกลางคืน",
-      "tags": ["วิวพาโนรามา", "ถ่ายรูปสวย", "แลนด์มาร์ก"],
+      "tags": [
+        "วิวพาโนรามา",
+        "ถ่ายรูปสวย",
+        "แลนด์มาร์ก"
+      ],
       "tips": [
         "ซื้อบัตร Fast Skytree ออนไลน์ล่วงหน้าช่วยลดเวลาต่อคิว",
         "วันฟ้าใสมองเห็นภูเขาไฟฟูจิได้จากชั้น 350"
@@ -46,10 +50,17 @@
         }
       ],
       "products": [
-        { "nameTh": "บัตรชมวิวชั้น Tembo Deck (350 ม.)", "priceJpy": 2100 },
-        { "nameTh": "บัตรชมวิวรวม Tembo Galleria (450 ม.)", "priceJpy": 3100 }
+        {
+          "nameTh": "บัตรชมวิวชั้น Tembo Deck (350 ม.)",
+          "priceJpy": 2100
+        },
+        {
+          "nameTh": "บัตรชมวิวรวม Tembo Galleria (450 ม.)",
+          "priceJpy": 3100
+        }
       ],
-      "sourceUrl": "https://www.tokyo-skytree.jp/"
+      "sourceUrl": "https://www.tokyo-skytree.jp/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.71006,139.81069"
     },
     {
       "id": "fushimi-inari-taisha",
@@ -68,7 +79,11 @@
       "hours": "เปิด 24 ชั่วโมง (เข้าฟรี)",
       "station": "ติดสถานี JR Inari (สาย Nara) / Fushimi-Inari (Keihan)",
       "bestTime": "เช้าตรู่ก่อน 8 โมง หรือช่วงค่ำ คนน้อย แสงสวย",
-      "tags": ["เสาโทริอิพันต้น", "เข้าฟรี", "ถ่ายรูปสวย"],
+      "tags": [
+        "เสาโทริอิพันต้น",
+        "เข้าฟรี",
+        "ถ่ายรูปสวย"
+      ],
       "tips": [
         "ไต่ถึงจุด Yotsutsuji ~30–45 นาที ได้วิวเมืองเกียวโต",
         "ไปเช้ามากหรือพลบค่ำเพื่อเลี่ยงนักท่องเที่ยวแน่น"
@@ -96,11 +111,21 @@
         }
       ],
       "products": [
-        { "nameTh": "ค่าเข้าชม (ฟรี)", "priceJpy": 0 },
-        { "nameTh": "เครื่องราง (โอมาโมริ)", "priceJpy": 800 },
-        { "nameTh": "แผ่นไม้ขอพร (เอมะ)", "priceJpy": 500 }
+        {
+          "nameTh": "ค่าเข้าชม (ฟรี)",
+          "priceJpy": 0
+        },
+        {
+          "nameTh": "เครื่องราง (โอมาโมริ)",
+          "priceJpy": 800
+        },
+        {
+          "nameTh": "แผ่นไม้ขอพร (เอมะ)",
+          "priceJpy": 500
+        }
       ],
-      "sourceUrl": "https://inari.jp/"
+      "sourceUrl": "https://inari.jp/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.96714,135.77267"
     },
     {
       "id": "osaka-castle",
@@ -116,10 +141,14 @@
         "th": "1-1 โอซาก้าโจ เขตชูโอ โอซาก้า",
         "ja": "大阪市中央区大阪城1-1"
       },
-      "hours": "9:00–17:00 (เข้าได้ถึง 16:30)",
+      "hours": "9:00–17:00 (เข้าได้ถึง 16:30) · โดยประมาณ",
       "station": "เดินจากสถานี Osakajokoen (JR Loop) / Tanimachi 4-chome ~15 นาที",
       "bestTime": "ปลายมีนาคม–ต้นเมษายน ซากุระบานรอบปราสาท",
-      "tags": ["ปราสาทประวัติศาสตร์", "สวนซากุระ", "วิวเมือง"],
+      "tags": [
+        "ปราสาทประวัติศาสตร์",
+        "สวนซากุระ",
+        "วิวเมือง"
+      ],
       "tips": [
         "สวนรอบปราสาทเดินเล่นฟรี จ่ายเฉพาะค่าเข้าหอปราสาท",
         "ขึ้นลิฟต์ถึงชั้น 5 แล้วเดินขึ้นชั้น 8 เพื่อชมวิว"
@@ -147,10 +176,17 @@
         }
       ],
       "products": [
-        { "nameTh": "บัตรเข้าชมหอปราสาท (ผู้ใหญ่)", "priceJpy": 1200 },
-        { "nameTh": "บัตรรวมหอปราสาท + สวนนิชิโนมารุ", "priceJpy": 1500 }
+        {
+          "nameTh": "บัตรเข้าชมหอปราสาท (ผู้ใหญ่)",
+          "priceJpy": 1200
+        },
+        {
+          "nameTh": "บัตรรวมหอปราสาท + สวนนิชิโนมารุ",
+          "priceJpy": 1500
+        }
       ],
-      "sourceUrl": "https://www.osakacastle.net/"
+      "sourceUrl": "https://www.osakacastle.net/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.68726,135.52593"
     },
     {
       "id": "super-potato-akihabara",
@@ -166,21 +202,45 @@
         "th": "1-11-2 โซโตคันดะ เขตชิโยดะ โตเกียว (ตึกคิตะบายาชิ ชั้น 3–5)",
         "ja": "東京都千代田区外神田1-11-2 北林ビル3-5F"
       },
-      "hours": "จ–ศ 11:00–20:00 · ส–อา 10:00–20:00",
+      "hours": "จ–ศ 11:00–20:00 · ส–อา 10:00–20:00 · โดยประมาณ",
       "station": "เดินจากสถานี Akihabara ~5 นาที",
       "bestTime": "ช่วงบ่ายวันธรรมดา คนน้อยกว่า",
-      "tags": ["เกมเรโทร", "มือสอง", "ของสะสม"],
+      "tags": [
+        "เกมเรโทร",
+        "มือสอง",
+        "ของสะสม"
+      ],
       "tips": [
         "ชั้น 5 มีเกมเซ็นเตอร์ย้อนยุค (Retro Ge-Sen) เล่นได้",
         "ตรวจสภาพตลับ/เครื่องก่อนซื้อ ราคาขึ้นกับสภาพ"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "ตลับเกมแฟมิคอม (มือสอง)", "priceJpy": 500, "condition": "used" },
-        { "nameTh": "จอยซูเปอร์แฟมิคอม (มือสอง)", "priceJpy": 1800, "condition": "used" },
-        { "nameTh": "เครื่องเกมเรโทรสภาพดี (มือสอง)", "priceJpy": 9800, "condition": "used" }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Akihabara_-_Super_Potato_Retro_Game_Shop.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Akihabara_-_Super_Potato_Retro_Game_Shop.jpg",
+          "credit": "ภาพ: IQRemix / Wikimedia Commons",
+          "license": "CC BY-SA 2.0"
+        }
       ],
-      "sourceUrl": "https://www.superpotato.com/"
+      "products": [
+        {
+          "nameTh": "ตลับเกมแฟมิคอม (มือสอง)",
+          "priceJpy": 500,
+          "condition": "used"
+        },
+        {
+          "nameTh": "จอยซูเปอร์แฟมิคอม (มือสอง)",
+          "priceJpy": 1800,
+          "condition": "used"
+        },
+        {
+          "nameTh": "เครื่องเกมเรโทรสภาพดี (มือสอง)",
+          "priceJpy": 9800,
+          "condition": "used"
+        }
+      ],
+      "sourceUrl": "https://www.superpotato.com/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.69906,139.77155"
     },
     {
       "id": "mandarake-nakano",
@@ -196,10 +256,14 @@
         "th": "5-52-15 นาคาโนะ เขตนาคาโนะ โตเกียว (ห้างนาคาโนะบรอดเวย์)",
         "ja": "東京都中野区中野5-52-15 中野ブロードウェイ"
       },
-      "hours": "12:00–20:00 (อาคารเปิด 10:00 · บางร้านปิดพุธ)",
+      "hours": "12:00–20:00 (อาคารเปิด 10:00 · บางร้านปิดพุธ) · โดยประมาณ",
       "station": "เดินจากสถานี Nakano (ทางออกเหนือ) ผ่าน Sunmall ~5 นาที",
       "bestTime": "บ่ายวันธรรมดา ร้านเปิดครบ คนไม่แน่น",
-      "tags": ["ของสะสม", "มังงะมือสอง", "ฟิกเกอร์หายาก"],
+      "tags": [
+        "ของสะสม",
+        "มังงะมือสอง",
+        "ฟิกเกอร์หายาก"
+      ],
       "tips": [
         "กระจายหลายสิบร้านย่อยในตึก เผื่อเวลาเดินทั้งวัน",
         "เทียบราคาหลายร้านก่อนซื้อของหายาก"
@@ -215,11 +279,24 @@
         }
       ],
       "products": [
-        { "nameTh": "มังงะมือสอง (ต่อเล่ม)", "priceJpy": 200, "condition": "used" },
-        { "nameTh": "ฟิกเกอร์มือสอง", "priceJpy": 1500, "condition": "used" },
-        { "nameTh": "ตลับเกม/ของสะสมหายาก (มือสอง)", "priceJpy": 3800, "condition": "used" }
+        {
+          "nameTh": "มังงะมือสอง (ต่อเล่ม)",
+          "priceJpy": 200,
+          "condition": "used"
+        },
+        {
+          "nameTh": "ฟิกเกอร์มือสอง",
+          "priceJpy": 1500,
+          "condition": "used"
+        },
+        {
+          "nameTh": "ตลับเกม/ของสะสมหายาก (มือสอง)",
+          "priceJpy": 3800,
+          "condition": "used"
+        }
       ],
-      "sourceUrl": "https://www.mandarake.co.jp/dir/nkn/index-en.html"
+      "sourceUrl": "https://www.mandarake.co.jp/dir/nkn/index-en.html",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.70808,139.66563"
     },
     {
       "id": "super-potato-nipponbashi",
@@ -235,21 +312,46 @@
         "th": "5-7-18 นิปปมบาชิ เขตนานิวะ โอซาก้า",
         "ja": "大阪市浪速区日本橋5-7-18"
       },
-      "hours": "ราว 11:00–20:00 (ย่านเดนเดนทาวน์)",
+      "hours": "ราว 11:00–20:00 (ย่านเดนเดนทาวน์) · โดยประมาณ",
       "station": "เดินจากสถานี Nipponbashi / Namba ~8 นาที",
       "bestTime": "ช่วงบ่าย",
-      "tags": ["เกมเรโทร", "มือสอง", "เดนเดนทาวน์"],
+      "tags": [
+        "เกมเรโทร",
+        "มือสอง",
+        "เดนเดนทาวน์"
+      ],
       "tips": [
         "มีมาริโอตัวใหญ่หน้าร้านเป็นจุดถ่ายรูป",
         "ย่านโอตะโรดรอบ ๆ มีร้านเกม/อนิเมะอีกเพียบ"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "ตลับเกมแฟมิคอม (มือสอง)", "priceJpy": 500, "condition": "used" },
-        { "nameTh": "เครื่องเกมพกพา (มือสอง)", "priceJpy": 3500, "condition": "used" },
-        { "nameTh": "เกมหายากสะสม (มือสอง)", "priceJpy": 6800, "condition": "used" }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/4/48/SNES-SFAM-Cartridges.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:SNES-SFAM-Cartridges.jpg",
+          "credit": "ภาพประกอบ: Evan-Amos / Wikimedia Commons",
+          "license": "Public domain",
+          "isIllustrative": true
+        }
       ],
-      "sourceUrl": "https://www.superpotato.com/"
+      "products": [
+        {
+          "nameTh": "ตลับเกมแฟมิคอม (มือสอง)",
+          "priceJpy": 500,
+          "condition": "used"
+        },
+        {
+          "nameTh": "เครื่องเกมพกพา (มือสอง)",
+          "priceJpy": 3500,
+          "condition": "used"
+        },
+        {
+          "nameTh": "เกมหายากสะสม (มือสอง)",
+          "priceJpy": 6800,
+          "condition": "used"
+        }
+      ],
+      "sourceUrl": "https://www.superpotato.com/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.65883,135.50421"
     },
     {
       "id": "acos-ikebukuro",
@@ -265,21 +367,43 @@
         "th": "3-2-1 ฮิงาชิอิเคบุคุโระ เขตโทชิมะ โตเกียว (ตึก Animate Sunshine ชั้น 2–3)",
         "ja": "東京都豊島区東池袋3-2-1 アニメイトサンシャイン2-3F"
       },
-      "hours": "11:00–20:00 (ไม่มีวันหยุด)",
+      "hours": "11:00–20:00 (ไม่มีวันหยุด) · โดยประมาณ",
       "station": "เดินจากสถานี Higashi-Ikebukuro (สาย Yurakucho) ~6 นาที / Ikebukuro ~8 นาที",
       "bestTime": "ช่วงบ่าย",
-      "tags": ["ชุดคอสเพลย์", "วิก", "Otome Road"],
+      "tags": [
+        "ชุดคอสเพลย์",
+        "วิก",
+        "Otome Road"
+      ],
       "tips": [
         "อยู่ในตึก Animate Sunshine ใจกลางย่าน Otome Road",
         "ลองชุด/วิกได้ที่ร้านก่อนตัดสินใจซื้อ"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "ชุดคอสเพลย์สำเร็จรูป", "priceJpy": 8000 },
-        { "nameTh": "วิกผมคอสเพลย์", "priceJpy": 3500 },
-        { "nameTh": "เครื่องประดับ/พร็อพคอสเพลย์", "priceJpy": 1200 }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Phoenix_Wright_Cosplayer_at_Anime_LA_2009.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Phoenix_Wright_Cosplayer_at_Anime_LA_2009.jpg",
+          "credit": "ภาพประกอบ: Andrew Evans / Wikimedia Commons",
+          "license": "CC BY 2.0",
+          "isIllustrative": true
+        }
       ],
-      "sourceUrl": "https://www.acos.me/"
+      "products": [
+        {
+          "nameTh": "ชุดคอสเพลย์สำเร็จรูป",
+          "priceJpy": 8000
+        },
+        {
+          "nameTh": "วิกผมคอสเพลย์",
+          "priceJpy": 3500
+        },
+        {
+          "nameTh": "เครื่องประดับ/พร็อพคอสเพลย์",
+          "priceJpy": 1200
+        }
+      ],
+      "sourceUrl": "https://www.acos.me/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.72866,139.71868"
     },
     {
       "id": "acos-akihabara",
@@ -295,21 +419,43 @@
         "th": "1-7-6 โซโตคันดะ เขตชิโยดะ โตเกียว (AKIBA Cultures Zone ชั้น 5)",
         "ja": "東京都千代田区外神田1-7-6 AKIBAカルチャーズZONE 5F"
       },
-      "hours": "ราว 11:00–20:00 (AKIBA Cultures Zone ชั้น 5)",
+      "hours": "ราว 11:00–20:00 (AKIBA Cultures Zone ชั้น 5) · โดยประมาณ",
       "station": "เดินจากสถานี Akihabara ~4 นาที",
       "bestTime": "ช่วงบ่าย",
-      "tags": ["ชุดคอสเพลย์", "คอนแทคเลนส์", "วิก"],
+      "tags": [
+        "ชุดคอสเพลย์",
+        "คอนแทคเลนส์",
+        "วิก"
+      ],
       "tips": [
         "อยู่ชั้น 5 อาคาร AKIBA Cultures Zone",
         "มีคอนแทคเลนส์/เครื่องสำอางคอสเพลย์ให้เลือกครบ"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "ชุดคอสเพลย์สำเร็จรูป", "priceJpy": 7500 },
-        { "nameTh": "คอนแทคเลนส์คอสเพลย์ (คู่)", "priceJpy": 1800 },
-        { "nameTh": "วิกผมคอสเพลย์", "priceJpy": 3500 }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Cosplay-boston-01.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Cosplay-boston-01.jpg",
+          "credit": "ภาพประกอบ: John Stephen Dwyer / Wikimedia Commons",
+          "license": "CC BY-SA 3.0",
+          "isIllustrative": true
+        }
       ],
-      "sourceUrl": "https://www.acos.me/"
+      "products": [
+        {
+          "nameTh": "ชุดคอสเพลย์สำเร็จรูป",
+          "priceJpy": 7500
+        },
+        {
+          "nameTh": "คอนแทคเลนส์คอสเพลย์ (คู่)",
+          "priceJpy": 1800
+        },
+        {
+          "nameTh": "วิกผมคอสเพลย์",
+          "priceJpy": 3500
+        }
+      ],
+      "sourceUrl": "https://www.acos.me/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.69934,139.77065"
     },
     {
       "id": "otaroad-nipponbashi",
@@ -319,8 +465,8 @@
       "category": "cosplay",
       "city": "osaka",
       "description": "ถนนสายโอตาคุยาว ~500 เมตรในย่านเดนเดนทาวน์ \"อากิฮาบาระแห่งตะวันตก\" รวมร้านคอสเพลย์ ฟิกเกอร์ มังงะ และเมดคาเฟ่ เป็นศูนย์กลางเทศกาลคอสเพลย์ Nippombashi Street Festa",
-      "lat": 34.65950,
-      "lng": 135.50340,
+      "lat": 34.6595,
+      "lng": 135.5034,
       "address": {
         "th": "นิปปมบาชิ เขตนานิวะ โอซาก้า (โอตะโรด)",
         "ja": "大阪市浪速区日本橋（オタロード）"
@@ -328,18 +474,40 @@
       "hours": "ร้านส่วนใหญ่ ~11:00–20:00 (ถนนเดินได้ตลอด)",
       "station": "เดินจากสถานี Namba / Nipponbashi ~8 นาที",
       "bestTime": "สุดสัปดาห์ มีคอสเพลเยอร์ออกมาเดินเยอะ",
-      "tags": ["อากิบะแห่งตะวันตก", "ร้านโอตาคุ", "เทศกาลคอสเพลย์"],
+      "tags": [
+        "อากิบะแห่งตะวันตก",
+        "ร้านโอตาคุ",
+        "เทศกาลคอสเพลย์"
+      ],
       "tips": [
         "ช่วง Nippombashi Street Festa (มีนาคม) คึกคักที่สุด",
         "รวมร้านคอสเพลย์/ฟิกเกอร์/เมดคาเฟ่ในถนนเดียว"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "ชุดคอสเพลย์มือสอง", "priceJpy": 4000, "condition": "used" },
-        { "nameTh": "วิกผมคอสเพลย์", "priceJpy": 3000 },
-        { "nameTh": "พร็อพ/อุปกรณ์คอสเพลย์", "priceJpy": 1500 }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/97/Den-Den_Town%2C_Nipponbashi%2C_Osaka_-_Jul_12%2C_2023.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Den-Den_Town,_Nipponbashi,_Osaka_-_Jul_12,_2023.jpg",
+          "credit": "ภาพ: Clemens Vasters / Wikimedia Commons",
+          "license": "CC BY 2.0"
+        }
       ],
-      "sourceUrl": "https://osaka-info.jp/en/osaka/pop-culture/pop-culture-osakanippombashi-otaroad/"
+      "products": [
+        {
+          "nameTh": "ชุดคอสเพลย์มือสอง",
+          "priceJpy": 4000,
+          "condition": "used"
+        },
+        {
+          "nameTh": "วิกผมคอสเพลย์",
+          "priceJpy": 3000
+        },
+        {
+          "nameTh": "พร็อพ/อุปกรณ์คอสเพลย์",
+          "priceJpy": 1500
+        }
+      ],
+      "sourceUrl": "https://osaka-info.jp/en/osaka/pop-culture/pop-culture-osakanippombashi-otaroad/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.6595,135.5034"
     },
     {
       "id": "yodobashi-akiba",
@@ -355,21 +523,45 @@
         "th": "1-1 คันดะ-ฮานาโอกะโจ เขตชิโยดะ โตเกียว",
         "ja": "東京都千代田区神田花岡町1-1"
       },
-      "hours": "9:30–22:00 (เปิดทุกวัน)",
+      "hours": "9:30–22:00 (เปิดทุกวัน) · โดยประมาณ",
       "station": "ตรงข้ามสถานี Akihabara (ทางออก Showa-dori) ~2 นาที",
       "bestTime": "30 นาทีแรกหลังเปิดร้าน คนน้อยสุด",
-      "tags": ["Tax-free", "9 ชั้น", "ครบทุกอย่าง"],
+      "tags": [
+        "Tax-free",
+        "9 ชั้น",
+        "ครบทุกอย่าง"
+      ],
       "tips": [
         "ชั้น 8 เป็นโซนร้านอาหารใหญ่ที่สุดในอากิบะ",
         "พกพาสปอร์ตเพื่อรับสิทธิ์ Tax-free"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "หูฟัง/อุปกรณ์เสริมมือถือ", "priceJpy": 2000, "condition": "new" },
-        { "nameTh": "กล้องคอมแพกต์", "priceJpy": 35000, "condition": "new" },
-        { "nameTh": "หม้อหุงข้าวญี่ปุ่น", "priceJpy": 18000, "condition": "new" }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Akihabara-_Yodobashi-Akiba_Megastore.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Akihabara-_Yodobashi-Akiba_Megastore.jpg",
+          "credit": "ภาพ: James Morris / Wikimedia Commons",
+          "license": "CC BY 2.0"
+        }
       ],
-      "sourceUrl": "https://www.yodobashi.com/ec/store/en/0018/"
+      "products": [
+        {
+          "nameTh": "หูฟัง/อุปกรณ์เสริมมือถือ",
+          "priceJpy": 2000,
+          "condition": "new"
+        },
+        {
+          "nameTh": "กล้องคอมแพกต์",
+          "priceJpy": 35000,
+          "condition": "new"
+        },
+        {
+          "nameTh": "หม้อหุงข้าวญี่ปุ่น",
+          "priceJpy": 18000,
+          "condition": "new"
+        }
+      ],
+      "sourceUrl": "https://www.yodobashi.com/ec/store/en/0018/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.69846,139.77441"
     },
     {
       "id": "yodobashi-kyoto",
@@ -379,27 +571,51 @@
       "category": "electronics",
       "city": "kyoto",
       "description": "ห้างเครื่องใช้ไฟฟ้าขนาดใหญ่ใกล้สถานีเกียวโต รวมกล้อง คอมพิวเตอร์ เครื่องใช้ในบ้าน ของเล่น แฟชั่น และร้านอาหาร รองรับ Tax-free (มาแทนบิคคาเมระสาขาสถานีที่ปิดตัวไปแล้ว)",
-      "lat": 34.98930,
-      "lng": 135.75720,
+      "lat": 34.9893,
+      "lng": 135.7572,
       "address": {
         "th": "590-2 ฮิงาชิชิโอโคจิโจ ถนนคาราสุมะ เขตชิโมเงียว เกียวโต",
         "ja": "京都市下京区烏丸通塩小路下る東塩小路町590-2"
       },
-      "hours": "9:30–22:00 (เปิด 365 วัน)",
+      "hours": "9:30–22:00 (เปิด 365 วัน) · โดยประมาณ",
       "station": "เดินจาก JR Kyoto Station ~7 นาที",
       "bestTime": "ช่วงสาย ก่อนนักท่องเที่ยวเข้าเมือง",
-      "tags": ["Tax-free", "ใกล้สถานีเกียวโต", "ครบทุกชั้น"],
+      "tags": [
+        "Tax-free",
+        "ใกล้สถานีเกียวโต",
+        "ครบทุกชั้น"
+      ],
       "tips": [
         "อยู่ฝั่งเหนือของสถานีเกียวโต เดินถึงได้สบาย",
         "สาขาบิคคาเมระหน้าสถานีปิดแล้ว มาที่นี่แทนได้"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "แบตสำรอง/อุปกรณ์เสริม", "priceJpy": 1500, "condition": "new" },
-        { "nameTh": "ไดร์เป่าผมญี่ปุ่น", "priceJpy": 9000, "condition": "new" },
-        { "nameTh": "นาฬิกาข้อมือญี่ปุ่น", "priceJpy": 12000, "condition": "new" }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Yodobashi_Camera_Multimedia_Kyoto.JPG",
+          "source": "https://commons.wikimedia.org/wiki/File:Yodobashi_Camera_Multimedia_Kyoto.JPG",
+          "credit": "ภาพ: Tokumeigakarinoaoshima / Wikimedia Commons",
+          "license": "CC0"
+        }
       ],
-      "sourceUrl": "https://www.yodobashi.com/ec/store/en/0083/"
+      "products": [
+        {
+          "nameTh": "แบตสำรอง/อุปกรณ์เสริม",
+          "priceJpy": 1500,
+          "condition": "new"
+        },
+        {
+          "nameTh": "ไดร์เป่าผมญี่ปุ่น",
+          "priceJpy": 9000,
+          "condition": "new"
+        },
+        {
+          "nameTh": "นาฬิกาข้อมือญี่ปุ่น",
+          "priceJpy": 12000,
+          "condition": "new"
+        }
+      ],
+      "sourceUrl": "https://www.yodobashi.com/ec/store/en/0083/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.9893,135.7572"
     },
     {
       "id": "edion-namba",
@@ -409,27 +625,51 @@
       "category": "electronics",
       "city": "osaka",
       "description": "ห้างเครื่องใช้ไฟฟ้าเรือธงของ Edion ย่านนัมบะ อาคารใหญ่ 9 ชั้น รวมเครื่องใช้ไฟฟ้าในบ้าน อุปกรณ์เกม เครื่องสำอาง และของเล่นไฮเทค มีโซนทดลองสินค้า รองรับ Tax-free",
-      "lat": 34.66480,
-      "lng": 135.50130,
+      "lat": 34.6648,
+      "lng": 135.5013,
       "address": {
         "th": "3-2-18 นัมบะ เขตชูโอ โอซาก้า",
         "ja": "大阪市中央区難波3-2-18"
       },
-      "hours": "10:00–21:00 (บางชั้นถึง 22:00)",
+      "hours": "10:00–21:00 (บางชั้นถึง 22:00) · โดยประมาณ",
       "station": "เดินจากสถานี Namba (สาย Midosuji) ~3 นาที",
       "bestTime": "ช่วงบ่าย ช้อปต่อย่านชินไซบาชิได้",
-      "tags": ["Tax-free", "อาคารเรือธง", "โซนทดลองสินค้า"],
+      "tags": [
+        "Tax-free",
+        "อาคารเรือธง",
+        "โซนทดลองสินค้า"
+      ],
       "tips": [
         "มีโซนให้ทดลองสินค้าจริงหลายจุด",
         "ย่านนัมบะ/ชินไซบาชิช้อปต่อได้ยาว"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "เครื่องโกนหนวดไฟฟ้า", "priceJpy": 8000, "condition": "new" },
-        { "nameTh": "ลำโพงบลูทูธ", "priceJpy": 5000, "condition": "new" },
-        { "nameTh": "เครื่องนวดพกพา", "priceJpy": 4000, "condition": "new" }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/ed/EDION_Namba_head_store.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:EDION_Namba_head_store.jpg",
+          "credit": "ภาพ: Tokumeigakarinoaoshima / Wikimedia Commons",
+          "license": "CC BY-SA 4.0"
+        }
       ],
-      "sourceUrl": "https://www.edion.com/"
+      "products": [
+        {
+          "nameTh": "เครื่องโกนหนวดไฟฟ้า",
+          "priceJpy": 8000,
+          "condition": "new"
+        },
+        {
+          "nameTh": "ลำโพงบลูทูธ",
+          "priceJpy": 5000,
+          "condition": "new"
+        },
+        {
+          "nameTh": "เครื่องนวดพกพา",
+          "priceJpy": 4000,
+          "condition": "new"
+        }
+      ],
+      "sourceUrl": "https://www.edion.com/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.6648,135.5013"
     },
     {
       "id": "ichiran-dotonbori",
@@ -448,7 +688,11 @@
       "hours": "เปิด 24 ชั่วโมง",
       "station": "เดินจากสถานี Namba ~5 นาที (ย่านโดทงโบริ)",
       "bestTime": "ดึก ๆ คิวสั้นกว่าช่วงมื้อหลัก",
-      "tags": ["ราเมงทงคตสึ", "นั่งเดี่ยว", "เปิด 24 ชม."],
+      "tags": [
+        "ราเมงทงคตสึ",
+        "นั่งเดี่ยว",
+        "เปิด 24 ชม."
+      ],
       "tips": [
         "กรอกใบปรับความเข้มน้ำซุป/ความสุกเส้นได้เอง",
         "ช่วงหลังเที่ยงคืนคิวสั้นกว่าช่วงมื้ออาหาร"
@@ -464,11 +708,21 @@
         }
       ],
       "products": [
-        { "nameTh": "ราเมงทงคตสึ (ชามมาตรฐาน)", "priceJpy": 980 },
-        { "nameTh": "ไข่ต้มยางมะตูม (เพิ่ม)", "priceJpy": 140 },
-        { "nameTh": "เพิ่มเส้น (คาเอดามะ)", "priceJpy": 210 }
+        {
+          "nameTh": "ราเมงทงคตสึ (ชามมาตรฐาน)",
+          "priceJpy": 980
+        },
+        {
+          "nameTh": "ไข่ต้มยางมะตูม (เพิ่ม)",
+          "priceJpy": 140
+        },
+        {
+          "nameTh": "เพิ่มเส้น (คาเอดามะ)",
+          "priceJpy": 210
+        }
       ],
-      "sourceUrl": "https://ichiran.com/"
+      "sourceUrl": "https://ichiran.com/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=34.66873,135.50118"
     },
     {
       "id": "nishiki-market",
@@ -478,16 +732,20 @@
       "category": "food",
       "city": "kyoto",
       "description": "ตลาดมีหลังคายาวกว่า 400 เมตร ฉายา \"ครัวของเกียวโต\" รวมร้านอาหารพื้นเมือง ของกินเล่น ขนมหวาน ผักดอง และวัตถุดิบสดของเกียวโตกว่าร้อยร้าน",
-      "lat": 35.00500,
-      "lng": 135.76490,
+      "lat": 35.005,
+      "lng": 135.7649,
       "address": {
         "th": "ถนนนิชิกิโคจิ เขตนาคาเงียว เกียวโต",
         "ja": "京都市中京区錦小路通"
       },
-      "hours": "ร้านส่วนใหญ่ 9:00–17:00 (บางร้านปิดพุธ)",
+      "hours": "ร้านส่วนใหญ่ 9:00–17:00 (บางร้านปิดพุธ) · โดยประมาณ",
       "station": "เดินจากสถานี Shijo (สาย Karasuma) / Kawaramachi (Hankyu) ~3–5 นาที",
       "bestTime": "10:00–11:00 เช้า ของครบ คนยังไม่แน่น",
-      "tags": ["ครัวของเกียวโต", "สตรีทฟู้ด", "ของกินเล่น"],
+      "tags": [
+        "ครัวของเกียวโต",
+        "สตรีทฟู้ด",
+        "ของกินเล่น"
+      ],
       "tips": [
         "มารยาทท้องถิ่น: ยืนกินหน้าร้าน ไม่เดินกินไป",
         "ไปก่อนบ่าย 4 โมง หลายร้านเริ่มเก็บของ"
@@ -507,11 +765,21 @@
         }
       ],
       "products": [
-        { "nameTh": "ปลาหมึกเสียบไม้ (ทาโกะทามาโกะ)", "priceJpy": 500 },
-        { "nameTh": "ขนมหวานโมจิ", "priceJpy": 300 },
-        { "nameTh": "ผักดองเกียวโต (สึเกะโมโนะ)", "priceJpy": 600 }
+        {
+          "nameTh": "ปลาหมึกเสียบไม้ (ทาโกะทามาโกะ)",
+          "priceJpy": 500
+        },
+        {
+          "nameTh": "ขนมหวานโมจิ",
+          "priceJpy": 300
+        },
+        {
+          "nameTh": "ผักดองเกียวโต (สึเกะโมโนะ)",
+          "priceJpy": 600
+        }
       ],
-      "sourceUrl": "https://www.kyoto-nishiki.or.jp/"
+      "sourceUrl": "https://www.kyoto-nishiki.or.jp/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.005,135.7649"
     },
     {
       "id": "tsukiji-outer-market",
@@ -522,15 +790,19 @@
       "city": "tokyo",
       "description": "ตลาดนอกเก่าแก่ของสึกิจิ แหล่งสตรีทฟู้ดทะเลสดใหม่ ทั้งซูชิ ซาชิมิ ไข่หวานเสียบไม้ หอยย่าง และของกินเล่นนับร้อยร้าน เปิดตั้งแต่เช้า",
       "lat": 35.66556,
-      "lng": 139.77060,
+      "lng": 139.7706,
       "address": {
         "th": "4-chome สึกิจิ เขตชูโอ โตเกียว",
         "ja": "東京都中央区築地4丁目"
       },
-      "hours": "ราว 5:00–14:00 (ร้านอาหารเปิด ~6–7 โมงเช้า)",
+      "hours": "ราว 5:00–14:00 (ร้านอาหารเปิด ~6–7 โมงเช้า) · โดยประมาณ",
       "station": "เดินจากสถานี Tsukiji (Hibiya) ทางออก 1 / Tsukiji-shijo (Oedo) ~3 นาที",
       "bestTime": "ราว 8 โมงเช้า ของครบ ย่างร้อน คนยังไม่แน่น",
-      "tags": ["อาหารทะเลสด", "สตรีทฟู้ด", "ตลาดเช้า"],
+      "tags": [
+        "อาหารทะเลสด",
+        "สตรีทฟู้ด",
+        "ตลาดเช้า"
+      ],
       "tips": [
         "ปิดวันอาทิตย์และวันพุธบางสัปดาห์ เช็กปฏิทินก่อนไป",
         "ไปเช้าของสดและครบกว่าช่วงสาย"
@@ -546,11 +818,21 @@
         }
       ],
       "products": [
-        { "nameTh": "ซูชิ/ซาชิมิจานสด", "priceJpy": 1500 },
-        { "nameTh": "ไข่หวานเสียบไม้ (ทามาโกยากิ)", "priceJpy": 150 },
-        { "nameTh": "หอยเชลล์ย่าง", "priceJpy": 600 }
+        {
+          "nameTh": "ซูชิ/ซาชิมิจานสด",
+          "priceJpy": 1500
+        },
+        {
+          "nameTh": "ไข่หวานเสียบไม้ (ทามาโกยากิ)",
+          "priceJpy": 150
+        },
+        {
+          "nameTh": "หอยเชลล์ย่าง",
+          "priceJpy": 600
+        }
       ],
-      "sourceUrl": "https://www.tsukiji.or.jp/"
+      "sourceUrl": "https://www.tsukiji.or.jp/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.66556,139.7706"
     },
     {
       "id": "trader-akihabara",
@@ -560,27 +842,52 @@
       "category": "games",
       "city": "tokyo",
       "description": "ร้านซื้อ-ขายวิดีโอเกมมือสองรายใหญ่ใจกลางอากิฮาบาระ อาคารหลายชั้น ชั้นล่างเป็นเกมทุกเครื่อง ชั้นบนมีฟิกเกอร์ ดีวีดี และของสะสมจากเกม/อนิเมะ",
-      "lat": 35.70120,
-      "lng": 139.77100,
+      "lat": 35.7012,
+      "lng": 139.771,
       "address": {
         "th": "3-14-10 โซโตคันดะ เขตชิโยดะ โตเกียว",
         "ja": "東京都千代田区外神田3-14-10"
       },
-      "hours": "11:00–20:00",
+      "hours": "11:00–20:00 · โดยประมาณ",
       "station": "เดินจากสถานี Akihabara ~5 นาที",
       "bestTime": "ช่วงบ่ายวันธรรมดา คนน้อยกว่า",
-      "tags": ["เกมมือสอง", "ซื้อขายเกม", "ของสะสม"],
+      "tags": [
+        "เกมมือสอง",
+        "ซื้อขายเกม",
+        "ของสะสม"
+      ],
       "tips": [
         "ชั้น 1–2 เป็นเกม ชั้นบนเป็นฟิกเกอร์/ของสะสม",
         "รับซื้อเกมเก่าด้วย ถ้ามีของไปแลกได้"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "เกมมือสอง (ต่อแผ่น/ตลับ)", "priceJpy": 500, "condition": "used" },
-        { "nameTh": "จอย/อุปกรณ์เสริมมือสอง", "priceJpy": 1500, "condition": "used" },
-        { "nameTh": "เครื่องเกมมือสอง", "priceJpy": 8000, "condition": "used" }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Akihabara_Night.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Akihabara_Night.jpg",
+          "credit": "ภาพประกอบ: ElHeineken / Wikimedia Commons",
+          "license": "CC BY 4.0",
+          "isIllustrative": true
+        }
       ],
-      "sourceUrl": "https://www.e-trader.jp/"
+      "products": [
+        {
+          "nameTh": "เกมมือสอง (ต่อแผ่น/ตลับ)",
+          "priceJpy": 500,
+          "condition": "used"
+        },
+        {
+          "nameTh": "จอย/อุปกรณ์เสริมมือสอง",
+          "priceJpy": 1500,
+          "condition": "used"
+        },
+        {
+          "nameTh": "เครื่องเกมมือสอง",
+          "priceJpy": 8000,
+          "condition": "used"
+        }
+      ],
+      "sourceUrl": "https://www.e-trader.jp/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.7012,139.771"
     },
     {
       "id": "surugaya-akihabara",
@@ -596,21 +903,46 @@
         "th": "3-9-8 โซโตคันดะ เขตชิโยดะ โตเกียว (อาคารโทโย ชั้น 1)",
         "ja": "東京都千代田区外神田3-9-8 東洋ビル1F"
       },
-      "hours": "9:00–22:00",
+      "hours": "9:00–22:00 · โดยประมาณ",
       "station": "เดินจากสถานี Akihabara ~6 นาที / Suehirocho ~3 นาที",
       "bestTime": "ค่ำ เปิดถึงสี่ทุ่ม เลี่ยงช่วงคนเยอะ",
-      "tags": ["เกมมือสอง", "ราคาถูก", "เปิดยาว"],
+      "tags": [
+        "เกมมือสอง",
+        "ราคาถูก",
+        "เปิดยาว"
+      ],
       "tips": [
         "เปิดถึง 22:00 ช้อปต่อหลังร้านอื่นปิดได้",
         "เครือซูรุกายะมีหลายสาขาในอากิบะ แยกตามหมวดสินค้า"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "ตลับ/แผ่นเกมมือสอง", "priceJpy": 480, "condition": "used" },
-        { "nameTh": "เกมรุ่นเก่าสะสม", "priceJpy": 2000, "condition": "used" },
-        { "nameTh": "เครื่องเกมมือสอง", "priceJpy": 6000, "condition": "used" }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Urban_architectural_portrait_from_Chuo-dori_of_Akihabara%2C_Chiyoda%2C_Tokyo%2C_Japan%2C_2024_May.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Urban_architectural_portrait_from_Chuo-dori_of_Akihabara,_Chiyoda,_Tokyo,_Japan,_2024_May.jpg",
+          "credit": "ภาพประกอบ: Ximonic (Simo Räsänen) / Wikimedia Commons",
+          "license": "CC BY-SA 4.0",
+          "isIllustrative": true
+        }
       ],
-      "sourceUrl": "https://www.suruga-ya.jp/"
+      "products": [
+        {
+          "nameTh": "ตลับ/แผ่นเกมมือสอง",
+          "priceJpy": 480,
+          "condition": "used"
+        },
+        {
+          "nameTh": "เกมรุ่นเก่าสะสม",
+          "priceJpy": 2000,
+          "condition": "used"
+        },
+        {
+          "nameTh": "เครื่องเกมมือสอง",
+          "priceJpy": 6000,
+          "condition": "used"
+        }
+      ],
+      "sourceUrl": "https://www.suruga-ya.jp/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.70085,139.77185"
     },
     {
       "id": "mandarake-complex-akihabara",
@@ -626,21 +958,45 @@
         "th": "3-11-12 โซโตคันดะ เขตชิโยดะ โตเกียว",
         "ja": "東京都千代田区外神田3-11-12"
       },
-      "hours": "12:00–20:00",
+      "hours": "12:00–20:00 · โดยประมาณ",
       "station": "เดินจากสถานี Akihabara (ทางออก Electric Town) ~5 นาที",
       "bestTime": "ช่วงบ่าย หลังร้านเปิดครบเที่ยง",
-      "tags": ["ของสะสม", "ฟิกเกอร์", "ของหายากยุคโชวะ"],
+      "tags": [
+        "ของสะสม",
+        "ฟิกเกอร์",
+        "ของหายากยุคโชวะ"
+      ],
       "tips": [
         "ทั้ง 8 ชั้นแยกหมวดสินค้า เผื่อเวลาเดินครบ",
         "ของวินเทจ/เซลอนิเมะหายากอยู่ชั้นบน ๆ"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "โดจินชิ/มังงะมือสอง", "priceJpy": 300, "condition": "used" },
-        { "nameTh": "ฟิกเกอร์มือสอง", "priceJpy": 1800, "condition": "used" },
-        { "nameTh": "ของสะสมยุคโชวะหายาก", "priceJpy": 5000, "condition": "used" }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/ea/MANDARAKE_COMPLEX_AKIHABARA.JPG",
+          "source": "https://commons.wikimedia.org/wiki/File:MANDARAKE_COMPLEX_AKIHABARA.JPG",
+          "credit": "ภาพ: 正和 / Wikimedia Commons",
+          "license": "CC BY-SA 3.0"
+        }
       ],
-      "sourceUrl": "https://www.mandarake.co.jp/dir/cmp/"
+      "products": [
+        {
+          "nameTh": "โดจินชิ/มังงะมือสอง",
+          "priceJpy": 300,
+          "condition": "used"
+        },
+        {
+          "nameTh": "ฟิกเกอร์มือสอง",
+          "priceJpy": 1800,
+          "condition": "used"
+        },
+        {
+          "nameTh": "ของสะสมยุคโชวะหายาก",
+          "priceJpy": 5000,
+          "condition": "used"
+        }
+      ],
+      "sourceUrl": "https://www.mandarake.co.jp/dir/cmp/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.70148,139.77137"
     },
     {
       "id": "akihabara-gachapon-kaikan",
@@ -651,25 +1007,44 @@
       "city": "tokyo",
       "description": "ร้านตู้กาชาปอง (แคปซูลทอย) โดยเฉพาะ มีตู้กว่า 500 ตู้ตลอดเวลา สับเปลี่ยนของใหม่ราว 50 แบบต่อเดือน สวรรค์ของคนชอบสุ่มของเล่นแคปซูล",
       "lat": 35.70206,
-      "lng": 139.77170,
+      "lng": 139.7717,
       "address": {
         "th": "3-15-5 โซโตคันดะ เขตชิโยดะ โตเกียว",
         "ja": "東京都千代田区外神田3-15-5"
       },
-      "hours": "จ–พฤ 11:00–20:00 · ศ–ส 11:00–22:00 · อา/วันหยุด 11:00–19:00",
+      "hours": "จ–พฤ 11:00–20:00 · ศ–ส 11:00–22:00 · อา/วันหยุด 11:00–19:00 · โดยประมาณ",
       "station": "เดินจากสถานี Suehirocho (สาย Ginza) ~2 นาที / Akihabara ~7 นาที",
       "bestTime": "ค่ำวันศุกร์/เสาร์ เปิดถึงสี่ทุ่ม",
-      "tags": ["กาชาปอง", "แคปซูลทอย", "ของเล่นสุ่ม"],
+      "tags": [
+        "กาชาปอง",
+        "แคปซูลทอย",
+        "ของเล่นสุ่ม"
+      ],
       "tips": [
         "เตรียมเหรียญ 100/500 เยนไปเยอะ ๆ",
         "ของใหม่หมุนเวียนเร็ว เจอแบบถูกใจรีบหมุน"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "กาชาปอง (ต่อครั้ง)", "priceJpy": 300 },
-        { "nameTh": "กาชาปองรุ่นพิเศษ", "priceJpy": 500 }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/4/44/Gashapon_machines_%28Hong_Kong%29.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Gashapon_machines_(Hong_Kong).jpg",
+          "credit": "ภาพประกอบ: Mk2010 / Wikimedia Commons",
+          "license": "CC BY-SA 3.0",
+          "isIllustrative": true
+        }
       ],
-      "sourceUrl": "https://www.gltjp.com/en/directory/item/16985/"
+      "products": [
+        {
+          "nameTh": "กาชาปอง (ต่อครั้ง)",
+          "priceJpy": 300
+        },
+        {
+          "nameTh": "กาชาปองรุ่นพิเศษ",
+          "priceJpy": 500
+        }
+      ],
+      "sourceUrl": "https://www.gltjp.com/en/directory/item/16985/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.70206,139.7717"
     },
     {
       "id": "athome-cafe-akihabara",
@@ -680,26 +1055,48 @@
       "city": "tokyo",
       "description": "เมดคาเฟ่ชื่อดังที่สุดของอากิฮาบาระ อยู่ในตึกดองกี้ (Don Quijote) ชั้น 5 เหล่าเมดเสิร์ฟอาหาร/เครื่องดื่มและเล่นกิจกรรมโมเอะ ถ่ายโพลารอยด์เป็นที่ระลึกได้",
       "lat": 35.70083,
-      "lng": 139.77110,
+      "lng": 139.7711,
       "address": {
         "th": "4-3-3 โซโตคันดะ เขตชิโยดะ โตเกียว (ตึก Don Quijote ชั้น 5)",
         "ja": "東京都千代田区外神田4-3-3 ドン・キホーテ秋葉原店5F"
       },
-      "hours": "จ–ศ 11:30–22:00 · ส–อา 10:30–22:00 (เปิดทุกวัน)",
+      "hours": "จ–ศ 11:30–22:00 · ส–อา 10:30–22:00 (เปิดทุกวัน) · โดยประมาณ",
       "station": "เดินจากสถานี Akihabara (ทางออก Electric Town) ~4 นาที",
       "bestTime": "ช่วงบ่าย หลีกมื้อเย็นที่คนแน่น",
-      "tags": ["เมดคาเฟ่", "วัฒนธรรมโมเอะ", "ถ่ายรูปกับเมด"],
+      "tags": [
+        "เมดคาเฟ่",
+        "วัฒนธรรมโมเอะ",
+        "ถ่ายรูปกับเมด"
+      ],
       "tips": [
         "มีระบบค่าเข้า + ต้องสั่งเครื่องดื่ม/เซ็ตอย่างน้อย 1",
         "ถ่ายเชกิ (โพลารอยด์) กับเมดเป็นที่ระลึกได้"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "ค่าเข้า + เครื่องดื่ม + โพลารอยด์ (1 ชม.)", "priceJpy": 1500 },
-        { "nameTh": "เซ็ตเมนูโมเอะ (อาหาร+เครื่องดื่ม)", "priceJpy": 2500 },
-        { "nameTh": "ถ่ายเชกิกับเมด (เพิ่ม)", "priceJpy": 1000 }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Maids_distributing_flyers_in_Akihabara_Tokyo_20100731_7376.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Maids_distributing_flyers_in_Akihabara_Tokyo_20100731_7376.jpg",
+          "credit": "ภาพประกอบ: Jakub Hałun / Wikimedia Commons",
+          "license": "CC BY-SA 3.0",
+          "isIllustrative": true
+        }
       ],
-      "sourceUrl": "https://www.maidcafe-athome.com/akihabara"
+      "products": [
+        {
+          "nameTh": "ค่าเข้า + เครื่องดื่ม + โพลารอยด์ (1 ชม.)",
+          "priceJpy": 1500
+        },
+        {
+          "nameTh": "เซ็ตเมนูโมเอะ (อาหาร+เครื่องดื่ม)",
+          "priceJpy": 2500
+        },
+        {
+          "nameTh": "ถ่ายเชกิกับเมด (เพิ่ม)",
+          "priceJpy": 1000
+        }
+      ],
+      "sourceUrl": "https://www.maidcafe-athome.com/akihabara",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.70083,139.7711"
     },
     {
       "id": "akihabara-electric-town",
@@ -718,17 +1115,35 @@
       "hours": "ร้านส่วนใหญ่ ~10:00/11:00–20:00 (ย่านเดินได้ตลอด)",
       "station": "ติดสถานี Akihabara (ทางออก Electric Town)",
       "bestTime": "บ่ายวันอาทิตย์ ถนนชูโอปิดรถ 13:00–18:00 (ต.ค.–มี.ค. ถึง 17:00)",
-      "tags": ["ย่านโอตาคุ", "เครื่องไฟฟ้า", "อนิเมะ/เกม"],
+      "tags": [
+        "ย่านโอตาคุ",
+        "เครื่องไฟฟ้า",
+        "อนิเมะ/เกม"
+      ],
       "tips": [
         "เดินถนนชูโอโดริเส้นหลัก ร้านเรียงยาวสองฝั่ง",
         "แวะ Radio Kaikan รวมร้านของสะสม 30+ ร้านในตึกเดียว"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "ค่าเข้าชมย่าน (ฟรี)", "priceJpy": 0 },
-        { "nameTh": "ตู้กาชาปองของสะสม (ต่อครั้ง)", "priceJpy": 300 }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/5/52/Akihabara_Chuo-dori_Crossing_SW_20110925.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Akihabara_Chuo-dori_Crossing_SW_20110925.jpg",
+          "credit": "ภาพ: Vantey / Wikimedia Commons",
+          "license": "Public domain"
+        }
       ],
-      "sourceUrl": "https://www.gotokyo.org/en/spot/55/index.html"
+      "products": [
+        {
+          "nameTh": "ค่าเข้าชมย่าน (ฟรี)",
+          "priceJpy": 0
+        },
+        {
+          "nameTh": "ตู้กาชาปองของสะสม (ต่อครั้ง)",
+          "priceJpy": 300
+        }
+      ],
+      "sourceUrl": "https://www.gotokyo.org/en/spot/55/index.html",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.69954,139.77137"
     },
     {
       "id": "sushi-zanmai-tsukiji",
@@ -747,7 +1162,11 @@
       "hours": "เปิด 24 ชั่วโมง",
       "station": "เดินจากสถานี Tsukiji (Hibiya) ~5 นาที / Higashi-Ginza",
       "bestTime": "เช้าตรู่หลังเดินตลาดนอกสึกิจิ",
-      "tags": ["ซูชิ", "เปิด 24 ชม.", "เป็นมิตรนักท่องเที่ยว"],
+      "tags": [
+        "ซูชิ",
+        "เปิด 24 ชม.",
+        "เป็นมิตรนักท่องเที่ยว"
+      ],
       "tips": [
         "มีเมนูภาพหลายภาษา สั่งง่ายแม้พูดญี่ปุ่นไม่ได้",
         "อยู่ใกล้ตลาดนอกสึกิจิ เดินต่อได้เลย"
@@ -762,11 +1181,21 @@
         }
       ],
       "products": [
-        { "nameTh": "ซูชิจานเดี่ยว (เริ่มต้น)", "priceJpy": 330 },
-        { "nameTh": "เซ็ตซูชิรวม", "priceJpy": 1500 },
-        { "nameTh": "เซ็ตทูน่าพิเศษ (กลางวัน)", "priceJpy": 3100 }
+        {
+          "nameTh": "ซูชิจานเดี่ยว (เริ่มต้น)",
+          "priceJpy": 330
+        },
+        {
+          "nameTh": "เซ็ตซูชิรวม",
+          "priceJpy": 1500
+        },
+        {
+          "nameTh": "เซ็ตทูน่าพิเศษ (กลางวัน)",
+          "priceJpy": 3100
+        }
       ],
-      "sourceUrl": "https://www.kiyomura.co.jp/"
+      "sourceUrl": "https://www.kiyomura.co.jp/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.66628,139.77004"
     },
     {
       "id": "uobei-shibuya",
@@ -782,21 +1211,43 @@
         "th": "2-29-11 โดเก็นซากะ เขตชิบุยะ โตเกียว",
         "ja": "東京都渋谷区道玄坂2-29-11"
       },
-      "hours": "11:00–24:00",
+      "hours": "11:00–24:00 · โดยประมาณ",
       "station": "เดินจากสถานี Shibuya ~5 นาที",
       "bestTime": "นอกช่วงมื้อหลัก เลี่ยงคิวยาว",
-      "tags": ["ซูชิสายพาน", "ราคาถูก", "สั่งจอทัช"],
+      "tags": [
+        "ซูชิสายพาน",
+        "ราคาถูก",
+        "สั่งจอทัช"
+      ],
       "tips": [
         "สั่งผ่านจอทัชหลายภาษา จานวิ่งมาตามรางเอง",
         "ชา/น้ำ/ซีอิ๊วฟรีที่โต๊ะ"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "ซูชิ (ต่อจาน เริ่มต้น)", "priceJpy": 110 },
-        { "nameTh": "เซ็ตยอดนิยม", "priceJpy": 500 },
-        { "nameTh": "ของหวาน", "priceJpy": 200 }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/8/85/Kaiten-zushi.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Kaiten-zushi.jpg",
+          "credit": "ภาพประกอบ: s nak / Wikimedia Commons",
+          "license": "CC BY 2.0",
+          "isIllustrative": true
+        }
       ],
-      "sourceUrl": "https://www.genkisushi.co.jp/"
+      "products": [
+        {
+          "nameTh": "ซูชิ (ต่อจาน เริ่มต้น)",
+          "priceJpy": 110
+        },
+        {
+          "nameTh": "เซ็ตยอดนิยม",
+          "priceJpy": 500
+        },
+        {
+          "nameTh": "ของหวาน",
+          "priceJpy": 200
+        }
+      ],
+      "sourceUrl": "https://www.genkisushi.co.jp/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.65802,139.69707"
     },
     {
       "id": "katsu-midori-shibuya",
@@ -807,26 +1258,48 @@
       "city": "tokyo",
       "description": "ซูชิสายพานคุณภาพดีราคาคุ้มชั้น 8 ห้างเซบุชิบุยะ คำใหญ่ วัตถุดิบสด เป็นที่นิยมจนต้องต่อคิว ราคาเริ่มจานละ 100 เยน",
       "lat": 35.66075,
-      "lng": 139.69930,
+      "lng": 139.6993,
       "address": {
         "th": "21-1 อูดางาวะโจ เขตชิบุยะ โตเกียว (เซบุ ชิบุยะ A ชั้น 8)",
         "ja": "東京都渋谷区宇田川町21-1 西武渋谷店A館8F"
       },
-      "hours": "11:00–23:00",
+      "hours": "11:00–23:00 · โดยประมาณ",
       "station": "เดินจากสถานี Shibuya ~5 นาที",
       "bestTime": "ก่อน 11 โมง หรือบ่ายแก่ ๆ เลี่ยงคิว (11–14 และ 18–20 คนแน่น)",
-      "tags": ["ซูชิสายพาน", "คุ้มค่า", "คำใหญ่"],
+      "tags": [
+        "ซูชิสายพาน",
+        "คุ้มค่า",
+        "คำใหญ่"
+      ],
       "tips": [
         "ช่วงมื้อคิวยาวมาก ไปนอกเวลาจะรอแค่ 5–10 นาที",
         "รับบัตรคิวที่หน้าร้านก่อนแล้วค่อยไปเดินเล่น"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "ซูชิ (ต่อจาน เริ่มต้น)", "priceJpy": 100 },
-        { "nameTh": "โอโทโร่ (2 คำ)", "priceJpy": 500 },
-        { "nameTh": "จานพิเศษ", "priceJpy": 400 }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Tokyo-Kaiten_sushi%2C_Japan_%282010%29.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Tokyo-Kaiten_sushi,_Japan_(2010).jpg",
+          "credit": "ภาพประกอบ: Alberto Carrasco Casado / Wikimedia Commons",
+          "license": "CC BY 2.0",
+          "isIllustrative": true
+        }
       ],
-      "sourceUrl": "https://katumidori.co.jp/"
+      "products": [
+        {
+          "nameTh": "ซูชิ (ต่อจาน เริ่มต้น)",
+          "priceJpy": 100
+        },
+        {
+          "nameTh": "โอโทโร่ (2 คำ)",
+          "priceJpy": 500
+        },
+        {
+          "nameTh": "จานพิเศษ",
+          "priceJpy": 400
+        }
+      ],
+      "sourceUrl": "https://katumidori.co.jp/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.66075,139.6993"
     },
     {
       "id": "daiwa-sushi-toyosu",
@@ -837,25 +1310,44 @@
       "city": "tokyo",
       "description": "ร้านซูชิในตำนานในตลาดโทโยสุ (ย้ายมาจากสึกิจิ) เสิร์ฟโอมากาเสะวัตถุดิบสดตรงจากตลาดประมูล เปิดเช้าตรู่ คิวยาว 1–2 ชม. แต่คุ้มค่าการรอ",
       "lat": 35.64517,
-      "lng": 139.78650,
+      "lng": 139.7865,
       "address": {
         "th": "6-3-2 โทโยสุ เขตโคโต โตเกียว (ตลาดโทโยสุ อาคารร้านค้า)",
         "ja": "東京都江東区豊洲6-3-2 豊洲市場"
       },
-      "hours": "6:00–13:00 (ปิดวันพุธและอาทิตย์)",
+      "hours": "6:00–13:00 (ปิดวันพุธและอาทิตย์) · โดยประมาณ",
       "station": "เดินจากสถานี Shijo-mae (สาย Yurikamome) ~5 นาที",
       "bestTime": "ไปก่อน 6 โมงเช้าเพื่อเลี่ยงคิว 1–2 ชม.",
-      "tags": ["โอมากาเสะ", "ตลาดโทโยสุ", "ซูชิเช้าตรู่"],
+      "tags": [
+        "โอมากาเสะ",
+        "ตลาดโทโยสุ",
+        "ซูชิเช้าตรู่"
+      ],
       "tips": [
         "ปิดวันพุธ/อาทิตย์ และวันหยุดตลาด เช็กปฏิทินก่อนไป",
         "ไปเช้ามาก ๆ คิวสั้นกว่า ของสดสุด"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "เซ็ตโอมากาเสะ (นิงิริ + ม้วน + ไข่หวาน + ซุป)", "priceJpy": 7000 },
-        { "nameTh": "นิงิริสั่งเพิ่มต่อคำ (เริ่มต้น)", "priceJpy": 500 }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/e8/Tuna_nigiri_sushi_-_Sushiko_%282648979899%29.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Tuna_nigiri_sushi_-_Sushiko_(2648979899).jpg",
+          "credit": "ภาพประกอบ: Alpha / Wikimedia Commons",
+          "license": "CC BY-SA 2.0",
+          "isIllustrative": true
+        }
       ],
-      "sourceUrl": "https://www.toyosu-market.or.jp/"
+      "products": [
+        {
+          "nameTh": "เซ็ตโอมากาเสะ (นิงิริ + ม้วน + ไข่หวาน + ซุป)",
+          "priceJpy": 7000
+        },
+        {
+          "nameTh": "นิงิริสั่งเพิ่มต่อคำ (เริ่มต้น)",
+          "priceJpy": 500
+        }
+      ],
+      "sourceUrl": "https://www.toyosu-market.or.jp/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.64517,139.7865"
     },
     {
       "id": "nodaiwa-azabu",
@@ -871,20 +1363,39 @@
         "th": "1-5-4 ฮิงาชิอาซาบุ เขตมินาโตะ โตเกียว",
         "ja": "東京都港区東麻布1-5-4"
       },
-      "hours": "11:00–13:30 และ 17:00–20:00 (ปิดวันอาทิตย์)",
+      "hours": "11:00–13:30 และ 17:00–20:00 (ปิดวันอาทิตย์) · โดยประมาณ",
       "station": "เดินจากสถานี Akabanebashi (สาย Oedo) ~6 นาที / Kamiyacho ~8 นาที",
       "bestTime": "มื้อกลางวันราคาย่อมเยากว่ามื้อค่ำ",
-      "tags": ["ปลาไหลย่าง", "ระดับมิชลิน", "ร้านเก่าแก่"],
+      "tags": [
+        "ปลาไหลย่าง",
+        "ระดับมิชลิน",
+        "ร้านเก่าแก่"
+      ],
       "tips": [
         "แนะนำจองโต๊ะล่วงหน้า โดยเฉพาะมื้อค่ำ",
         "มื้อกลางวันเริ่ม ~3,500 เยน คุ้มกว่ามื้อค่ำที่เริ่ม 8,000"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "อุนาจู กลางวัน (เริ่มต้น)", "priceJpy": 3500 },
-        { "nameTh": "เซ็ตปลาไหลมื้อค่ำ", "priceJpy": 8000 }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/8/81/Unadon_-_Flickr_-_chooyutshing.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Unadon_-_Flickr_-_chooyutshing.jpg",
+          "credit": "ภาพประกอบ: Choo Yut Shing / Wikimedia Commons",
+          "license": "Public domain",
+          "isIllustrative": true
+        }
       ],
-      "sourceUrl": "https://guide.michelin.com/jp/en/tokyo-region/tokyo/restaurant/nodaiwa-azabu-Iikura-honten-1194124"
+      "products": [
+        {
+          "nameTh": "อุนาจู กลางวัน (เริ่มต้น)",
+          "priceJpy": 3500
+        },
+        {
+          "nameTh": "เซ็ตปลาไหลมื้อค่ำ",
+          "priceJpy": 8000
+        }
+      ],
+      "sourceUrl": "https://guide.michelin.com/jp/en/tokyo-region/tokyo/restaurant/nodaiwa-azabu-Iikura-honten-1194124",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.65713,139.74527"
     },
     {
       "id": "izuei-honten-ueno",
@@ -894,27 +1405,49 @@
       "category": "food",
       "city": "tokyo",
       "description": "ร้านปลาไหลเก่าแก่กว่า 250 ปีตั้งแต่ยุคเอโดะ ริมบึงชิโนบาซุในสวนอูเอโนะ บรรยากาศญี่ปุ่นดั้งเดิม ขึ้นชื่อเรื่องอุนาจูปลาไหลย่างเสิร์ฟพร้อมสำรับอาหารญี่ปุ่น",
-      "lat": 35.71000,
-      "lng": 139.77000,
+      "lat": 35.71,
+      "lng": 139.77,
       "address": {
         "th": "2-12-22 อูเอโนะ เขตไทโต โตเกียว (ริมบึงชิโนบาซุ)",
         "ja": "東京都台東区上野2-12-22"
       },
-      "hours": "11:00–21:30",
+      "hours": "11:00–21:30 · โดยประมาณ",
       "station": "เดินจากสถานี JR Ueno ~5 นาที / Ueno-Hirokoji ~3 นาที",
       "bestTime": "มื้อกลางวันวิวบึงชิโนบาซุสวย",
-      "tags": ["ปลาไหลย่าง", "ร้านยุคเอโดะ", "บรรยากาศดั้งเดิม"],
+      "tags": [
+        "ปลาไหลย่าง",
+        "ร้านยุคเอโดะ",
+        "บรรยากาศดั้งเดิม"
+      ],
       "tips": [
         "ขออุนาจูแบบเดี่ยวจะคุ้มกว่าคอร์สเต็ม",
         "อยู่ในสวนอูเอโนะ เดินเที่ยวต่อได้"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "อุนาจู (เริ่มต้น)", "priceJpy": 3000 },
-        { "nameTh": "คอร์ส Matsu (อุนาจู + สำรับ 6 อย่าง)", "priceJpy": 8800 },
-        { "nameTh": "คอร์สพิเศษ", "priceJpy": 12100 }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Rice_with_grilled_eel_and_lunch_combo_%285791218501%29.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Rice_with_grilled_eel_and_lunch_combo_(5791218501).jpg",
+          "credit": "ภาพประกอบ: pelican / Wikimedia Commons",
+          "license": "CC BY-SA 2.0",
+          "isIllustrative": true
+        }
       ],
-      "sourceUrl": "https://izuei.co.jp/en/"
+      "products": [
+        {
+          "nameTh": "อุนาจู (เริ่มต้น)",
+          "priceJpy": 3000
+        },
+        {
+          "nameTh": "คอร์ส Matsu (อุนาจู + สำรับ 6 อย่าง)",
+          "priceJpy": 8800
+        },
+        {
+          "nameTh": "คอร์สพิเศษ",
+          "priceJpy": 12100
+        }
+      ],
+      "sourceUrl": "https://izuei.co.jp/en/",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.71,139.77"
     },
     {
       "id": "kyogoku-kaneyo-kyoto",
@@ -924,27 +1457,49 @@
       "category": "food",
       "city": "kyoto",
       "description": "ร้านปลาไหลเก่าแก่ 7 รุ่นตั้งแต่ยุคเมจิ ใจกลางย่านชินเกียวโกกุ เกียวโต เมนูเด็ดคือ \"คินชิด้ง\" ข้าวหน้าปลาไหลราดซอสทับด้วยไข่หวานม้วนแผ่นใหญ่สไตล์เกียวโต",
-      "lat": 35.00880,
-      "lng": 135.76760,
+      "lat": 35.0088,
+      "lng": 135.7676,
       "address": {
         "th": "456 มัตสึกาเอโจ ถนนซันโจ เขตนาคาเงียว เกียวโต",
         "ja": "京都市中京区松ヶ枝町456"
       },
-      "hours": "11:30–15:30 และ 17:00–20:30 (อังคารเฉพาะกลางวัน · ปิดวันพุธ)",
+      "hours": "11:30–15:30 และ 17:00–20:30 (อังคารเฉพาะกลางวัน · ปิดวันพุธ) · โดยประมาณ",
       "station": "เดินจากสถานี Sanjo (Keihan) / Kyoto Shiyakusho-mae (Tozai) ~5 นาที",
       "bestTime": "มื้อกลางวันมีเซ็ตราคาประหยัด",
-      "tags": ["ปลาไหลย่าง", "คินชิด้ง", "ร้านยุคเมจิ"],
+      "tags": [
+        "ปลาไหลย่าง",
+        "คินชิด้ง",
+        "ร้านยุคเมจิ"
+      ],
       "tips": [
         "สั่ง \"คินชิด้ง\" เมนูซิกเนเจอร์ที่ทับด้วยไข่หวานแผ่นใหญ่",
         "ปิดวันพุธ และวันอังคารเปิดเฉพาะกลางวัน"
       ],
-      "images": [],
-      "products": [
-        { "nameTh": "เซ็ตกลางวันประหยัด", "priceJpy": 950 },
-        { "nameTh": "คินชิด้ง (ข้าวหน้าปลาไหล + ไข่หวาน)", "priceJpy": 2700 },
-        { "nameTh": "อุนาจู", "priceJpy": 3000 }
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Unagi_Don_-_J-Pub_Shogun_AUD13_%283427209239%29.jpg",
+          "source": "https://commons.wikimedia.org/wiki/File:Unagi_Don_-_J-Pub_Shogun_AUD13_(3427209239).jpg",
+          "credit": "ภาพประกอบ: Alpha / Wikimedia Commons",
+          "license": "CC BY-SA 2.0",
+          "isIllustrative": true
+        }
       ],
-      "sourceUrl": "https://guide.michelin.com/us/en/kyoto-region/kyoto/restaurant/kyogoku-kaneyo"
+      "products": [
+        {
+          "nameTh": "เซ็ตกลางวันประหยัด",
+          "priceJpy": 950
+        },
+        {
+          "nameTh": "คินชิด้ง (ข้าวหน้าปลาไหล + ไข่หวาน)",
+          "priceJpy": 2700
+        },
+        {
+          "nameTh": "อุนาจู",
+          "priceJpy": 3000
+        }
+      ],
+      "sourceUrl": "https://guide.michelin.com/us/en/kyoto-region/kyoto/restaurant/kyogoku-kaneyo",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.0088,135.7676"
     },
     {
       "id": "donki-dotonbori",
