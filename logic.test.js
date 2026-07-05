@@ -607,4 +607,19 @@ describe('data.json (dataset guard)', () => {
       expect(counts[c], `หมวด ${c} มี ${counts[c]} รายการ (ต้อง ≥ 3)`).toBeGreaterThanOrEqual(3);
     }
   });
+
+  it('Editor\'s Picks: มี 8–10 ร้าน กระจายหลายหมวด/หลายเมือง และมีเหตุผลทุกอัน', () => {
+    const picks = dataset.entries.filter((e) => e.editorsPick === true);
+    // 8–10 picks (คัดจาก ~49 ร้าน)
+    expect(picks.length).toBeGreaterThanOrEqual(8);
+    expect(picks.length).toBeLessThanOrEqual(10);
+    // ทุก pick มี editorsPickReason ที่จับต้องได้ (ไม่ว่าง)
+    for (const e of picks) {
+      expect(typeof e.editorsPickReason === 'string' && e.editorsPickReason.trim().length > 0,
+        `${e.id} ขาด editorsPickReason`).toBe(true);
+    }
+    // กระจายหลายหมวด (ไม่กระจุกแนวเดียว) และมากกว่า 1 เมือง
+    expect(new Set(picks.map((e) => e.category)).size).toBeGreaterThanOrEqual(5);
+    expect(new Set(picks.map((e) => e.city)).size).toBeGreaterThan(1);
+  });
 });

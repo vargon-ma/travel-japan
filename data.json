@@ -27,8 +27,6 @@
         "ซื้อบัตร Fast Skytree ออนไลน์ล่วงหน้าช่วยลดเวลาต่อคิว",
         "วันฟ้าใสมองเห็นภูเขาไฟฟูจิได้จากชั้น 350"
       ],
-      "editorsPick": true,
-      "editorsPickReason": "จุดชมวิวสูงสุดในญี่ปุ่น เห็นโตเกียวรอบทิศ 360°",
       "images": [
         {
           "url": "https://upload.wikimedia.org/wikipedia/commons/8/84/Tokyo_Skytree_2014_%E2%85%A2.jpg",
@@ -89,7 +87,7 @@
         "ไปเช้ามากหรือพลบค่ำเพื่อเลี่ยงนักท่องเที่ยวแน่น"
       ],
       "editorsPick": true,
-      "editorsPickReason": "อุโมงค์โทริอิแดงนับพันต้น ไอคอนของเกียวโต และเข้าฟรี",
+      "editorsPickReason": "อุโมงค์โทริอิแดงนับพันต้น ไอคอนของเกียวโต เดินขึ้นเขาได้และเข้าฟรี",
       "images": [
         {
           "url": "https://upload.wikimedia.org/wikipedia/commons/3/35/20181110_Fushimi_Inari_shrine_11.jpg",
@@ -153,8 +151,6 @@
         "สวนรอบปราสาทเดินเล่นฟรี จ่ายเฉพาะค่าเข้าหอปราสาท",
         "ขึ้นลิฟต์ถึงชั้น 5 แล้วเดินขึ้นชั้น 8 เพื่อชมวิว"
       ],
-      "editorsPick": true,
-      "editorsPickReason": "ปราสาทสัญลักษณ์โอซาก้า ล้อมด้วยสวนซากุระกว้างใหญ่",
       "images": [
         {
           "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Castillo_de_Osaka_2023.jpg",
@@ -240,7 +236,9 @@
         }
       ],
       "sourceUrl": "https://www.superpotato.com/",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.69906,139.77155"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.69906,139.77155",
+      "editorsPick": true,
+      "editorsPickReason": "ร้านเกมเรโทรระดับตำนานของอากิฮาบาระ ตลับและเครื่องหายากตั้งแต่ยุคแฟมิคอม"
     },
     {
       "id": "mandarake-nakano",
@@ -268,8 +266,6 @@
         "กระจายหลายสิบร้านย่อยในตึก เผื่อเวลาเดินทั้งวัน",
         "เทียบราคาหลายร้านก่อนซื้อของหายาก"
       ],
-      "editorsPick": true,
-      "editorsPickReason": "สวรรค์นักสะสม รวมร้านมือสองของหายากหลายสิบร้านในตึกเดียว",
       "images": [
         {
           "url": "https://upload.wikimedia.org/wikipedia/commons/6/66/Broadway_Arcade_Nakano_Tokyo.jpg",
@@ -403,7 +399,9 @@
         }
       ],
       "sourceUrl": "https://www.acos.me/",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.72866,139.71868"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.72866,139.71868",
+      "editorsPick": true,
+      "editorsPickReason": "ร้านชุดและวิกคอสเพลย์เรือธงบนโอโตเมะโรด แหล่งรวมสายคอสตัวจริง"
     },
     {
       "id": "acos-akihabara",
@@ -561,7 +559,9 @@
         }
       ],
       "sourceUrl": "https://www.yodobashi.com/ec/store/en/0018/",
-      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.69846,139.77441"
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=35.69846,139.77441",
+      "editorsPick": true,
+      "editorsPickReason": "อาณาจักรเครื่องไฟฟ้า กล้อง และของเล่นหลายชั้นกลางอากิฮาบาระ ครบจบในตึกเดียว"
     },
     {
       "id": "yodobashi-kyoto",
@@ -698,7 +698,7 @@
         "ช่วงหลังเที่ยงคืนคิวสั้นกว่าช่วงมื้ออาหาร"
       ],
       "editorsPick": true,
-      "editorsPickReason": "ราเมงทงคตสึในตำนาน นั่งคูหาเดี่ยว ปรับรสเองได้ เปิด 24 ชม.",
+      "editorsPickReason": "ราเมงทงคตสึในตำนาน นั่งคูหาเดี่ยว ปรับความเข้ม/เส้นเองได้ เปิด 24 ชม.",
       "images": [
         {
           "url": "https://upload.wikimedia.org/wikipedia/commons/5/5d/A_view_of_Dotonbori_canal%2C_Osaka.jpg",
@@ -808,7 +808,7 @@
         "ไปเช้าของสดและครบกว่าช่วงสาย"
       ],
       "editorsPick": true,
-      "editorsPickReason": "ตลาดเช้าสตรีทฟู้ดทะเลสดในตำนานของโตเกียว",
+      "editorsPickReason": "เดินชิมซูชิ ไข่หวาน และทะเลย่างสด ๆ ตลาดเช้าสตรีทฟู้ดในตำนานของโตเกียว",
       "images": [
         {
           "url": "https://upload.wikimedia.org/wikipedia/commons/4/41/Choosing_the_right_uni_%282077579258%29.jpg",
@@ -1549,7 +1549,9 @@
           "priceJpy": 600
         }
       ],
-      "sourceUrl": "https://www.donki.com/"
+      "sourceUrl": "https://www.donki.com/",
+      "editorsPick": true,
+      "editorsPickReason": "ตะลุยของฝากรอบเดียวจบ เปิด 24 ชม. พร้อมชิงช้าสวรรค์เอบิสึทาวเวอร์ริมโดตงโบริ"
     },
     {
       "id": "shibuya-109",
@@ -1787,7 +1789,9 @@
           "priceJpy": 1500
         }
       ],
-      "sourceUrl": "https://arabica.coffee/"
+      "sourceUrl": "https://arabica.coffee/",
+      "editorsPick": true,
+      "editorsPickReason": "กาแฟสเปเชียลตี้ที่ถือกำเนิดในเกียวโต จิบลาเต้คู่วิวเจดีย์ยาซากะย่านเมืองเก่า"
     },
     {
       "id": "blue-bottle-kiyosumi",
@@ -1985,7 +1989,9 @@
           "priceJpy": 900
         }
       ],
-      "sourceUrl": "https://www.pokemon.co.jp/gp/pokecen/osaka/"
+      "sourceUrl": "https://www.pokemon.co.jp/gp/pokecen/osaka/",
+      "editorsPick": true,
+      "editorsPickReason": "ร้านโปเกมอนทางการ ตุ๊กตา การ์ด และของลิมิเต็ดเฉพาะสาขา แฟนพันธุ์แท้ห้ามพลาด"
     },
     {
       "id": "animate-kyoto",
@@ -2372,7 +2378,9 @@
           "priceJpy": 1500
         }
       ],
-      "sourceUrl": "https://www.dotonbori.or.jp/"
+      "sourceUrl": "https://www.dotonbori.or.jp/",
+      "editorsPick": true,
+      "editorsPickReason": "หัวใจกลางคืนของโอซาก้า ป้ายกูลิโกะและนีออนยักษ์ริมคลอง จุดเช็กอินที่ต้องมา"
     },
     {
       "id": "bic-camera-shinjuku",
