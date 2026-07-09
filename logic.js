@@ -152,6 +152,131 @@ export function sortByPrice(entries, direction = 'asc') {
 }
 
 // ============================================================
+//  Trip Planner — จัด Entry ที่บุ๊กมาร์กไว้ลง Trip Day (ดู CONTEXT.md, ADR-0004)
+// ============================================================
+
+/**
+ * รวมราคาเริ่มต้น (JPY) ของ entry ตาม id ที่ระบุ — ใช้คำนวณ Trip Total ต่อ Trip Day
+ * id ที่ไม่พบใน entries หรือ entry ที่ไม่มีราคาที่ใช้ได้ นับเป็น 0
+ * @param {Array<object>} entries
+ * @param {Array<string>} entryIds
+ * @returns {number}
+ */
+export function getTripDayTotalJpy(entries, entryIds) {
+  if (!Array.isArray(entries) || !Array.isArray(entryIds)) return 0;
+  const byId = new Map(entries.map((entry) => [entry?.id, entry]));
+  return entryIds.reduce((sum, id) => {
+    const entry = byId.get(id);
+    const price = entry ? getStartingPriceJpy(entry) : null;
+    return sum + (typeof price === 'number' ? price : 0);
+  }, 0);
+}
+
+/**
+ * รวมราคาเริ่มต้น (JPY) ของทุก entry ที่จัดอยู่ใน Trip Day ใดๆ ของ Trip Plan (ไม่นับซ้ำ)
+ * @param {Array<object>} entries
+ * @param {Array<{ id: number, entryIds: string[] }>} tripDays
+ * @returns {number}
+ */
+export function getTripPlanTotalJpy(entries, tripDays) {
+  const ids = [
+    ...new Set(
+      (Array.isArray(tripDays) ? tripDays : []).flatMap((day) =>
+        Array.isArray(day?.entryIds) ? day.entryIds : [],
+      ),
+    ),
+  ];
+  return getTripDayTotalJpy(entries, ids);
+}
+
+/**
+ * ตัด id ที่ไม่ได้บุ๊กมาร์กแล้วออกจากทุก Trip Day (invariant ตาม ADR-0004: บุ๊กมาร์กคือ pool เดียว)
+ * @param {Array<{ id: number, entryIds: string[] }>} tripDays
+ * @param {Array<string>|Set<string>} bookmarkedIds
+ * @returns {Array<{ id: number, entryIds: string[] }>} tripDays ใหม่ที่กรองแล้ว
+ */
+export function syncTripDaysWithBookmarks(tripDays, bookmarkedIds) {
+  if (!Array.isArray(tripDays)) return [];
+  const bookmarked = bookmarkedIds instanceof Set ? bookmarkedIds : new Set(bookmarkedIds ?? []);
+  return tripDays.map((day) => ({
+    ...day,
+    entryIds: (Array.isArray(day?.entryIds) ? day.entryIds : []).filter((id) => bookmarked.has(id)),
+  }));
+}
+
+/**
+ * ย้าย entry หนึ่งไปยัง Trip Day ที่ระบุ (เอาออกจากวันเดิมก่อนเสมอ กันซ้ำสองวัน)
+ * targetDayId = null/undefined หมายถึง "ยังไม่จัดวัน" (เอาออกอย่างเดียว ไม่จัดลงวันไหน)
+ * ถ้า targetDayId ไม่ตรงกับ Trip Day ใดเลย entry จะถูกเอาออกจากวันเดิมโดยไม่ถูกจัดลงที่ไหน (ไม่ throw)
+ * @param {Array<{ id: number, entryIds: string[] }>} tripDays
+ * @param {string} entryId
+ * @param {number|null} targetDayId
+ * @returns {Array<{ id: number, entryIds: string[] }>}
+ */
+export function moveEntryToDay(tripDays, entryId, targetDayId) {
+  if (!Array.isArray(tripDays)) return [];
+  const removed = tripDays.map((day) => ({
+    ...day,
+    entryIds: (Array.isArray(day?.entryIds) ? day.entryIds : []).filter((id) => id !== entryId),
+  }));
+  if (targetDayId == null) return removed;
+  return removed.map((day) =>
+    day.id === targetDayId ? { ...day, entryIds: [...day.entryIds, entryId] } : day,
+  );
+}
+
+/**
+ * ขยับลำดับ entry หนึ่งขึ้น/ลงภายใน Trip Day เดียวกัน (สลับกับตัวข้างเคียง)
+ * ไม่มีผลถ้า entry อยู่ขอบอยู่แล้ว (ต้นสุด+ขึ้น หรือ ท้ายสุด+ลง) หรือหา day/entry ไม่เจอ
+ * @param {Array<{ id: number, entryIds: string[] }>} tripDays
+ * @param {number} dayId
+ * @param {string} entryId
+ * @param {'up'|'down'} direction
+ * @returns {Array<{ id: number, entryIds: string[] }>}
+ */
+export function reorderEntryInDay(tripDays, dayId, entryId, direction) {
+  if (!Array.isArray(tripDays)) return [];
+  const delta = direction === 'down' ? 1 : -1;
+  return tripDays.map((day) => {
+    if (day?.id !== dayId) return day;
+    const ids = Array.isArray(day.entryIds) ? day.entryIds : [];
+    const i = ids.indexOf(entryId);
+    const j = i + delta;
+    if (i === -1 || j < 0 || j >= ids.length) return day;
+    const next = [...ids];
+    [next[i], next[j]] = [next[j], next[i]];
+    return { ...day, entryIds: next };
+  });
+}
+
+/**
+ * เพิ่ม Trip Day ใหม่ (entryIds ว่าง) ต่อท้าย — id ใหม่ = max id เดิม + 1 (หรือ 1 ถ้ายังไม่มีวันเลย)
+ * @param {Array<{ id: number, entryIds: string[] }>} tripDays
+ * @returns {Array<{ id: number, entryIds: string[] }>}
+ */
+export function addTripDay(tripDays) {
+  const days = Array.isArray(tripDays) ? tripDays : [];
+  const nextId = days.reduce((max, day) => Math.max(max, typeof day?.id === 'number' ? day.id : 0), 0) + 1;
+  return [...days, { id: nextId, entryIds: [] }];
+}
+
+/**
+ * คืน id ที่บุ๊กมาร์กไว้แต่ยังไม่ถูกจัดลง Trip Day ไหนเลย (คงลำดับตาม bookmarkedIds)
+ * @param {Array<string>|Set<string>} bookmarkedIds
+ * @param {Array<{ id: number, entryIds: string[] }>} tripDays
+ * @returns {Array<string>}
+ */
+export function getUnassignedBookmarkIds(bookmarkedIds, tripDays) {
+  const bookmarked = bookmarkedIds instanceof Set ? [...bookmarkedIds] : Array.isArray(bookmarkedIds) ? bookmarkedIds : [];
+  const assigned = new Set(
+    (Array.isArray(tripDays) ? tripDays : []).flatMap((day) =>
+      Array.isArray(day?.entryIds) ? day.entryIds : [],
+    ),
+  );
+  return bookmarked.filter((id) => !assigned.has(id));
+}
+
+// ============================================================
 //  Validator — ตรวจคุณภาพ entry ก่อนขึ้นเว็บ (seam เดียว, pure)
 // ============================================================
 

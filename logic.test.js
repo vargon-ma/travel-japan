@@ -11,6 +11,13 @@ import {
   validateDataset,
   CATEGORIES,
   CITIES,
+  getTripDayTotalJpy,
+  getTripPlanTotalJpy,
+  syncTripDaysWithBookmarks,
+  moveEntryToDay,
+  reorderEntryInDay,
+  addTripDay,
+  getUnassignedBookmarkIds,
 } from './logic.js';
 import dataset from './data.json';
 
@@ -332,6 +339,204 @@ describe('sortByPrice', () => {
     const copy = [...SAMPLE];
     sortByPrice(SAMPLE, 'asc');
     expect(SAMPLE).toEqual(copy);
+  });
+});
+
+describe('getTripDayTotalJpy', () => {
+  it('รวมราคาเริ่มต้นของ entry ตาม entryIds ที่ให้มา', () => {
+    expect(getTripDayTotalJpy(SAMPLE, ['super-potato', 'ichiran'])).toBe(500 + 980);
+  });
+
+  it('ข้าม id ที่ไม่มีอยู่ใน entries', () => {
+    expect(getTripDayTotalJpy(SAMPLE, ['super-potato', 'ghost'])).toBe(500);
+  });
+
+  it('entry ที่ไม่มีราคาที่ใช้ได้ นับเป็น 0', () => {
+    expect(getTripDayTotalJpy([{ id: 'x', products: [] }], ['x'])).toBe(0);
+  });
+
+  it('entryIds ว่าง → 0', () => {
+    expect(getTripDayTotalJpy(SAMPLE, [])).toBe(0);
+  });
+
+  it('ทนต่อ input ที่ไม่ใช่ array', () => {
+    expect(getTripDayTotalJpy(null, ['a'])).toBe(0);
+    expect(getTripDayTotalJpy(SAMPLE, null)).toBe(0);
+  });
+});
+
+describe('getTripPlanTotalJpy', () => {
+  it('รวมราคาข้ามทุก Trip Day', () => {
+    const tripDays = [
+      { id: 1, entryIds: ['super-potato'] },
+      { id: 2, entryIds: ['ichiran', 'skytree'] },
+    ];
+    expect(getTripPlanTotalJpy(SAMPLE, tripDays)).toBe(500 + 980 + 2100);
+  });
+
+  it('ไม่นับซ้ำถ้า id เดียวกันหลุดไปอยู่มากกว่าหนึ่งวัน', () => {
+    const tripDays = [
+      { id: 1, entryIds: ['super-potato'] },
+      { id: 2, entryIds: ['super-potato'] },
+    ];
+    expect(getTripPlanTotalJpy(SAMPLE, tripDays)).toBe(500);
+  });
+
+  it('ไม่มีวันเลย → 0', () => {
+    expect(getTripPlanTotalJpy(SAMPLE, [])).toBe(0);
+  });
+});
+
+describe('syncTripDaysWithBookmarks', () => {
+  it('เอา entry ที่เลิกบุ๊กมาร์กแล้วออกจาก Trip Day ทันที (ADR-0004)', () => {
+    const tripDays = [{ id: 1, entryIds: ['super-potato', 'ichiran'] }];
+    const result = syncTripDaysWithBookmarks(tripDays, new Set(['super-potato']));
+    expect(result).toEqual([{ id: 1, entryIds: ['super-potato'] }]);
+  });
+
+  it('รับ bookmarkedIds เป็น array ธรรมดาได้ด้วย', () => {
+    const tripDays = [{ id: 1, entryIds: ['super-potato', 'ichiran'] }];
+    const result = syncTripDaysWithBookmarks(tripDays, ['ichiran']);
+    expect(result).toEqual([{ id: 1, entryIds: ['ichiran'] }]);
+  });
+
+  it('ไม่แตะวันที่ทุก entry ยังถูกบุ๊กมาร์กอยู่', () => {
+    const tripDays = [{ id: 1, entryIds: ['super-potato'] }];
+    expect(syncTripDaysWithBookmarks(tripDays, new Set(['super-potato']))).toEqual(tripDays);
+  });
+
+  it('ไม่แก้ไข tripDays ต้นฉบับ', () => {
+    const tripDays = [{ id: 1, entryIds: ['super-potato', 'ichiran'] }];
+    const copy = JSON.parse(JSON.stringify(tripDays));
+    syncTripDaysWithBookmarks(tripDays, new Set(['super-potato']));
+    expect(tripDays).toEqual(copy);
+  });
+
+  it('ทนต่อ input ที่ไม่ใช่ array', () => {
+    expect(syncTripDaysWithBookmarks(null, new Set())).toEqual([]);
+  });
+});
+
+describe('moveEntryToDay', () => {
+  const makeTripDays = () => [
+    { id: 1, entryIds: ['super-potato'] },
+    { id: 2, entryIds: [] },
+  ];
+
+  it('ย้าย entry จากวันหนึ่งไปอีกวัน', () => {
+    const result = moveEntryToDay(makeTripDays(), 'super-potato', 2);
+    expect(result).toEqual([
+      { id: 1, entryIds: [] },
+      { id: 2, entryIds: ['super-potato'] },
+    ]);
+  });
+
+  it('จัด entry ที่ยังไม่จัดวันลงวันที่เลือก', () => {
+    const result = moveEntryToDay(makeTripDays(), 'ichiran', 2);
+    expect(result.find((d) => d.id === 2).entryIds).toEqual(['ichiran']);
+  });
+
+  it('targetDayId เป็น null → เอาออกจากทุกวัน (ยังไม่จัดวัน)', () => {
+    const result = moveEntryToDay(makeTripDays(), 'super-potato', null);
+    expect(result).toEqual([
+      { id: 1, entryIds: [] },
+      { id: 2, entryIds: [] },
+    ]);
+  });
+
+  it('targetDayId ไม่มีอยู่จริง → ยังคงเอาออกจากวันเดิม (ไม่ throw)', () => {
+    const result = moveEntryToDay(makeTripDays(), 'super-potato', 999);
+    expect(result.flatMap((d) => d.entryIds)).toEqual([]);
+  });
+
+  it('ไม่แก้ไข tripDays ต้นฉบับ', () => {
+    const days = makeTripDays();
+    const copy = JSON.parse(JSON.stringify(days));
+    moveEntryToDay(days, 'super-potato', 2);
+    expect(days).toEqual(copy);
+  });
+});
+
+describe('reorderEntryInDay', () => {
+  const makeTripDays = () => [{ id: 1, entryIds: ['a', 'b', 'c'] }];
+
+  it('ขยับ entry ขึ้น (สลับกับตัวก่อนหน้า)', () => {
+    const result = reorderEntryInDay(makeTripDays(), 1, 'b', 'up');
+    expect(result[0].entryIds).toEqual(['b', 'a', 'c']);
+  });
+
+  it('ขยับ entry ลง (สลับกับตัวถัดไป)', () => {
+    const result = reorderEntryInDay(makeTripDays(), 1, 'b', 'down');
+    expect(result[0].entryIds).toEqual(['a', 'c', 'b']);
+  });
+
+  it('อยู่แรกสุดแล้วขยับขึ้น → ไม่มีผล', () => {
+    const result = reorderEntryInDay(makeTripDays(), 1, 'a', 'up');
+    expect(result[0].entryIds).toEqual(['a', 'b', 'c']);
+  });
+
+  it('อยู่ท้ายสุดแล้วขยับลง → ไม่มีผล', () => {
+    const result = reorderEntryInDay(makeTripDays(), 1, 'c', 'down');
+    expect(result[0].entryIds).toEqual(['a', 'b', 'c']);
+  });
+
+  it('ไม่มีวันนั้นอยู่จริง → ไม่มีผล', () => {
+    const result = reorderEntryInDay(makeTripDays(), 999, 'a', 'up');
+    expect(result).toEqual(makeTripDays());
+  });
+
+  it('ไม่แก้ไข tripDays ต้นฉบับ', () => {
+    const days = makeTripDays();
+    const copy = JSON.parse(JSON.stringify(days));
+    reorderEntryInDay(days, 1, 'b', 'up');
+    expect(days).toEqual(copy);
+  });
+});
+
+describe('addTripDay', () => {
+  it('ยังไม่มีวันเลย → เพิ่มวันแรกด้วย id 1', () => {
+    expect(addTripDay([])).toEqual([{ id: 1, entryIds: [] }]);
+  });
+
+  it('เพิ่มวันใหม่ด้วย id = max id เดิม + 1', () => {
+    const result = addTripDay([
+      { id: 1, entryIds: [] },
+      { id: 3, entryIds: ['x'] },
+    ]);
+    expect(result).toEqual([
+      { id: 1, entryIds: [] },
+      { id: 3, entryIds: ['x'] },
+      { id: 4, entryIds: [] },
+    ]);
+  });
+
+  it('ไม่แก้ไข tripDays ต้นฉบับ', () => {
+    const days = [{ id: 1, entryIds: [] }];
+    const copy = JSON.parse(JSON.stringify(days));
+    addTripDay(days);
+    expect(days).toEqual(copy);
+  });
+});
+
+describe('getUnassignedBookmarkIds', () => {
+  it('คืน id ที่บุ๊กมาร์กไว้แต่ยังไม่ถูกจัดลงวันไหน', () => {
+    const tripDays = [{ id: 1, entryIds: ['super-potato'] }];
+    const result = getUnassignedBookmarkIds(['super-potato', 'ichiran', 'skytree'], tripDays);
+    expect(result).toEqual(['ichiran', 'skytree']);
+  });
+
+  it('รับ bookmarkedIds เป็น Set ได้ด้วย', () => {
+    const result = getUnassignedBookmarkIds(new Set(['super-potato']), []);
+    expect(result).toEqual(['super-potato']);
+  });
+
+  it('บุ๊กมาร์กทุกอันถูกจัดวันหมดแล้ว → array ว่าง', () => {
+    const tripDays = [{ id: 1, entryIds: ['super-potato'] }];
+    expect(getUnassignedBookmarkIds(['super-potato'], tripDays)).toEqual([]);
+  });
+
+  it('ไม่มีบุ๊กมาร์กเลย → array ว่าง', () => {
+    expect(getUnassignedBookmarkIds([], [])).toEqual([]);
   });
 });
 

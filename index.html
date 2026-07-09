@@ -8,6 +8,22 @@
       name="description"
       content="รวมร้านและสถานที่เด็ดในโตเกียว โอซาก้า เกียวโต สำหรับนักท่องเที่ยวไทย — เที่ยว เกม อนิเมะ คอสเพลย์ คาเฟ่ ของกิน พร้อมราคา ¥/฿ และแผนที่"
     />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛩️</text></svg>" />
+
+    <!-- Open Graph / Twitter Card — พรีวิวตอนแชร์ลิงก์ผ่าน LINE/Facebook/Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="เที่ยวญี่ปุ่น (Travel Japan)" />
+    <meta property="og:title" content="เที่ยวญี่ปุ่น — ร้านและสถานที่แนะนำสำหรับคนไทย" />
+    <meta
+      property="og:description"
+      content="รวมร้านและสถานที่เด็ดในโตเกียว โอซาก้า เกียวโต สำหรับนักท่องเที่ยวไทย — เที่ยว เกม อนิเมะ คอสเพลย์ คาเฟ่ ของกิน พร้อมราคา ¥/฿ และแผนที่"
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="เที่ยวญี่ปุ่น — ร้านและสถานที่แนะนำสำหรับคนไทย" />
+    <meta
+      name="twitter:description"
+      content="รวมร้านและสถานที่เด็ดในโตเกียว โอซาก้า เกียวโต สำหรับนักท่องเที่ยวไทย — เที่ยว เกม อนิเมะ คอสเพลย์ คาเฟ่ ของกิน พร้อมราคา ¥/฿ และแผนที่"
+    />
 
     <!-- ฟอนต์ดิสเพลย์ภาษาไทย (Kanit) + เนื้อความ (Noto Sans Thai) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -108,6 +124,9 @@
             <button type="button" class="viewtoggle__btn" data-view="map" aria-pressed="false">
               🗺 แผนที่
             </button>
+            <button type="button" class="viewtoggle__btn" data-view="trip" aria-pressed="false">
+              📅 แผนเที่ยว
+            </button>
           </div>
         </div>
 
@@ -122,6 +141,19 @@
           </div>
           <div class="view__map">
             <div id="map" class="map"></div>
+          </div>
+          <div class="view__trip" id="view-trip">
+            <p class="trip__empty" id="trip-empty" hidden>
+              บุ๊กมาร์กร้านที่สนใจก่อน (กดปุ่ม ♡ บนการ์ด) แล้วมาจัดลงแผนเที่ยวได้ที่นี่
+            </p>
+            <div class="trip" id="trip-body" hidden>
+              <p class="trip__total" id="trip-total"></p>
+              <div class="trip__tabs" id="trip-tabs" role="tablist" aria-label="เลือกวันเที่ยว"></div>
+              <div class="trip__cols">
+                <div class="trip__list" id="trip-list"></div>
+                <div class="trip__map-wrap" id="trip-map-wrap"></div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

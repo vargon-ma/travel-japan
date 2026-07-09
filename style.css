@@ -532,8 +532,11 @@ a { color: var(--accent); }
    ============================================================ */
 .view { margin-top: 18px; }
 .view__map { display: none; }
+.view__trip { display: none; }
 .view.is-map .view__grid { display: none; }
 .view.is-map .view__map { display: block; }
+.view.is-trip .view__grid { display: none; }
+.view.is-trip .view__trip { display: block; }
 
 .map {
   height: 560px;
@@ -577,6 +580,193 @@ a { color: var(--accent); }
   padding: 8px 12px;
 }
 .map-popup__btn:hover { background: var(--accent-strong); }
+
+/* ============================================================
+   TRIP PLANNER (มุมมอง "แผนเที่ยว")
+   ============================================================ */
+.trip__empty {
+  text-align: center;
+  padding: 52px 20px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+}
+
+.trip__total {
+  margin: 0 0 14px;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.trip__total .thb { color: var(--accent); margin-left: 6px; }
+
+.trip__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.trip__tab {
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+  background: var(--bg);
+  color: var(--text);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.trip__tab:hover { border-color: var(--violet); }
+.trip__tab[aria-selected="true"] { background: var(--violet); border-color: var(--violet); color: #fff; }
+
+.trip__add-day {
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+  background: var(--violet-soft);
+  color: var(--violet);
+  border: 1.5px dashed var(--violet);
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  white-space: nowrap;
+}
+.trip__add-day:hover { background: var(--violet); color: #fff; }
+
+.trip__cols {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.trip__list {
+  flex: 1 1 360px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.trip__map-wrap {
+  flex: 1 1 360px;
+  min-width: 0;
+}
+.trip__map-wrap .map { height: 100%; min-height: 420px; }
+
+.trip__list-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+}
+
+.trip-day-total {
+  margin: 0 0 10px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.trip-day-total b { color: var(--text); }
+
+.trip-entry {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 10px 12px;
+}
+
+.trip-entry__img {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--cat-soft);
+}
+.trip-entry__placeholder {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background: var(--cat-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trip-entry__body { flex: 1; min-width: 0; }
+.trip-entry__name {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.92rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.trip-entry__price { margin: 2px 0 0; font-size: 0.8rem; color: var(--muted); }
+.trip-entry__price .thb { color: var(--accent); }
+
+.trip-entry__actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.trip-entry__reorder {
+  font: inherit;
+  cursor: pointer;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  line-height: 1;
+}
+.trip-entry__reorder:hover:not(:disabled) { border-color: var(--violet); color: var(--violet); }
+.trip-entry__reorder:disabled { opacity: 0.3; cursor: default; }
+
+.trip-entry__move {
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.trip-entry__move:focus { outline: none; border-color: var(--violet); }
+
+/* หมุดเลขลำดับบนแผนที่แผนเที่ยว (Leaflet divIcon) */
+.trip-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--violet);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: var(--shadow-sm);
+  border: 2px solid #fff;
+}
+
+@media (max-width: 760px) {
+  .trip__cols { flex-direction: column; }
+  .trip__map-wrap .map { height: 320px; }
+}
 
 /* ============================================================
    STATUS (loading / empty / error)

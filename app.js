@@ -7,6 +7,13 @@ import {
   filterEntries,
   sortByPrice,
   wikiThumbUrl,
+  getTripDayTotalJpy,
+  getTripPlanTotalJpy,
+  syncTripDaysWithBookmarks,
+  moveEntryToDay,
+  reorderEntryInDay,
+  addTripDay,
+  getUnassignedBookmarkIds,
 } from './logic.js';
 
 // เรต JPY→THB ดึงสดจาก API ที่ไม่ต้องใช้ key; ถ้าล้มเหลวใช้เรตสำรองด้านล่าง
@@ -324,15 +331,16 @@ function renderMap(entries) {
   }
 
   // fitBounds ต้องการให้ container มีขนาด; ถ้าแผนที่ถูกซ่อนอยู่ค่อย fit ตอนสลับมาดู
-  if (markers.length > 0 && !isMapHidden()) {
+  if (markers.length > 0 && !isViewHidden('is-map')) {
     const bounds = L.featureGroup(markers).getBounds();
     map.fitBounds(bounds.pad(0.2), { maxZoom: 14 });
   }
 }
 
-function isMapHidden() {
+/** เช็คว่ามุมมองที่ระบุ (คลาสบน #view เช่น 'is-map'/'is-trip') กำลังถูกซ่อนอยู่หรือไม่ */
+function isViewHidden(className) {
   const view = document.getElementById('view');
-  return !view || !view.classList.contains('is-map');
+  return !view || !view.classList.contains(className);
 }
 
 // ============================================================
@@ -376,7 +384,8 @@ function getViewModel() {
 function applyView(gridEl, statusEl) {
   const view = allEntries.length === 0 ? [] : getViewModel();
   lastView = view;
-  renderMap(view);
+  // ข้ามตอนมุมมองแผนเที่ยวโชว์อยู่ — ไม่งั้นจะไปทับ markerLayer ที่ใช้ร่วมกับเส้นทางของแผนเที่ยว
+  if (isViewHidden('is-trip')) renderMap(view);
   updateResultCount(view.length);
 
   if (allEntries.length === 0) {
@@ -481,24 +490,45 @@ function setupFilters(gridEl, statusEl) {
   }
 }
 
-/** ปุ่มสลับมุมมองกริด ↔ แผนที่ */
+/** ปุ่มสลับมุมมองกริด ↔ แผนที่ ↔ แผนเที่ยว */
 function setupViewToggle() {
   const view = document.getElementById('view');
   const buttons = [...document.querySelectorAll('.viewtoggle__btn')];
+  const mapEl = document.getElementById('map');
+  const mapHomeEl = document.querySelector('.view__map');
+  const tripMapSlot = document.getElementById('trip-map-wrap');
 
   for (const btn of buttons) {
     btn.addEventListener('click', () => {
-      const wantMap = btn.dataset.view === 'map';
-      view.classList.toggle('is-map', wantMap);
+      const target = btn.dataset.view; // 'grid' | 'map' | 'trip'
+      view.classList.toggle('is-map', target === 'map');
+      view.classList.toggle('is-trip', target === 'trip');
       for (const b of buttons) {
-        b.setAttribute('aria-pressed', String((b.dataset.view === 'map') === wantMap));
+        b.setAttribute('aria-pressed', String(b.dataset.view === target));
       }
-      // แผนที่ถูกสร้างตอนถูกซ่อน → ต้อง invalidateSize + fit ใหม่เมื่อแสดง
-      if (wantMap && map) {
-        setTimeout(() => {
-          map.invalidateSize();
-          renderMap(lastView);
-        }, 0);
+
+      // แผนที่ (Leaflet instance เดียว) ถูกย้ายไปมาระหว่างมุมมองแผนที่หลัก ↔ แผนเที่ยว
+      // แผนที่ถูกสร้าง/ย้ายตอนถูกซ่อน → ต้อง invalidateSize ก่อนเสมอ แล้วค่อย fit/render (ไม่งั้น fitBounds จะใช้ขนาด container เก่าที่ค้างไว้)
+      // ทั้งสอง callback เช็คมุมมองปัจจุบันซ้ำก่อน render กันกรณีสลับมุมมองเร็วๆ จน callback เก่ามาทำงานทับมุมมองใหม่
+      if (target === 'trip') {
+        tripMapSlot?.appendChild(mapEl);
+        revealTripPanel(); // เปิดเผย #trip-body (ถ้ามีบุ๊กมาร์ก) ก่อนเสมอ ให้ container มีขนาดจริงตอน invalidateSize
+        if (map) {
+          setTimeout(() => {
+            map.invalidateSize();
+            if (!isViewHidden('is-trip')) renderTripView();
+          }, 0);
+        } else {
+          renderTripView();
+        }
+      } else if (target === 'map') {
+        mapHomeEl?.appendChild(mapEl);
+        if (map) {
+          setTimeout(() => {
+            map.invalidateSize();
+            if (!isViewHidden('is-map')) renderMap(lastView);
+          }, 0);
+        }
       }
     });
   }
@@ -511,8 +541,12 @@ function toggleBookmark(id, gridEl, statusEl) {
   if (bookmarkedIds.has(id)) bookmarkedIds.delete(id);
   else bookmarkedIds.add(id);
   saveBookmarks();
+  // ADR-0004: บุ๊กมาร์กคือ pool เดียว — เลิกบุ๊กมาร์กแล้วต้องหลุดจาก Trip Day ที่อยู่ด้วยทันที
+  tripDays = syncTripDaysWithBookmarks(tripDays, bookmarkedIds);
+  saveTripDays();
   if (filterState.bookmarkedOnly) applyView(gridEl, statusEl);
   syncBookmarkButtons(id);
+  if (!isViewHidden('is-trip')) renderTripView();
 }
 
 function setupBookmarks(gridEl, statusEl) {
@@ -531,6 +565,274 @@ function setupBookmarks(gridEl, statusEl) {
     toggleBtn.setAttribute('aria-pressed', String(filterState.bookmarkedOnly));
     toggleBtn.classList.toggle('is-active', filterState.bookmarkedOnly);
     applyView(gridEl, statusEl);
+  });
+}
+
+// ============================================================
+//  Trip Planner (มุมมอง "แผนเที่ยว") — ต่อยอดจากบุ๊กมาร์ก, ดู CONTEXT.md / ADR-0004
+// ============================================================
+const TRIP_DAYS_KEY = 'travel-japan:trip-days';
+let tripDays = []; // Array<{ id: number, entryIds: string[] }>
+let activeTripTab = 'unassigned'; // 'unassigned' | number (Trip Day id)
+
+/** อ่านแผนเที่ยวจาก localStorage; ถ้าพัง/ไม่มีให้คืน array ว่าง (เว็บต้องไม่พัง) */
+function loadTripDays() {
+  try {
+    const raw = localStorage.getItem(TRIP_DAYS_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .filter((d) => d && typeof d.id === 'number')
+      .map((d) => ({
+        id: d.id,
+        entryIds: Array.isArray(d.entryIds) ? d.entryIds.filter((id) => typeof id === 'string') : [],
+      }));
+  } catch (err) {
+    console.warn('อ่านแผนเที่ยวจาก localStorage ไม่สำเร็จ:', err);
+    return [];
+  }
+}
+
+/** บันทึกแผนเที่ยวลง localStorage (ล้มเหลวเงียบๆ ไม่ให้ทำหน้าเว็บพัง) */
+function saveTripDays() {
+  try {
+    localStorage.setItem(TRIP_DAYS_KEY, JSON.stringify(tripDays));
+  } catch (err) {
+    console.warn('บันทึกแผนเที่ยวลง localStorage ไม่สำเร็จ:', err);
+  }
+}
+
+/** ตัวเลือกวันในดร็อปดาวน์ "ย้ายไปวัน" ของแต่ละแถว — value ที่เลือกอยู่คือกลุ่มปัจจุบันของ entry นั้น */
+function tripDayOptionsHtml(selectedValue) {
+  const options = [
+    { value: 'unassigned', label: 'ยังไม่จัดวัน' },
+    ...tripDays.map((day, i) => ({ value: String(day.id), label: `วันที่ ${i + 1}` })),
+  ];
+  return options
+    .map(
+      ({ value, label }) =>
+        `<option value="${escapeHtml(value)}"${value === selectedValue ? ' selected' : ''}>${escapeHtml(label)}</option>`,
+    )
+    .join('');
+}
+
+function tripEntryRowHtml(entry, { dayValue, index, total }) {
+  const startingPrice = getStartingPriceJpy(entry);
+  const thb = formatThb(startingPrice, currentRate);
+  const hasImage = Array.isArray(entry.images) && entry.images.length > 0;
+  const media = hasImage
+    ? `<img class="trip-entry__img" src="${escapeHtml(wikiThumbUrl(entry.images[0].url, 250))}" alt="" loading="lazy" decoding="async" />`
+    : '<span class="trip-entry__placeholder" aria-hidden="true">🗾</span>';
+
+  const canReorder = dayValue !== 'unassigned';
+  const reorderHtml = canReorder
+    ? `
+      <button type="button" class="trip-entry__reorder" data-trip-reorder="up" data-id="${escapeHtml(entry.id)}" data-day="${escapeHtml(dayValue)}" ${index === 0 ? 'disabled' : ''} aria-label="ขยับขึ้น">▲</button>
+      <button type="button" class="trip-entry__reorder" data-trip-reorder="down" data-id="${escapeHtml(entry.id)}" data-day="${escapeHtml(dayValue)}" ${index === total - 1 ? 'disabled' : ''} aria-label="ขยับลง">▼</button>`
+    : '';
+
+  return `
+    <div class="trip-entry" data-id="${escapeHtml(entry.id)}">
+      ${media}
+      <div class="trip-entry__body">
+        <p class="trip-entry__name">${escapeHtml(entry.nameTh)}</p>
+        <p class="trip-entry__price">${formatJpy(startingPrice)}${thb ? ` <span class="thb">${thb}</span>` : ''}</p>
+      </div>
+      <div class="trip-entry__actions">
+        ${reorderHtml}
+        <select class="trip-entry__move" data-trip-move="${escapeHtml(entry.id)}" aria-label="ย้ายไปวัน">
+          ${tripDayOptionsHtml(dayValue)}
+        </select>
+      </div>
+    </div>`;
+}
+
+/** ยอดรวมทั้งทริป — โชว์เฉพาะเมื่อมี entry ถูกจัดลงวันไหนแล้วอย่างน้อยหนึ่งรายการ */
+function renderTripTotal() {
+  const el = document.getElementById('trip-total');
+  if (!el) return;
+  const hasAny = tripDays.some((d) => d.entryIds.length > 0);
+  if (!hasAny) {
+    el.hidden = true;
+    return;
+  }
+  el.hidden = false;
+  const totalJpy = getTripPlanTotalJpy(allEntries, tripDays);
+  const thb = formatThb(totalJpy, currentRate);
+  el.innerHTML = `รวมทั้งทริป: <span>${formatJpy(totalJpy)}</span>${thb ? ` <span class="thb">${thb}</span>` : ''}`;
+}
+
+function renderTripTabs() {
+  const bar = document.getElementById('trip-tabs');
+  if (!bar) return;
+
+  const tabs = [
+    { id: 'unassigned', label: 'ยังไม่จัดวัน' },
+    ...tripDays.map((day, i) => ({ id: day.id, label: `วันที่ ${i + 1}` })),
+  ];
+
+  const tabNodes = tabs.map(({ id, label }) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'trip__tab';
+    btn.dataset.tripTab = String(id);
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-selected', String(id === activeTripTab));
+    btn.textContent = label;
+    return btn;
+  });
+
+  const addBtn = document.createElement('button');
+  addBtn.type = 'button';
+  addBtn.className = 'trip__add-day';
+  addBtn.dataset.tripAddDay = '';
+  addBtn.textContent = '+ เพิ่มวัน';
+
+  bar.replaceChildren(...tabNodes, addBtn);
+}
+
+function renderTripList() {
+  const listEl = document.getElementById('trip-list');
+  if (!listEl) return;
+
+  let ids;
+  let dayValue;
+  if (activeTripTab === 'unassigned') {
+    ids = getUnassignedBookmarkIds(bookmarkedIds, tripDays);
+    dayValue = 'unassigned';
+  } else {
+    const day = tripDays.find((d) => d.id === activeTripTab);
+    ids = day ? day.entryIds : [];
+    dayValue = String(activeTripTab);
+  }
+
+  const entries = ids.map((id) => entryById.get(id)).filter(Boolean);
+
+  if (entries.length === 0) {
+    listEl.innerHTML = `<p class="trip__list-empty">${
+      activeTripTab === 'unassigned'
+        ? 'ไม่มีร้านที่รอจัดวัน'
+        : 'ยังไม่มีร้านในวันนี้ — เลือกแท็บ "ยังไม่จัดวัน" แล้วย้ายร้านมาที่นี่'
+    }</p>`;
+    return;
+  }
+
+  let totalHtml = '';
+  if (activeTripTab !== 'unassigned') {
+    const totalJpy = getTripDayTotalJpy(allEntries, ids);
+    const thb = formatThb(totalJpy, currentRate);
+    totalHtml = `<p class="trip-day-total">รวมวันนี้: <b>${formatJpy(totalJpy)}</b>${thb ? ` ${thb}` : ''}</p>`;
+  }
+
+  listEl.innerHTML =
+    totalHtml +
+    entries
+      .map((entry, i) => tripEntryRowHtml(entry, { dayValue, index: i, total: entries.length }))
+      .join('');
+}
+
+/** วาดหมุดเลขลำดับ + เส้นเชื่อมของ Trip Day ที่เลือกอยู่ บนแผนที่ตัวเดียวกับมุมมองอื่น */
+function renderTripMap() {
+  if (!map || !markerLayer) return;
+  markerLayer.clearLayers();
+
+  if (activeTripTab === 'unassigned') return; // ยังไม่จัดวัน = ไม่มีลำดับ/เส้นทางให้โชว์
+
+  const day = tripDays.find((d) => d.id === activeTripTab);
+  const ids = day ? day.entryIds : [];
+  const points = [];
+
+  ids.forEach((id, i) => {
+    const entry = entryById.get(id);
+    if (!entry || typeof entry.lat !== 'number' || typeof entry.lng !== 'number') return;
+    const marker = L.marker([entry.lat, entry.lng], {
+      icon: L.divIcon({
+        className: 'trip-pin',
+        html: `<span>${i + 1}</span>`,
+        iconSize: [28, 28],
+        iconAnchor: [14, 14],
+      }),
+    }).bindPopup(buildPopupHtml(entry));
+    markerLayer.addLayer(marker);
+    points.push([entry.lat, entry.lng]);
+  });
+
+  if (points.length > 1) {
+    markerLayer.addLayer(L.polyline(points, { color: '#7c3aed', weight: 3, dashArray: '6 8' }));
+  }
+
+  if (points.length > 0 && !isViewHidden('is-trip')) {
+    map.fitBounds(L.latLngBounds(points).pad(0.2), { maxZoom: 14 });
+  }
+}
+
+/** render ทั้งแผงแผนเที่ยว: ยอดรวม + แท็บวัน + ลิสต์ + แผนที่ */
+/**
+ * สลับ hidden ระหว่างข้อความว่าง/ตัวแผงแผนเที่ยวตามสถานะบุ๊กมาร์ก — คืน true ถ้ามีตัวแผงให้แสดง
+ * แยกออกมาเพราะต้องเรียก "ก่อน" invalidateSize ตอนสลับมุมมอง ไม่งั้น #trip-body ที่ยัง hidden จะทำให้
+ * แผนที่ (ซึ่งถูกย้ายเข้ามาอยู่ข้างใน) มีขนาด container เป็น 0 ตอน invalidateSize คำนวณขนาด
+ */
+function revealTripPanel() {
+  const emptyEl = document.getElementById('trip-empty');
+  const bodyEl = document.getElementById('trip-body');
+  if (!emptyEl || !bodyEl) return false;
+
+  const hasBookmarks = bookmarkedIds.size > 0;
+  emptyEl.hidden = hasBookmarks;
+  bodyEl.hidden = !hasBookmarks;
+  return hasBookmarks;
+}
+
+function renderTripView() {
+  if (!revealTripPanel()) return;
+
+  // กันแท็บที่เลือกอ้างถึง Trip Day ที่ไม่มีอยู่แล้ว (เผื่ออนาคต)
+  if (activeTripTab !== 'unassigned' && !tripDays.some((d) => d.id === activeTripTab)) {
+    activeTripTab = 'unassigned';
+  }
+
+  renderTripTotal();
+  renderTripTabs();
+  renderTripList();
+  renderTripMap();
+}
+
+function setupTripPlanner() {
+  const tabsEl = document.getElementById('trip-tabs');
+  const listEl = document.getElementById('trip-list');
+
+  tabsEl.addEventListener('click', (e) => {
+    if (e.target.closest('[data-trip-add-day]')) {
+      tripDays = addTripDay(tripDays);
+      saveTripDays();
+      activeTripTab = tripDays[tripDays.length - 1].id;
+      renderTripView();
+      return;
+    }
+    const tabBtn = e.target.closest('[data-trip-tab]');
+    if (!tabBtn) return;
+    const raw = tabBtn.dataset.tripTab;
+    activeTripTab = raw === 'unassigned' ? 'unassigned' : Number(raw);
+    renderTripView();
+  });
+
+  listEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-trip-reorder]');
+    if (!btn) return;
+    const dayId = Number(btn.dataset.day);
+    tripDays = reorderEntryInDay(tripDays, dayId, btn.dataset.id, btn.dataset.tripReorder);
+    saveTripDays();
+    renderTripView();
+  });
+
+  listEl.addEventListener('change', (e) => {
+    const select = e.target.closest('[data-trip-move]');
+    if (!select) return;
+    const entryId = select.dataset.tripMove;
+    const targetDayId = select.value === 'unassigned' ? null : Number(select.value);
+    tripDays = moveEntryToDay(tripDays, entryId, targetDayId);
+    saveTripDays();
+    renderTripView();
   });
 }
 
@@ -906,6 +1208,10 @@ async function init() {
     entryById = new Map(entries.map((entry) => [entry.id, entry]));
     currentRate = rateInfo.rate;
     bookmarkedIds = loadBookmarks();
+    tripDays = syncTripDaysWithBookmarks(loadTripDays(), bookmarkedIds); // ADR-0004: sync ทันทีตอนโหลด
+    // กัน id ค้าง (bookmark/แผนเที่ยวจากเซสชันก่อนอ้างถึง entry ที่ถูกลบ/แก้ id ไปแล้วใน data.json)
+    tripDays = syncTripDaysWithBookmarks(tripDays, new Set(entryById.keys()));
+    saveTripDays();
 
     renderHeroStats(entries);
     renderCredits(entries);
@@ -916,6 +1222,7 @@ async function init() {
     setupViewToggle();
     setupModal(gridEl);
     setupBookmarks(gridEl, statusEl);
+    setupTripPlanner();
     setupMap();
     applyView(gridEl, statusEl);
   } catch (err) {
